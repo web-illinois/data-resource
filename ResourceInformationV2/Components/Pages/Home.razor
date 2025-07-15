@@ -1,0 +1,20 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <ul class="ilw-buttons">
+                <li><a class="ilw-button" href="MicrosoftIdentity/Account/SignOut">Sign Out</a></li>
+                <li>Logged in as @context.User.Identity?.Name</li>
+            </ul>
+        </Authorized>
+        <NotAuthorized>
+            <ul class="ilw-buttons">
+                <li><a class="ilw-button" href="MicrosoftIdentity/Account/SignIn">Log in</a></li>
+            </ul>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>

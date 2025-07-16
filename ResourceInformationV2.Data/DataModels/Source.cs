@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourceInformationV2.Data.DataModels {
 
@@ -21,6 +16,9 @@ namespace ResourceInformationV2.Data.DataModels {
         public bool IsTest { get; set; } = false;
         public int NumberOfDaysForReview { get; set; }
         public string ReviewEmail { get; set; } = "";
+        public string SecurityKey { get; set; } = "";
+        public string SecurityKeyAlternate { get; set; } = "";
+        public DateTime SecurityKeyChangeDate { get; set; }
         public string Title { get; set; } = "";
         public string UrlTemplate { get; set; } = "";
         public bool UseFaqs { get; set; }

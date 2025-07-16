@@ -2,10 +2,10 @@
     <ul>
         <li>
             <ilw-header-menu-section>
-                <span slot="label">Mange Information</span>
+                <span slot="label">Add / Edit Information</span>
                 <ul>
-                    <li><a href="/add">Add New</a></li>
-                    <li><a href="/edit">Edit Existing</a></li>
+                    <li><a href="/add">Add New Item</a></li>
+                    <li><a href="/edit">Edit Existing Item</a></li>
                     <li><a href="/viewdrafts">View Drafts</a></li>
                     <li><a href="/audit">Audit</a></li>
                 </ul>
@@ -17,7 +17,18 @@
                 <ul>
                     <li><a href="/upload">Upload Tab-Delimited List</a></li>
                     <li><a href="/download">Download Tab-Delimited List</a></li>
-                    <li><a href="/downloadjson">Download JSON</a></li>
+                    <li><a href="/uploadjson">Upload JSON File</a></li>
+                    <li><a href="/downloadjson">Download JSON File</a></li>
+                </ul>
+            </ilw-header-menu-section>
+        </li>
+        <li>
+            <ilw-header-menu-section>
+                <span slot="label">Review Information</span>
+                <ul>
+                    <li><a href="/viewdrafts">View Drafts</a></li>
+                    <li><a href="/review">View Review List</a></li>
+                    <li><a href="/editreview">Edit Review Process</a></li>
                 </ul>
             </ilw-header-menu-section>
         </li>
@@ -29,7 +40,6 @@
                     <li><a href="/configuration/instructions">Instructions</a></li>
                     <li><a href="/configuration/filters">Filters</a></li>
                     <li><a href="/configuration/security">Security</a></li>
-                    <li><a href="/configuration/audit">Audit Process</a></li>
                     <li><a href="/configuration/requestdeletion">Request Deletion</a></li>
                     <li><a href="/configuration/testing">Testing Access</a></li>
                 </ul>

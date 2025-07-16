@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+    <Folder Include="JsonThinModels\" />
+    <Folder Include="Setters\" />
+    <Folder Include="Getters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenSearch.Client" Version="1.8.0" />
+    <PackageReference Include="OpenSearch.Net.Auth.AwsSigV4" Version="1.8.0" />
+  </ItemGroup>
+
 </Project>

@@ -19,6 +19,7 @@ builder.Services.AddAuthorization(options => {
 });
 
 builder.Services.AddWebOptimizer(pipeline => {
+    pipeline.AddJavaScriptBundle("/js/site.js", "/wwwroot/js/*.js").UseContentRoot();
     pipeline.AddCssBundle("/css/site.css", "/wwwroot/css/*.css").UseContentRoot();
 });
 

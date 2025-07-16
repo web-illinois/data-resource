@@ -1,9 +1,33 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<ilw-page>
+<ilw-header slot="header">
+    <a slot="primary-unit" href="https://itpartners.illinois.edu/">IT Partners</a>
+        <a slot="site-name" href="/">IT Partners Resource Repository</a>
+    <div slot="search">
+        <LoginDisplay />
+    </div>
+    <NavMenu />
+</ilw-header>
 
+<main id="app-main">
+    @Body
+    <ilw-spacer></ilw-spacer>
+</main>
+
+<aside>
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+</aside>
+
+<ilw-footer slot="footer">
+    <a slot="primary-unit" href="https://itpartners.illinois.edu/">IT Partners</a>
+        <a slot="site-name" href="/">IT Partners Resource Repository</a>
+    <div slot="actions">
+        <a href="#">Report a Problem</a>
+    </div>
+</ilw-footer>
+</ilw-page>

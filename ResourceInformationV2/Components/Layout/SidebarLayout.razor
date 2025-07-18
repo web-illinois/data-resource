@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
-
+<CascadingValue Value="this">
+<NavigationLock OnBeforeInternalNavigation=this.LocationChangingHandler ConfirmExternalNavigation=IsDirty />
 <ilw-page>
     <ilw-header slot="header">
         <a slot="primary-unit" href="https://itpartners.illinois.edu/">IT Partners</a>
@@ -45,3 +46,4 @@
         </div>
     </ilw-footer>
 </ilw-page>
+</CascadingValue>

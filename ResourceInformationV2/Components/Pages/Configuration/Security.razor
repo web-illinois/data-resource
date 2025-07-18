@@ -1,0 +1,23 @@
+﻿@page "/configuration/security"
+@layout SidebarLayout
+
+<PageTitle>Configuration - Security</PageTitle>
+
+<ilw-content>
+    <h1>Security</h1>
+
+    @foreach (var netid in NetIds)
+    {
+        <div class="security-box">
+            <p>@netid</p>
+            <button class="ilw-button" @onclick="e => Remove(netid)">Remove</button>
+        </div>
+    }
+
+    <div class="ils-input-entry">
+        <label for="newnetid">New Net ID</label>
+        <input id="newnetid" type="text" @bind="NewNetId" class="ils-input-long" />
+        <p>Add a Net ID to add to the list. The <em>@@illinois.edu</em> is optional.</p>
+    </div>
+    <p><button class="ilw-button" @onclick="Add">Add Net ID</button></p>
+</ilw-content>

@@ -2,11 +2,11 @@
 
     public enum CategoryType {
         None,
-        People,
+        Person,
         Publication,
         Resource,
         Faq,
-        Notes
+        Note
     }
 
     public enum FieldType {
@@ -15,6 +15,7 @@
         ImageAndVideo,
         Specific,
         Filters,
+        Links,
         Technical
     }
 

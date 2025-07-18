@@ -1,0 +1,62 @@
+﻿<ilw-content>
+    <fieldset class="heading fields-used-yes-no">
+        <legend>Would you like to add this item to your source?</legend>
+        <div class="ils-input-entry-compact">
+            <label for="isused-yes">Yes</label>
+            <input type="radio" name="isused" id="isused-yes" value="yes" checked="@IsUsed" @onchange="e => SaveUsedChange(true)" />
+        </div>
+        <div class="ils-input-entry-compact">
+            <label for="isused-no">No</label>
+            <input type="radio" name="isused" id="isused-no" value="no" checked="@(!IsUsed)" @onchange="e => SaveUsedChange(false)" />
+        </div>
+    </fieldset>
+</ilw-content>
+@if (IsUsed)
+{
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="general">Optional Instructions for General Area</label>
+            <textarea id="general" @bind="InstructionsGeneral" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="image">Optional Instructions for Image/Video Area</label>
+            <textarea id="image" @bind="InstructionsImage" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    @if (CategoryType != CategoryType.Resource)
+    {
+        <ilw-content>
+            <div class="ils-input-entry">
+                <label for="specific">Optional Instructions for Publication Area</label>
+                <textarea id="specific" @bind="InstructionsSpecific" @bind:after="Layout.SetDirty" />
+            </div>
+        </ilw-content>
+    }
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="filters">Optional Instructions for Filters Area</label>
+            <textarea id="filters" @bind="InstructionsFilters" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="relatedlinks">Optional Instructions for Related Links Area</label>
+            <textarea id="relatedlinks" @bind="InstructionsLinks" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="technical">Optional Instructions for Technical Information</label>
+            <textarea id="technical" @bind="InstructionsTechnical" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+}
+
+<button class="ilw-button ilw-theme-orange-2" @onclick="SaveChanges" @onblur="Layout.RemoveMessage">Save</button>

@@ -1,0 +1,12 @@
+﻿<ilw-content>
+    <h2>Destructive Actions - Delete @ItemTitle</h2>
+
+    <div class="ils-input-disclaimer">
+        <input id="deletebox-@ItemId" type="checkbox" @bind="DeleteCheckbox">
+        <label for="deletebox-@ItemId">
+            @ItemText. Deleting is done automatically and there is no <em>undo</em> button for this. We strongly recommend backing up your data before deleting so you can re-import the data if it becomes needed. Having read this, are you sure you want to delete this?
+        </label>
+    </div>
+
+    <button class="ilw-button" @onclick="Delete" disabled="@(!DeleteCheckbox)">Delete</button>
+</ilw-content>

@@ -17,9 +17,11 @@ namespace ResourceInformationV2.Data.DataContext {
             Debug.WriteLine($"{_id} context created.");
         }
 
+        public DbSet<Instruction> Instructions { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<SecurityEntry> SecurityEntries { get; set; }
         public DbSet<Source> Sources { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         public override void Dispose() {
             Debug.WriteLine($"{_id} context disposed.");

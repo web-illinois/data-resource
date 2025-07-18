@@ -2,5 +2,121 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<ilw-content width="page">
+    <h1>Welcome to the IT Partners Resource Repository</h1>
+    @if (RedirectIfNoSource)
+    {
+        <p class="alert-no-source">Alert: You must choose a source before continuing.</p>
+    }
+    <p>This tool is used to edit resources, publications, notes, FAQs, and people external to the University. This information can be accessed via an API to search based on text and category.</p>
+</ilw-content>
+@if (string.IsNullOrWhiteSpace(SelectedSource) && Sources != null)
+{
+    <ilw-content width="page">
+        <ilw-grid innerwidth="300px" padding="35px 0">
+            @if (NumberOfSources > 1)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3 id="sourcelabel-initial">Choose a Source</h3>
+                    <p>You have access to multiple sources, so you must choose a source before editing resources.</p>
+                    <div slot="footer">
+                        <select aria-labelledby="sourcelabel-initial" @onchange="(ChangeEventArgs e) => ChangeSource(e)">
+                            <option value=""></option>
+                            @foreach (var source in Sources)
+                            {
+                                <option value="@source.Key">@source.Value</option>
+                            }
+                        </select>
+                    </div>
+                </ilw-card>
+            }
+            <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                <h3>Create a Source</h3>
+                <p>A source is a collection of resources on a web page. This is an artificial designation that is usually project-driven. Note that a project may have more than one source, and a source may have multiple components (both resources and publications, for example).</p>
+                <div slot="footer"><a href="/configuration/sources" class="ilw-button">Create a New Source</a></div>
+            </ilw-card>
+            <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                <h3>Access Test Source</h3>
+                <p>We have a test source that you can add yourself to. This will allow you to experiment with adding, modifying, and deleting programs, courses, etc.</p>
+                <div slot="footer"><a href="/configuration/testing" class="ilw-button">Access Test Source</a></div>
+            </ilw-card>
+        </ilw-grid>
+    </ilw-content>
+}
+else if (Sources != null)
+{
+    <ilw-content width="page">
+        <h2>Active Source: <em>@SelectedSourceTitle</em></h2>
+        <ilw-grid innerwidth="300px" padding="35px 0">
+            @if (UseResources)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>Resources</h3>
+                    <p>Resources are a generic list of items. They can be lesson plans, education resources, or any group of resources. </p>
+                    <div slot="footer"><a href="/resource/edit" class="ilw-button">Edit Resources</a> <a href="/resource/general" class="ilw-button">Add New Resource</a></div>
+                </ilw-card>
+            }
+            @if (UsePublications)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>Publications</h3>
+                    <p>Publications are an extension of resources that have additional fields for book title, author, etc. </p>
+                    <div slot="footer"><a href="/publication/edit" class="ilw-button">Edit Publications</a> <a href="/publication/general" class="ilw-button">Add New Publication</a></div>
+                </ilw-card>
+            }
+            @if (UsePeople)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>People</h3>
+                    <p>People are a modification of resources that uses names, departments, and job titles instead of title. Note that this is not tied to any source like Banner, Illinois Experts, or EDW.</p>
+                    <div slot="footer"><a href="/person/edit" class="ilw-button">Edit People</a> <a href="/person/general" class="ilw-button">Add New Person</a></div>
+                </ilw-card>
+            }
+            @if (UseFaqs)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>FAQs</h3>
+                    <p>FAQs are a modification of resources that uses a simple question and complex rich-text templated answer.</p>
+                    <div slot="footer"><a href="/faq/edit" class="ilw-button">Edit FAQs</a> <a href="/faq/general" class="ilw-button">Add New FAQ</a></div>
+                </ilw-card>
+            }
+            @if (UseNotes)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>Notes</h3>
+                    <p>Notes are an extension of resources that allows a rich-text format and template for the description.</p>
+                    <div slot="footer"><a href="/note/edit" class="ilw-button">Edit Notes</a> <a href="/note/general" class="ilw-button">Add New Note</a></div>
+                </ilw-card>
+            }
+            @if (UseResources || UsePublications || UsePeople || UseFaqs || UseNotes)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>Review Items</h3>
+                   <p>You can have a review process to confirm your items are not outdated.</p>
+                   <div slot="footer"><a href="/review" class="ilw-button">View Review List</a><a href="/editreview" class="ilw-button">Edit Review Process</a></div>
+                </ilw-card>
+            }
+            <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                <h3>Configuration</h3>
+                <p>The configuration section allows you to edit the back-end of your source. This includes adding or removing different options.</p>
+                <div slot="footer"><a href="/configuration/sources" class="ilw-button">Edit Configuration</a></div>
+            </ilw-card>
+            @if (NumberOfSources > 1)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3 id="sourcelabel">Choose another Source</h3>
+                    <p>You have access to multiple sources, so you may choose a different source here.</p>
+                    <div slot="footer">
+                        <select aria-labelledby="sourcelabel" @onchange="(ChangeEventArgs e) => ChangeSource(e)">
+                            @foreach (var source in Sources)
+                            {
+                                <option value="@source.Key" selected="@(source.Key == SelectedSource)">@source.Value</option>
+                            }
+                        </select>
+                    </div>
+                </ilw-card>
+            }
+        </ilw-grid>
+    </ilw-content>
 
+}

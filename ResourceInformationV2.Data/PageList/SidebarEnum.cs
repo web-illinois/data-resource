@@ -2,8 +2,7 @@
 
     public enum SidebarEnum {
         None,
-        EditInformation,
-        AddInformation,
+        AddEditInformation,
         PeopleItem,
         PublicationItem,
         ResourceItem,
@@ -11,7 +10,8 @@
         NotesItem,
         Configuration,
         ConfigurationNoSource,
-        Audit,
-        FieldsUsed
+        Review,
+        Transfer,
+        Instructions
     }
 }

@@ -1,0 +1,18 @@
+﻿ilw-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    ilw-content table tr th {
+        padding: 5px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    ilw-content table tr td {
+        padding: 5px;
+    }
+
+    ilw-content table tr:nth-child(even) {
+        background: var(--il-storm-lighter-4);
+    }

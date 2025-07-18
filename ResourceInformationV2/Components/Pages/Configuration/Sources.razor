@@ -1,0 +1,38 @@
+﻿@page "/configuration/sources"
+@layout SidebarLayout
+
+<PageTitle>Configuration - Sources</PageTitle>
+
+<ilw-content>
+    <h1>Sources</h1>
+    <h2>Create a New Source</h2>
+    <p>You may create a new source below. Your source selection will change to the new source once created. Visit the home page to select a different source to edit.</p>
+    <div class="ils-input-entry">
+        <label for="source">Source Name</label>
+        <input id="source" type="text" @bind="NewSource">
+    </div>
+    <div class="ils-input-entry">
+        <label for="code">Source Code</label>
+        <input id="code" type="text" @bind="NewSourceCode">
+    </div>
+
+    <p><button class="ilw-button ilw-theme-orange-2" @onclick="CreateSource" @onblur="Layout.RemoveMessage">Create Source</button></p>
+</ilw-content>
+
+<ilw-content>
+    <h2>Source Owners</h2>
+    <p>If you wish to request access to a source, please request access below.</p>
+    @if (SourceEntries != null)
+    {
+        <ul>
+            @foreach (var entry in SourceEntries)
+            {
+                <li>
+                    <div>@entry.Item2 (email <a href="mailto:@entry.Item1">@entry.Item1</a> to get access)</div>
+                </li>
+            }
+        </ul>
+    }
+
+</ilw-content>
+

@@ -1,0 +1,17 @@
+﻿button.ilw-button.small {
+    padding: 0 5px;
+}
+
+ul.ilw-buttons#save-group {
+    justify-content: start;
+}
+
+div.button-group {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+}
+
+    div.button-group button {
+        max-height: 40px;
+    }

@@ -1,0 +1,10 @@
+﻿.search-generic-item {
+    display: block;
+    padding-bottom: 2.15rem;
+    border-bottom: thin solid var(--il-storm-lighter-1);
+    margin-bottom: 2.15rem;
+}
+
+    .search-generic-item ul.ilw-buttons {
+        justify-content: start;
+    }

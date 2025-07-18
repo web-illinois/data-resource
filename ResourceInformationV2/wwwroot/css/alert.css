@@ -1,0 +1,115 @@
+﻿/* Alert messages with fadeout */
+#update-alert {
+    font-size: 1.8rem;
+    color: white;
+    font-weight: 700;
+    font-family: var(--il-font-sans);
+    padding: 0 10px;
+    background: #1E3877;
+    position: fixed;
+    z-index: 90;
+    bottom: 0;
+    height: 0;
+    width: calc(100% - 40px);
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    visibility: hidden;
+}
+
+    #update-alert button {
+        color: white;
+        z-index: 99;
+        display: block;
+        position: absolute;
+        left: calc(100% - 30px);
+        top: 5px;
+        background: transparent;
+        border: none;
+        height: 30px;
+        width: 30px;
+        font-size: 1.4rem;
+    }
+
+    #update-alert.fadein {
+        border: 10px solid white;
+        height: 100px;
+        -webkit-animation: fadein 1s;
+        animation: fadein 1s;
+        visibility: visible;
+    }
+
+    #update-alert.fadeout {
+        border: 10px solid white;
+        height: 100px;
+        -webkit-animation: fadeout 1s;
+        animation: fadeout 1s;
+        visibility: visible;
+    }
+
+@media (prefers-reduced-motion) {
+    #update-alert.fadein, #update-alert.fadeout {
+        animation: none;
+    }
+
+    #update-alert.fadeout {
+        visibility: hidden;
+        border: none;
+    }
+}
+
+@-webkit-keyframes fadein {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+
+    to {
+        height: 100px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+
+    to {
+        height: 100px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        height: 100px;
+        opacity: 1;
+    }
+
+    to {
+        height: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+p.iled-inline-alert {
+    padding: 0 20px;
+    margin: 10px 0;
+    background: var(--il-blue);
+    color: white;
+    font-weight: 700;
+}

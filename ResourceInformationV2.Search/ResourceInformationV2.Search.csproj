@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="JsonThinModels\" />
     <Folder Include="Setters\" />
     <Folder Include="Getters\" />

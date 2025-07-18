@@ -1,5 +1,28 @@
-﻿<h3>Sidebar</h3>
-
-@code {
-
+﻿@if (_sidebarLinks != null)
+{
+    @if (_sidebar != Data.PageList.SidebarEnum.None)
+    {
+        <ilw-section-nav>
+            <span class="ilw-section-nav--root">@_title</span>
+            @foreach (var sidebarLink in _sidebarLinks)
+            {
+                @if (_baseUrl == sidebarLink.Url)
+                {
+                    <a href="@sidebarLink.Url" aria-current="page">@sidebarLink.Text</a>
+                }
+                else if (sidebarLink.IsEmphasized)
+                {
+                    <a href="@sidebarLink.Url"><em>@sidebarLink.Text</em></a>
+                }
+                else
+                {
+                    <a href="@sidebarLink.Url">@sidebarLink.Text</a>
+                }
+            }
+        </ilw-section-nav>
+    }
+    @if (_sidebar == Data.PageList.SidebarEnum.None)
+    {
+        <ilw-content><p class="bold-title">@_title</p><p><em>More options will be available when the item is saved</em></p></ilw-content>
+    }
 }

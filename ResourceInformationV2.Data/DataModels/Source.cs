@@ -9,6 +9,18 @@ namespace ResourceInformationV2.Data.DataModels {
         public string CreatedByEmail { get; set; } = "";
         public bool DeactivateOnReview { get; set; }
 
+        public string FilterAudienceTitle { get; set; } = "";
+
+        public string FilterTag1Title { get; set; } = "";
+
+        public string FilterTag2Title { get; set; } = "";
+
+        public string FilterTag3Title { get; set; } = "";
+
+        public string FilterTag4Title { get; set; } = "";
+
+        public string FilterTopicTitle { get; set; } = "";
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override int Id { get; set; }
@@ -19,8 +31,9 @@ namespace ResourceInformationV2.Data.DataModels {
         public string SecurityKey { get; set; } = "";
         public string SecurityKeyAlternate { get; set; } = "";
         public DateTime SecurityKeyChangeDate { get; set; }
+        public string TemplateText { get; set; } = "";
+        public string TemplateTitle { get; set; } = "";
         public string Title { get; set; } = "";
-        public string UrlTemplate { get; set; } = "";
         public bool UseFaqs { get; set; }
         public bool UseNotes { get; set; }
         public bool UsePeople { get; set; }

@@ -1,5 +1,9 @@
-﻿<h3>Breadcrumb</h3>
-
-@code {
-
+﻿@if (_breadcrumbs != null && _breadcrumbs.Any())
+{
+    <ilw-breadcrumbs width="page" style="display: block; padding-top: 10px;">
+        @foreach (var breadcrumb in _breadcrumbs)
+        {
+            <a href="@breadcrumb.Url">@breadcrumb.Text</a>
+        }
+    </ilw-breadcrumbs>
 }

@@ -1,7 +1,15 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using OpenSearch.Client;
 using ResourceInformationV2.Components;
+using ResourceInformationV2.Data.Cache;
+using ResourceInformationV2.Data.DataContext;
+using ResourceInformationV2.Data.DataHelpers;
+using ResourceInformationV2.Data.Uploads;
+using ResourceInformationV2.Search;
+using ResourceInformationV2.Search.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +33,20 @@ builder.Services.AddWebOptimizer(pipeline => {
 
 builder.Services.AddCascadingAuthenticationState();
 
+builder.Services.AddScoped(b => new UploadStorage(builder.Configuration["AzureStorage"], builder.Configuration["AzureAccountName"], builder.Configuration["AzureAccountKey"], builder.Configuration["AzureImageContainerName"]));
+
+builder.Services.AddDbContextFactory<ResourceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection")).EnableSensitiveDataLogging(true));
+builder.Services.AddScoped<ResourceRepository>();
+builder.Services.AddSingleton(b => OpenSearchFactory.CreateClient(builder.Configuration["SearchUrl"], builder.Configuration["SearchAccessKey"], builder.Configuration["SearchSecretAccessKey"], bool.Parse(builder.Configuration["SearchDebug"] ?? "false")));
+builder.Services.AddSingleton(b => OpenSearchFactory.CreateLowLevelClient(builder.Configuration["SearchUrl"], builder.Configuration["SearchAccessKey"], builder.Configuration["SearchSecretAccessKey"], bool.Parse(builder.Configuration["SearchDebug"] ?? "false")));
+builder.Services.AddScoped<BulkEditor>();
+builder.Services.AddSingleton<CacheHolder>();
+builder.Services.AddScoped<SourceHelper>();
+builder.Services.AddScoped<InstructionHelper>();
+builder.Services.AddScoped<FilterHelper>();
+builder.Services.AddScoped<SecurityHelper>();
+builder.Services.AddScoped<LogHelper>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,5 +65,16 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.Lifetime.ApplicationStarted.Register(() => {
+    var factory = app.Services.GetService<IServiceScopeFactory>() ?? throw new NullReferenceException("service scope factory is null");
+    using var serviceScope = factory.CreateScope();
+    // Ensure the database is created
+    var context = serviceScope.ServiceProvider.GetRequiredService<ResourceContext>();
+    _ = context.Database.EnsureCreated();
+    // Ensure the search index is created
+    var openSearchClient = serviceScope.ServiceProvider.GetRequiredService<OpenSearchClient>();
+    Console.WriteLine(OpenSearchFactory.MapIndex(openSearchClient));
+});
 
 app.Run();

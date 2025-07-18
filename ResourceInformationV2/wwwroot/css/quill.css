@@ -1,0 +1,14 @@
+﻿.ql-editor {
+    min-height: 250px;
+}
+
+    .ql-editor p {
+        font-family: var(--il-font-sans);
+        font-size: 1rem;
+        padding-bottom: 20px !important;
+    }
+
+    .ql-editor li {
+        font-family: var(--il-font-sans);
+        font-size: 1rem;
+    }

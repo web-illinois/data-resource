@@ -1,0 +1,50 @@
+﻿@page "/configuration/filters"
+@layout SidebarLayout
+
+<PageTitle>Configuration - Manage Filters</PageTitle>
+
+<ilw-content>
+    <h1>Manage Filters</h1>
+    <p>Tags, departments, and skills are keywords that can be configured per source and can be used as filters for various resources.</p>
+
+    <div class="ils-input-entry">
+        <label for="filter-type">Type</label>
+        <select id="filter-type" @bind="FilterType" @bind:after="ChangeFilter">
+            <option value=""></option>
+            <option value="Audience">Audience</option>
+            <option value="Topic">Topic</option>
+            <option value="Tag 1">Generic Tag 1</option>
+            <option value="Tag 2">Generic Tag 2</option>
+            <option value="Tag 3">Generic Tag 3</option>
+            <option value="Tag 4">Generic Tag 4</option>
+        </select>
+    </div>
+</ilw-content>
+
+@if (FilterType != "")
+{
+    <ilw-content>
+        <h2>@FilterType</h2>
+
+        <h3>Filter Name</h3>
+        <p>The name of the filter as it appears to users. For example, "Audience", "Topic", "Grade Level", "Skilll", "Format", etc.</p>
+
+        <div class="ils-input-entry">
+            <label for="filter-title">Filter Title:</label>
+            <input id="filter-title" @bind="FilterTitle" />
+        </div>
+
+        <h3>Filters</h3>
+        @for (int i = 0; i < FilterTags.Count; i++)
+        {
+            <FilterEditor Id="@i" @bind-Value="@FilterTags[i]" MoveUpCallback="e => MoveUp(e)" MoveDownCallback="e => MoveDown(e)" RemoveCallback="e => Remove(e)" />
+        }
+
+        <div class="search-generic-item">
+            <h3>Add New Filter</h3>
+            <input type="text" @bind="NewFilterName" class="ils-input-long" />
+            <button class="ilw-button" @onclick="Add">Add</button>
+        </div>
+    </ilw-content>
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}

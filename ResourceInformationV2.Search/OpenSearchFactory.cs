@@ -11,11 +11,12 @@ namespace ResourceInformationV2.Search {
 
         public static OpenSearchClient CreateClient(string? baseUrl, string? accessKey, string? secretKey, bool debug) {
             var client = new OpenSearchClient(GenerateConnection(baseUrl, accessKey, secretKey, debug));
-            _ = client.ConnectionSettings.DefaultIndices.Add(typeof(FaqItem), UrlTypes.Faq.ConvertToUrlString());
+            _ = client.ConnectionSettings.DefaultIndices.Add(typeof(FaqItem), UrlTypes.Faqs.ConvertToUrlString());
             _ = client.ConnectionSettings.DefaultIndices.Add(typeof(NoteItem), UrlTypes.Notes.ConvertToUrlString());
             _ = client.ConnectionSettings.DefaultIndices.Add(typeof(Person), UrlTypes.People.ConvertToUrlString());
             _ = client.ConnectionSettings.DefaultIndices.Add(typeof(Publication), UrlTypes.Publications.ConvertToUrlString());
             _ = client.ConnectionSettings.DefaultIndices.Add(typeof(Resource), UrlTypes.Resources.ConvertToUrlString());
+            _ = client.ConnectionSettings.DefaultIndices.Add(typeof(Event), UrlTypes.Events.ConvertToUrlString());
             return client;
         }
 
@@ -25,7 +26,9 @@ namespace ResourceInformationV2.Search {
             var returnValue = "Mapping: ";
             // var indexPrograms = openSearchClient.Indices.Create(UrlTypes.Programs.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Program>().Properties<Program>(p => p.Keyword(k => k.Name(f => f.Credentials.Select(f => f.FormatType))).Keyword(k => k.Name(f => f.Credentials.Select(f => f.CredentialType))).Keyword(k => k.Name(f => f.Credentials.Select(f => f.ProgramId))).Keyword(k => k.Name(f => f.Credentials.Select(f => f.DepartmentList))))));
 
-            var indexFaqs = openSearchClient.Indices.Create(UrlTypes.Faq.ConvertToUrlString(), c => c.Map(m => m.AutoMap<FaqItem>()));
+            var indexEvents = openSearchClient.Indices.Create(UrlTypes.Events.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Event>()));
+            returnValue += $"Events {(indexEvents.IsValid ? "created" : "failed")} - {indexEvents.DebugInformation}; ";
+            var indexFaqs = openSearchClient.Indices.Create(UrlTypes.Faqs.ConvertToUrlString(), c => c.Map(m => m.AutoMap<FaqItem>()));
             returnValue += $"FAQs {(indexFaqs.IsValid ? "created" : "failed")} - {indexFaqs.DebugInformation}; ";
             var indexNotes = openSearchClient.Indices.Create(UrlTypes.Notes.ConvertToUrlString(), c => c.Map(m => m.AutoMap<NoteItem>()));
             returnValue += $"Notes {(indexNotes.IsValid ? "created" : "failed")} - {indexNotes.DebugInformation}; ";

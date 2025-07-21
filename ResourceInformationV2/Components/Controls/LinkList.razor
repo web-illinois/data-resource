@@ -1,0 +1,31 @@
+﻿<ilw-content>
+    @if (Links != null)
+    {
+        @if (Links.Count > 0)
+        {
+            <h2>List of Links</h2>
+        }
+        @foreach (var link in Links)
+        {
+            <div class="link-box">
+                <p>@link.Title: <a href="@link.LinkHref" target="_blank">@link.LinkHref</a></p>
+                <div class="button-group">
+                    <button class="ilw-button small" @onclick="() => Up(link)"><ilw-icon alt="up" size="24px" icon="back" class="rotate"></ilw-icon></button>
+                    <button class="ilw-button small" @onclick="() => Down(link)"><ilw-icon alt="down" size="24px" icon="next" class="rotate"></ilw-icon></button>
+                    <button class="ilw-button small" @onclick="() => Remove(link)">Remove</button>
+                    <button class="ilw-button small" @onclick="() => Edit(link)">Edit</button>
+                </div>
+            </div>
+        }
+    }
+    <h2>@AddLinkButtonTitle</h2>
+    <div class="ils-input-entry">
+        <label for="linkTitle">Link Title</label>
+        <input id="linkTitle" type="text" class="ils-input-long" @bind="NewLinkTitle" />
+    </div>
+    <div class="ils-input-entry">
+        <label for="linkUrl">Link URL</label>
+        <input id="linkUrl" type="text" class="ils-input-long" @bind="NewLinkUrl" />
+    </div>
+    <button class="ilw-button ilw-theme-orange" @onclick="AddLink">@AddLinkButtonTitle</button>
+</ilw-content>

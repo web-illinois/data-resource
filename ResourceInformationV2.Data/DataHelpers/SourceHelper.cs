@@ -39,6 +39,9 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 return false;
             }
             switch (categoryType) {
+                case CategoryType.Event:
+                    return source.UseEvents;
+
                 case CategoryType.Faq:
                     return source.UseFaqs;
 
@@ -158,6 +161,10 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 return 0;
             }
             switch (categoryType) {
+                case CategoryType.Event:
+                    source.UseEvents = isUsed;
+                    break;
+
                 case CategoryType.Faq:
                     source.UseFaqs = isUsed;
                     break;

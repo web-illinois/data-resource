@@ -6,7 +6,8 @@
         Publication,
         Resource,
         Faq,
-        Note
+        Note,
+        Event
     }
 
     public enum FieldType {

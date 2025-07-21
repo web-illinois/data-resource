@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="JsonThinModels\" />
-    <Folder Include="Setters\" />
-    <Folder Include="Getters\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,25 @@
+﻿@if (GenericItems != null)
+{
+    <ilw-content class="search-generic-item">
+        <div class="ils-input-entry">
+            <label for="filter">Search for a @ItemTitle</label>
+            <input id="filter" type="text" class="ils-input-long" @onchange="(ChangeEventArgs e) => FilterChange(e)" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="choose">Choose a @ItemTitle</label>
+            <select id="choose" size="10" class="ils-input-long" @bind="SelectedItemId">
+                @foreach (var item in GenericItems)
+                {
+                    <option value="@item.Id">@(item.IsActive ? "" : "(Inactive)") @item.Title</option>
+                }
+            </select>
+        </div>
+        <ul class="ilw-buttons">
+            <li>
+                <button class="ilw-button" disabled="@IsEditDisabled" @onclick="Edit">Edit @ItemTitle</button>
+            </li>
+        </ul>
+        <p>You can also add an item</p>
+        <button class="ilw-button" @onclick="Add">Add @ItemTitle</button>
+    </ilw-content>
+}

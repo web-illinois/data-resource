@@ -4,8 +4,9 @@
         People,
         Publications,
         Resources,
-        Faq,
+        Faqs,
         Notes,
+        Events,
     }
 
     public static class ExtensionTypes {

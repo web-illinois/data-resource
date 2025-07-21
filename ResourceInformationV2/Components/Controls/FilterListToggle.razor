@@ -1,0 +1,60 @@
+﻿<ilw-content>
+    <p>Edit the filters below by toggling them on and off. This will allow users to search filters for the things they’re interested in based on the filters selected below.</p>
+    @if (AudienceTags != null && TopicTags != null && Tags1 != null && Tags2 != null && Tags3 != null && Tags4 != null && !NoFiltersAvailable)
+    {
+        @if (AudienceTags.Count() > 0 && AudienceTitle != "")
+        {
+            <h2>@AudienceTitle (audience)</h2>
+            @foreach (var tag in AudienceTags)
+            {
+                <FilterToggle Filter="@tag"></FilterToggle>
+            }
+        }
+
+        @if (TopicTags.Count() > 0 && TopicTitle != "")
+        {
+            <h2>@TopicTitle (topics)</h2>
+            @foreach (var tag in TopicTags)
+            {
+                <FilterToggle Filter="@tag"></FilterToggle>
+            }
+        }
+
+        @if (Tags1.Count() > 0 && Tag1Title != "")
+        {
+            <h2>@Tag1Title (tag 1)</h2>
+            @foreach (var tag in Tags1)
+            {
+                <FilterToggle Filter="@tag"></FilterToggle>
+            }
+        }
+        @if (Tags2.Count() > 0 && Tag1Title != "")
+        {
+            <h2>@Tag2Title (tag 2)</h2>
+            @foreach (var tag in Tags2)
+            {
+                <FilterToggle Filter="@tag"></FilterToggle>
+            }
+        }
+        @if (Tags3.Count() > 0 && Tag1Title != "")
+        {
+            <h2>@Tag3Title (tag 3)</h2>
+            @foreach (var tag in Tags3)
+            {
+                <FilterToggle Filter="@tag"></FilterToggle>
+            }
+        }
+        @if (Tags4.Count() > 0 && Tag1Title != "")
+        {
+            <h2>@Tag4Title (tag 4)</h2>
+            @foreach (var tag in Tags4)
+            {
+                <FilterToggle Filter="@tag"></FilterToggle>
+            }
+        }
+    }
+    @if (NoFiltersAvailable)
+    {
+        <p>No filters are available for this source. <a href="/configuration/filters">You may add them</a>.</p>
+    }
+</ilw-content>

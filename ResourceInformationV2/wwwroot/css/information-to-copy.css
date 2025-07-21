@@ -1,0 +1,14 @@
+﻿.information-to-copy {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-bottom: thin solid var(--il-storm);
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+    border-top: thin solid var(--il-storm);
+    margin-top: 20px;
+    column-gap: 50px;
+}
+
+    .information-to-copy .header {
+        grid-column: 1 / span 2;
+    }

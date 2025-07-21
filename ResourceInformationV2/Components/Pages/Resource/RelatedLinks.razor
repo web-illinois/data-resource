@@ -1,0 +1,15 @@
+﻿@page "/resource/relatedlinks"
+@layout SidebarLayout
+
+<PageTitle>Resources - Related Links Information</PageTitle>
+
+<ilw-content>
+    <h1>Related Links Information</h1>
+    <Instruction CategoryType="CategoryType.Resource" FieldType="FieldType.Links"></Instruction>
+</ilw-content>
+
+@if (ResourceItem != null)
+{
+    <LinkList @ref="_linkList" Links="@ResourceItem.LinkList?.ToList()"></LinkList>
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}

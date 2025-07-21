@@ -8,6 +8,7 @@
         ResourceItem,
         FaqItem,
         NotesItem,
+        EventItem,
         Configuration,
         ConfigurationNoSource,
         Review,

@@ -44,6 +44,9 @@ namespace ResourceInformationV2.Search.Models {
         public DateTime? ReviewDate { get; set; }
 
         [Keyword]
+        public string ReviewEmail { get; set; } = "";
+
+        [Keyword]
         public string Source { get; set; } = "";
 
         [Keyword]

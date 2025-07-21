@@ -19,6 +19,7 @@ namespace ResourceInformationV2.Components.Pages {
 
         public string SelectedSource { get; set; } = "";
         public string SelectedSourceTitle { get; set; } = "";
+        public bool UseEvents { get; set; }
         public bool UseFaqs { get; set; }
         public bool UseNotes { get; set; }
         public bool UsePeople { get; set; }
@@ -67,6 +68,7 @@ namespace ResourceInformationV2.Components.Pages {
                 UseFaqs = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.Faq);
                 UsePublications = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.Publication);
                 UseResources = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.Resource);
+                UseEvents = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.Event);
             }
         }
     }

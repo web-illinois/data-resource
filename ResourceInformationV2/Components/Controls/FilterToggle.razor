@@ -1,0 +1,13 @@
+﻿<div class="ils-input-entry">
+    <div class="ils-input-entry-compact">
+        <label for="@FilterId">@Filter.Title</label>
+        <div class="ils-toggle-slider">
+            <input id="@FilterId" type="checkbox" @bind="Filter.EnabledBySource" @bind:after="Layout.SetDirty" role="switch" />
+            <span>
+                <span class="ils-container"></span>
+                <span aria-hidden="true" class="ils-text-on">On</span>
+                <span aria-hidden="true" class="ils-text-off">Off</span>
+            </span>
+        </div>
+    </div>
+</div>

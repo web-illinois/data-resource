@@ -1,0 +1,28 @@
+﻿@page "/resource/general"
+@layout SidebarLayout
+
+<PageTitle>Resources - General Information</PageTitle>
+
+<ilw-content>
+    <h1>General Information</h1>
+</ilw-content>
+
+@if (ResourceItem != null) {
+    <Instruction CategoryType="CategoryType.Resource" FieldType="FieldType.General"></Instruction>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Title</label>
+            <input id="title" type="text" @bind="ResourceItem.Title" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="description">Description</label>
+            <textarea id="description" @bind="ResourceItem.Description" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}
+

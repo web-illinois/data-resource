@@ -1,0 +1,13 @@
+﻿@page "/resource/edit"
+@layout SidebarLayout
+
+<PageTitle>Resources - Edit</PageTitle>
+
+<ilw-content>
+    <h1>Edit Resources</h1>
+</ilw-content>
+
+@if (_useResources ?? false)
+{
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@ResourceList" ItemTitle="Resource" AddClicked="SetNewResource" EditClicked="ChooseResource" SearchClicked="GetResources"></SearchGenericItem>
+}

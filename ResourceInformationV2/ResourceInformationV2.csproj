@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Pages\Resource\" />
+    <Folder Include="Components\Pages\Event\" />
     <Folder Include="Components\Pages\Note\" />
     <Folder Include="Components\Pages\Person\" />
     <Folder Include="Components\Pages\Faq\" />

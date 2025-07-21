@@ -12,6 +12,10 @@ namespace ResourceInformationV2.Data.DataHelpers {
             var source = instructions == null || instructions.Count == 0 ? await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == code)) : instructions[0].Source;
             bool isUsed = false;
             switch (categoryType) {
+                case CategoryType.Event:
+                    isUsed = source?.UseEvents ?? false;
+                    break;
+
                 case CategoryType.Faq:
                     isUsed = source?.UseFaqs ?? false;
                     break;
@@ -34,6 +38,11 @@ namespace ResourceInformationV2.Data.DataHelpers {
             }
             return (instructions ?? [], isUsed);
         }
+
+        public async Task<string> GetInstructionText(string sourceCode, CategoryType categoryType, FieldType fieldType) => await _resourceRepository
+            .ReadAsync(c => c.Instructions.Include(i => i.Source)
+            .Where(i => i.FieldType == fieldType && i.CategoryType == categoryType && i.Source.Code == sourceCode)
+            .FirstOrDefault()?.Text ?? "");
 
         public async Task<int> SaveInstructions(string text, int sourceId, CategoryType categoryType, FieldType fieldType) {
             var instruction = await _resourceRepository.ReadAsync(c => c.Instructions.FirstOrDefault(i => i.SourceId == sourceId && i.CategoryType == categoryType && i.FieldType == fieldType));

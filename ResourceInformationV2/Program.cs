@@ -9,7 +9,9 @@ using ResourceInformationV2.Data.DataContext;
 using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Data.Uploads;
 using ResourceInformationV2.Search;
+using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Helpers;
+using ResourceInformationV2.Search.Setters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +48,9 @@ builder.Services.AddScoped<InstructionHelper>();
 builder.Services.AddScoped<FilterHelper>();
 builder.Services.AddScoped<SecurityHelper>();
 builder.Services.AddScoped<LogHelper>();
+
+builder.Services.AddScoped<ResourceGetter>();
+builder.Services.AddScoped<ResourceSetter>();
 
 var app = builder.Build();
 

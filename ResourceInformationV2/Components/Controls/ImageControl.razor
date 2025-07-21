@@ -1,0 +1,24 @@
+﻿<ilw-content>
+    <h2>Image</h2>
+    <div class="ils-input-entry">
+        <label for="@IdUpload">Upload a file</label>
+        <InputFile OnChange="@SaveFileToTemp" id="@IdUpload" />
+    </div>
+    @if (ShowExternalUrl)
+    {
+        <div class="ils-input-entry">
+            <label for="@Id">Or use an External URL</label>
+            <input id="@Id" type="text" @bind="Value" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    }
+    @if (!ShowExternalUrl)
+    {
+        <div>
+            <button class="ilw-button" @onclick="DeleteFile">Delete File to add an External URL</button>
+        </div>
+    }
+    @if (Value != "")
+    {
+        <img src="@ValueUrl" alt="" style="height: 100px;" />
+    }
+</ilw-content>

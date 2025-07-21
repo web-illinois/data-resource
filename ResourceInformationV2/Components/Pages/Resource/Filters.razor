@@ -1,0 +1,14 @@
+﻿@page "/resource/filters"
+@layout SidebarLayout
+
+<PageTitle>Resources - Filters</PageTitle>
+
+<ilw-content>
+    <h1>Filters</h1>
+    <Instruction CategoryType="CategoryType.Resource" FieldType="FieldType.Filters"></Instruction>
+    @if (ResourceItem != null)
+    {
+        <FilterListToggle @ref="_filterListToggle" AudienceEnabledTags="@ResourceItem.AudienceList.ToList()" TopicEnabledTags="@ResourceItem.TopicList.ToList()" Tag1EnabledTags="@ResourceItem.TagList.ToList()" Tag2EnabledTags="@ResourceItem.Tag2List.ToList()" Tag3EnabledTags="@ResourceItem.Tag3List.ToList()" Tag4EnabledTags="@ResourceItem.Tag4List.ToList()"></FilterListToggle>
+        <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+    }
+</ilw-content>

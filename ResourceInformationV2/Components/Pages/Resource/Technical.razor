@@ -1,0 +1,34 @@
+﻿@page "/resource/technical"
+@layout SidebarLayout
+
+<PageTitle>Resources - Technical Information</PageTitle>
+
+<ilw-content>
+    <h1>Technical Information</h1>
+    <Instruction CategoryType="CategoryType.Resource" FieldType="FieldType.Technical"></Instruction>
+</ilw-content>
+@if (ResourceItem != null)
+{
+    <StatusOnSite @bind-Value="ResourceItem.IsActive"></StatusOnSite>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="fragment">URL Fragment</label>
+            <input id="fragment" type="text" @bind="ResourceItem.Title" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <p>Note that the URL fragment is used to make searching for this item easier and to meet SEO standards. This needs to be unique and consist of lower-case letters, numbers, dashes, and the '/' character. Do not use this if you cannot meet these requirements and rely on the ID to be a unique identifier.</p>
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="description">Internal Notes</label>
+            <textarea id="description" @bind="ResourceItem.Notes" @bind:after="Layout.SetDirty" />
+            <p>This will not show up in the search results.</p>
+        </div>
+    </ilw-content>
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+    <div class="information-to-copy">
+        <ilw-content class="header"><h2>Information to Copy</h2></ilw-content>
+        <IdList Title="Id" Id="@ResourceItem.Id"></IdList>
+        <IdList Title="Edit Link" Id="@ResourceItem.EditLink"></IdList>
+    </div>
+    <DeleteNotice DeleteClicked="Delete" ItemTitle="@ResourceItem.Title" ItemText="This will delete this resource"></DeleteNotice>
+}

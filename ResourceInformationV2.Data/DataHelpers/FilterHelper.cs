@@ -31,7 +31,26 @@ namespace ResourceInformationV2.Data.DataHelpers {
 
         public async Task<bool> SaveFilters(IEnumerable<Tag> tags, IEnumerable<Tag> tagsForDeletion, string sourceName) {
             var i = 1;
-            foreach (var tag in tags) {
+            var tagsForDeletionList = tagsForDeletion.ToList();
+            var duplicateTags = tags.GroupBy(t => new { t.Title, t.TagType }).Where(g => g.Count() > 1).ToList();
+            if (duplicateTags.Count > 0) {
+                foreach (var duplicateTag in duplicateTags) {
+                    bool firstOne = true;
+                    foreach (var tag in duplicateTag) {
+                        if (tag.Id != 0 && !string.IsNullOrWhiteSpace(tag.OldTitle) && tag.Title != tag.OldTitle && _bulkEditor != null) {
+                            _ = await _bulkEditor.UpdateTags(sourceName, tag.TagTypeSourceName, tag.OldTitle, tag.Title);
+                        }
+                        if (!firstOne) {
+                            tag.Title = "";
+                            tag.OldTitle = "";
+                            tagsForDeletionList.Add(tag);
+                        }
+                        firstOne = false;
+                    }
+                }
+            }
+
+            foreach (var tag in tags.Where(t => t.Title != "")) {
                 tag.Order = i++;
                 if (tag.Id == 0) {
                     _ = await _resourceRepository.CreateAsync(tag);
@@ -42,9 +61,9 @@ namespace ResourceInformationV2.Data.DataHelpers {
                     }
                 }
             }
-            foreach (var tag in tagsForDeletion.Where(t => t.Id != 0)) {
+            foreach (var tag in tagsForDeletionList.Where(t => t.Id != 0)) {
                 _ = await _resourceRepository.DeleteAsync(tag);
-                if (_bulkEditor != null) {
+                if (_bulkEditor != null && !string.IsNullOrWhiteSpace(tag.OldTitle)) {
                     _ = await _bulkEditor.DeleteTags(sourceName, tag.TagTypeSourceName, tag.OldTitle);
                 }
             }

@@ -51,6 +51,16 @@ builder.Services.AddScoped<LogHelper>();
 
 builder.Services.AddScoped<ResourceGetter>();
 builder.Services.AddScoped<ResourceSetter>();
+builder.Services.AddScoped<PublicationGetter>();
+builder.Services.AddScoped<PublicationSetter>();
+builder.Services.AddScoped<FaqGetter>();
+builder.Services.AddScoped<FaqSetter>();
+builder.Services.AddScoped<NoteGetter>();
+builder.Services.AddScoped<NoteSetter>();
+builder.Services.AddScoped<PersonGetter>();
+builder.Services.AddScoped<PersonSetter>();
+builder.Services.AddScoped<EventGetter>();
+builder.Services.AddScoped<EventSetter>();
 
 var app = builder.Build();
 

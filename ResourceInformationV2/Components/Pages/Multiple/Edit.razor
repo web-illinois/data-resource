@@ -1,5 +1,35 @@
-﻿<h3>Edit</h3>
+﻿@page "/edit"
+@layout SidebarLayout
 
-@code {
+<PageTitle>Edit Items</PageTitle>
 
-}
+<ilw-content>
+    <h1>Edit Items</h1>
+    <p>You have multiple options to edit items. Please choose one of the below.</p>
+    <ul class="ilw-buttons">
+        @if (UseEvents)
+        {
+            <li><a href="/event/edit">Event</a></li>
+        }
+        @if (UseFaqs)
+        {
+            <li><a href="/faq/edit">FAQ</a></li>
+        }
+        @if (UseNotes)
+        {
+            <li><a href="/note/edit">Note</a></li>
+        }
+        @if (UsePeople)
+        {
+            <li><a href="/person/edit">Person</a></li>
+        }
+        @if (UsePublications)
+        {
+            <li><a href="/publication/edit">Publication</a></li>
+        }
+        @if (UseResources)
+        {
+            <li><a href="/resource/edit">Resource</a></li>
+        }
+    </ul>
+</ilw-content>

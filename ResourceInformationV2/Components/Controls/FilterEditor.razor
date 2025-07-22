@@ -1,7 +1,6 @@
-﻿<div class="filter-box">
-
-    @if (Value != null)
-    {
+﻿@if (Value != null && !string.IsNullOrWhiteSpace(Value.Title))
+{
+    <div class="filter-box">
         <div>
             <label for="filter-title-@Id">Title</label>
             <input id="filter-title-@Id" type="text" @bind="Value.Title" class="ils-input-long" />
@@ -11,5 +10,5 @@
             <button class="ilw-button small" @onclick="MoveDown"><ilw-icon alt="down" size="24px" icon="next" class="rotate"></ilw-icon></button>
             <button class="ilw-button small" @onclick="Remove">Remove</button>
         </div>
-    }
-</div>
+    </div>
+}

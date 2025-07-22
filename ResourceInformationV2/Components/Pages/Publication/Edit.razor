@@ -1,0 +1,13 @@
+﻿@page "/publication/edit"
+@layout SidebarLayout
+
+<PageTitle>Publication - Edit</PageTitle>
+
+<ilw-content>
+    <h1>Edit Publications</h1>
+</ilw-content>
+
+@if (_usePublications ?? false)
+{
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@PublicationList" ItemTitle="Publication" AddClicked="SetNewPublication" EditClicked="ChoosePublication" SearchClicked="GetPublications"></SearchGenericItem>
+}

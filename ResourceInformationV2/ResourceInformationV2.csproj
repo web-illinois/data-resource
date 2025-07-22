@@ -31,7 +31,6 @@
     <Folder Include="Components\Pages\Note\" />
     <Folder Include="Components\Pages\Person\" />
     <Folder Include="Components\Pages\Faq\" />
-    <Folder Include="Components\Pages\Publication\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 

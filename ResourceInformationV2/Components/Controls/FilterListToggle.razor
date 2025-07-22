@@ -5,7 +5,7 @@
         @if (AudienceTags.Count() > 0 && AudienceTitle != "")
         {
             <h2>@AudienceTitle (audience)</h2>
-            @foreach (var tag in AudienceTags)
+            @foreach (var tag in AudienceTags.OrderBy(t => t.Order).ThenBy(t => t.Title))
             {
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
@@ -14,7 +14,7 @@
         @if (TopicTags.Count() > 0 && TopicTitle != "")
         {
             <h2>@TopicTitle (topics)</h2>
-            @foreach (var tag in TopicTags)
+            @foreach (var tag in TopicTags.OrderBy(t => t.Order).ThenBy(t => t.Title))
             {
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
@@ -23,7 +23,7 @@
         @if (Tags1.Count() > 0 && Tag1Title != "")
         {
             <h2>@Tag1Title (tag 1)</h2>
-            @foreach (var tag in Tags1)
+            @foreach (var tag in Tags1.OrderBy(t => t.Order).ThenBy(t => t.Title))
             {
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
@@ -31,7 +31,7 @@
         @if (Tags2.Count() > 0 && Tag1Title != "")
         {
             <h2>@Tag2Title (tag 2)</h2>
-            @foreach (var tag in Tags2)
+            @foreach (var tag in Tags2.OrderBy(t => t.Order).ThenBy(t => t.Title))
             {
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
@@ -39,7 +39,7 @@
         @if (Tags3.Count() > 0 && Tag1Title != "")
         {
             <h2>@Tag3Title (tag 3)</h2>
-            @foreach (var tag in Tags3)
+            @foreach (var tag in Tags3.OrderBy(t => t.Order).ThenBy(t => t.Title))
             {
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
@@ -47,7 +47,7 @@
         @if (Tags4.Count() > 0 && Tag1Title != "")
         {
             <h2>@Tag4Title (tag 4)</h2>
-            @foreach (var tag in Tags4)
+            @foreach (var tag in Tags4.OrderBy(t => t.Order).ThenBy(t => t.Title))
             {
                 <FilterToggle Filter="@tag"></FilterToggle>
             }

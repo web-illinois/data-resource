@@ -60,6 +60,12 @@ namespace ResourceInformationV2.Data.DataHelpers {
             return false;
         }
 
+        public async Task<(bool eventItem, bool faqItem, bool noteItem, bool resourceItem, bool personItem, bool publicationItem)> DoesSourceUseItemCheckAll(string sourceCode) {
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            return source == null ? (false, false, false, false, false, false) :
+                (source.UseEvents, source.UseFaqs, source.UseNotes, source.UseResources, source.UsePeople, source.UsePublications);
+        }
+
         public async Task<string> GetBaseUrlFromSource(string sourceCode) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
             return source?.BaseUrl ?? "";

@@ -13,14 +13,21 @@
     <ilw-content>
         <div class="ils-input-entry">
             <label for="fragment">URL Fragment</label>
-            <input id="fragment" type="text" @bind="ResourceItem.Title" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <input id="fragment" type="text" @bind="ResourceItem.Fragment" class="ils-input-long" @bind:after="Layout.SetDirty" />
             <p>Note that the URL fragment is used to make searching for this item easier and to meet SEO standards. This needs to be unique and consist of lower-case letters, numbers, dashes, and the '/' character. Do not use this if you cannot meet these requirements and rely on the ID to be a unique identifier.</p>
         </div>
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="description">Internal Notes</label>
-            <textarea id="description" @bind="ResourceItem.Notes" @bind:after="Layout.SetDirty" />
+            <label for="review">Email for Review</label>
+            <input id="review" type="text" @bind="ResourceItem.ReviewEmail" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <p>If you are using the review process, what email should be sent to review the item? You can include multiple emails as a comma or semicolon list.</p>
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="notes">Internal Notes</label>
+            <textarea id="notes" @bind="ResourceItem.Notes" @bind:after="Layout.SetDirty" />
             <p>This will not show up in the search results.</p>
         </div>
     </ilw-content>

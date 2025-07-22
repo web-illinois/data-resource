@@ -28,9 +28,6 @@ namespace ResourceInformationV2.Data.DataModels {
         public bool IsTest { get; set; } = false;
         public int NumberOfDaysForReview { get; set; }
         public string ReviewEmail { get; set; } = "";
-        public string SecurityKey { get; set; } = "";
-        public string SecurityKeyAlternate { get; set; } = "";
-        public DateTime SecurityKeyChangeDate { get; set; }
         public string Title { get; set; } = "";
         public bool UseEvents { get; set; }
         public bool UseFaqs { get; set; }

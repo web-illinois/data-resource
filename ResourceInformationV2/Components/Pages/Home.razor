@@ -48,30 +48,6 @@ else if (Sources != null)
     <ilw-content width="page">
         <h2>Active Source: <em>@SelectedSourceTitle</em></h2>
         <ilw-grid innerwidth="300px" padding="35px 0">
-            @if (UseResources)
-            {
-                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
-                    <h3>Resources</h3>
-                    <p>Resources are a generic list of items. They can be lesson plans, education resources, or any group of resources. </p>
-                    <div slot="footer"><a href="/resource/edit" class="ilw-button">Edit Resources</a> <a href="/resource/general" class="ilw-button">Add New Resource</a></div>
-                </ilw-card>
-            }
-            @if (UsePublications)
-            {
-                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
-                    <h3>Publications</h3>
-                    <p>Publications are an extension of resources that have additional fields for book title, author, etc. </p>
-                    <div slot="footer"><a href="/publication/edit" class="ilw-button">Edit Publications</a> <a href="/publication/general" class="ilw-button">Add New Publication</a></div>
-                </ilw-card>
-            }
-            @if (UsePeople)
-            {
-                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
-                    <h3>People</h3>
-                    <p>People are a modification of resources that uses names, departments, and job titles instead of title. Note that this is not tied to any source like Banner, Illinois Experts, or EDW.</p>
-                    <div slot="footer"><a href="/person/edit" class="ilw-button">Edit People</a> <a href="/person/general" class="ilw-button">Add New Person</a></div>
-                </ilw-card>
-            }
             @if (UseEvents)
             {
                 <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
@@ -96,7 +72,31 @@ else if (Sources != null)
                     <div slot="footer"><a href="/note/edit" class="ilw-button">Edit Notes</a> <a href="/note/general" class="ilw-button">Add New Note</a></div>
                 </ilw-card>
             }
-            @if (UseResources || UsePublications || UsePeople || UseFaqs || UseNotes)
+            @if (UsePeople)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>People</h3>
+                    <p>People are a modification of resources that uses names, departments, and job titles instead of title. Note that this is not tied to any source like Banner, Illinois Experts, or EDW.</p>
+                    <div slot="footer"><a href="/person/edit" class="ilw-button">Edit People</a> <a href="/person/general" class="ilw-button">Add New Person</a></div>
+                </ilw-card>
+            }
+            @if (UsePublications)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>Publications</h3>
+                    <p>Publications are an extension of resources that have additional fields for book title, author, etc. </p>
+                    <div slot="footer"><a href="/publication/edit" class="ilw-button">Edit Publications</a> <a href="/publication/general" class="ilw-button">Add New Publication</a></div>
+                </ilw-card>
+            }
+            @if (UseResources)
+            {
+                <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
+                    <h3>Resources</h3>
+                    <p>Resources are a generic list of items. They can be lesson plans, education resources, or any group of resources. </p>
+                    <div slot="footer"><a href="/resource/edit" class="ilw-button">Edit Resources</a> <a href="/resource/general" class="ilw-button">Add New Resource</a></div>
+                </ilw-card>
+            }
+            @if (UseResources || UsePublications || UsePeople || UseFaqs || UseNotes || UseEvents)
             {
                 <ilw-card theme="gray" align="center" style="--ilw-heading--color: var(--il-altgeld);">
                     <h3>Review Items</h3>

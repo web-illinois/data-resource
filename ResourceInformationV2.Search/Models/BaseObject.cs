@@ -13,7 +13,8 @@ namespace ResourceInformationV2.Search.Models {
         public IEnumerable<string> AudienceList { get; set; } = default!;
 
         public DateTime CreatedOn { get; set; }
-        public string Description { get; set; } = "";
+
+        public virtual string Description { get; set; } = "";
 
         [Keyword]
         public abstract string EditLink { get; }
@@ -38,7 +39,12 @@ namespace ResourceInformationV2.Search.Models {
         public virtual bool IsIdValid => !string.IsNullOrWhiteSpace(Id) && !string.IsNullOrWhiteSpace(Source) && Id.StartsWith(Source + "-");
 
         public DateTime LastUpdated { get; set; }
+
         public IEnumerable<Link> LinkList { get; set; } = default!;
+
+        [JsonIgnore]
+        public abstract string NameType { get; }
+
         public string Notes { get; set; } = "";
         public int Order { get; set; }
         public DateTime? ReviewDate { get; set; }

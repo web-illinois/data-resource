@@ -1,0 +1,78 @@
+﻿@page "/publication/detail"
+@layout SidebarLayout
+
+<PageTitle>Publications - Detail Information</PageTitle>
+
+<ilw-content>
+    <h1>Detail Information</h1>
+</ilw-content>
+
+@if (Item != null)
+{
+    <Instruction CategoryType="CategoryType.Publication" FieldType="FieldType.Specific"></Instruction>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="booktitle">Book Title</label>
+            <input id="booktitle" type="text" @bind="Item.BookTitle" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="journalname">Journal Name</label>
+            <input id="journalname" type="text" @bind="Item.JournalName" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="volume">Journal Volume Title</label>
+            <input id="volume" type="text" @bind="Item.Volume" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="issue">Journal Issue</label>
+            <input id="issue" type="text" @bind="Item.Issue" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="page">Page Numbers</label>
+            <input id="page" type="text" @bind="Item.PageNumbers" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="pubdate">Publication or Presentation Date</label>
+            <input id="pubdate" type="date" @bind="Item.PublishedDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="pubtype">Publication Type</label>
+            <input id="pubtype" type="text" @bind="Item.PublicationType" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="status">Publication Status</label>
+            <input id="status" type="text" @bind="Item.Status" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="doi">DOI</label>
+            <input id="doi" type="text" @bind="Item.Doi" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}
+

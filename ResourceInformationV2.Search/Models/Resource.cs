@@ -2,5 +2,6 @@
 
     public class Resource : BaseObject {
         public override string EditLink => _editLink + "resource/" + Id;
+        public override string NameType => "Resource";
     }
 }

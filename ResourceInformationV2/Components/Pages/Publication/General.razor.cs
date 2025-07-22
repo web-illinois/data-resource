@@ -6,10 +6,10 @@ using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Setters;
 
-namespace ResourceInformationV2.Components.Pages.Resource {
+namespace ResourceInformationV2.Components.Pages.Publication {
 
     public partial class General {
-        public Search.Models.Resource Item { get; set; } = default!;
+        public Search.Models.Publication Item { get; set; } = default!;
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
@@ -20,20 +20,20 @@ namespace ResourceInformationV2.Components.Pages.Resource {
         protected NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        protected ResourceGetter ResourceGetter { get; set; } = default!;
+        protected PublicationGetter PublicationGetter { get; set; } = default!;
 
         [Inject]
-        protected ResourceSetter ResourceSetter { get; set; } = default!;
+        protected PublicationSetter PublicationSetter { get; set; } = default!;
 
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
 
         public async Task Save() {
             Layout.RemoveDirty();
-            _ = await ResourceSetter.SetItem(Item);
+            _ = await PublicationSetter.SetItem(Item);
             await Layout.SetCacheId(Item.Id);
-            Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
-            await Layout.Log(CategoryType.Resource, FieldType.General, Item);
+            Layout.SetSidebar(SidebarEnum.PublicationItem, Item.Title);
+            await Layout.Log(CategoryType.Publication, FieldType.General, Item);
             await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 
@@ -42,14 +42,14 @@ namespace ResourceInformationV2.Components.Pages.Resource {
             var id = await Layout.GetCachedId();
 
             if (!string.IsNullOrWhiteSpace(id)) {
-                Item = await ResourceGetter.GetItem(id);
-                Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
+                Item = await PublicationGetter.GetItem(id);
+                Layout.SetSidebar(SidebarEnum.PublicationItem, Item.Title);
             } else {
-                Item = new Search.Models.Resource() {
+                Item = new Search.Models.Publication() {
                     Source = SourceCode,
                     IsActive = false
                 };
-                Layout.SetSidebar(SidebarEnum.ResourceItem, "New " + Item.NameType, true);
+                Layout.SetSidebar(SidebarEnum.PublicationItem, "New " + Item.NameType, true);
             }
             await base.OnInitializedAsync();
         }

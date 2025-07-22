@@ -12,10 +12,10 @@ namespace ResourceInformationV2.Components.Pages.Resource {
     public partial class RelatedLinks {
         private LinkList _linkList = default!;
 
+        public Search.Models.Resource Item { get; set; } = new();
+
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
-
-        public Search.Models.Resource ResourceItem { get; set; } = new();
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
@@ -31,10 +31,10 @@ namespace ResourceInformationV2.Components.Pages.Resource {
 
         public async Task Save() {
             Layout.RemoveDirty();
-            ResourceItem.LinkList = _linkList.GetSavedLinks();
-            _ = await ResourceSetter.SetItem(ResourceItem);
-            await Layout.Log(CategoryType.Resource, FieldType.Links, ResourceItem);
-            await Layout.AddMessage("Resource saved successfully.");
+            Item.LinkList = _linkList.GetSavedLinks();
+            _ = await ResourceSetter.SetItem(Item);
+            await Layout.Log(CategoryType.Resource, FieldType.Links, Item);
+            await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 
         protected override async Task OnInitializedAsync() {
@@ -43,8 +43,8 @@ namespace ResourceInformationV2.Components.Pages.Resource {
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }
-            ResourceItem = await ResourceGetter.GetItem(id);
-            Layout.SetSidebar(SidebarEnum.ResourceItem, ResourceItem.Title);
+            Item = await ResourceGetter.GetItem(id);
+            Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
             await base.OnInitializedAsync();
         }
     }

@@ -9,11 +9,10 @@ using ResourceInformationV2.Search.Setters;
 namespace ResourceInformationV2.Components.Pages.Resource {
 
     public partial class Technical {
+        public Search.Models.Resource Item { get; set; } = default!;
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
-
-        public Search.Models.Resource ResourceItem { get; set; } = default!;
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
@@ -29,23 +28,23 @@ namespace ResourceInformationV2.Components.Pages.Resource {
 
         public async Task Delete() {
             Layout.RemoveDirty();
-            _ = await ResourceSetter.DeleteItem(ResourceItem.Id);
-            await Layout.Log(CategoryType.Resource, FieldType.Technical, ResourceItem, "Deletion");
+            _ = await ResourceSetter.DeleteItem(Item.Id);
+            await Layout.Log(CategoryType.Resource, FieldType.Technical, Item, "Deletion");
             NavigationManager.NavigateTo("/resources/edit");
         }
 
         public async Task Save() {
             Layout.RemoveDirty();
-            _ = await ResourceSetter.SetItem(ResourceItem);
-            await Layout.Log(CategoryType.Resource, FieldType.Technical, ResourceItem);
-            await Layout.AddMessage("Program saved successfully.");
+            _ = await ResourceSetter.SetItem(Item);
+            await Layout.Log(CategoryType.Resource, FieldType.Technical, Item);
+            await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 
         protected override async Task OnInitializedAsync() {
             var sourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-            ResourceItem = await ResourceGetter.GetItem(id);
-            Layout.SetSidebar(SidebarEnum.ResourceItem, ResourceItem.Title);
+            Item = await ResourceGetter.GetItem(id);
+            Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
             await base.OnInitializedAsync();
         }
     }

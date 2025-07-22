@@ -7,12 +7,12 @@ using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Setters;
 
-namespace ResourceInformationV2.Components.Pages.Resource {
+namespace ResourceInformationV2.Components.Pages.Publication {
 
     public partial class Image {
         private ImageControl _imageProgramImage = default!;
 
-        public Search.Models.Resource Item { get; set; } = new();
+        public Search.Models.Publication Item { get; set; } = new();
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
@@ -21,10 +21,10 @@ namespace ResourceInformationV2.Components.Pages.Resource {
         protected NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        protected ResourceGetter ResourceGetter { get; set; } = default!;
+        protected PublicationGetter PublicationGetter { get; set; } = default!;
 
         [Inject]
-        protected ResourceSetter ResourceSetter { get; set; } = default!;
+        protected PublicationSetter PublicationSetter { get; set; } = default!;
 
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
@@ -34,8 +34,8 @@ namespace ResourceInformationV2.Components.Pages.Resource {
             if (_imageProgramImage != null) {
                 _ = await _imageProgramImage.SaveFileToPermanent();
             }
-            _ = await ResourceSetter.SetItem(Item);
-            await Layout.Log(CategoryType.Resource, FieldType.Links, Item);
+            _ = await PublicationSetter.SetItem(Item);
+            await Layout.Log(CategoryType.Publication, FieldType.Links, Item);
             await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 
@@ -45,8 +45,8 @@ namespace ResourceInformationV2.Components.Pages.Resource {
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }
-            Item = await ResourceGetter.GetItem(id);
-            Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
+            Item = await PublicationGetter.GetItem(id);
+            Layout.SetSidebar(SidebarEnum.PublicationItem, Item.Title);
             await base.OnInitializedAsync();
         }
     }

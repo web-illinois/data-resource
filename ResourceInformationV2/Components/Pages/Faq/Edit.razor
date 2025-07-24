@@ -1,0 +1,13 @@
+﻿@page "/faq/edit"
+@layout SidebarLayout
+
+<PageTitle>FAQ - Edit</PageTitle>
+
+<ilw-content>
+    <h1>Edit FAQs</h1>
+</ilw-content>
+
+@if (_useItem ?? false)
+{
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@FaqList" ItemTitle="Publication" AddClicked="SetNewItem" EditClicked="ChooseItem" SearchClicked="GetItems"></SearchGenericItem>
+}

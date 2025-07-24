@@ -1,0 +1,35 @@
+﻿@page "/faq/image"
+@layout SidebarLayout
+
+<PageTitle>FAQs - Image and Video</PageTitle>
+
+<ilw-content>
+    <h1>Image and Video</h1>
+    <Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.ImageAndVideo"></Instruction>
+</ilw-content>
+
+@if (Item != null)
+{
+    <ImageControl @ref="@_imageProgramImage" @bind-Value="Item.Image" ItemId="@Item.Id"></ImageControl>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="imagealt">Image Alternate Text</label>
+            <input id="imagealt" type="text" @bind="Item.ImageAltText" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="imagesource">Image Source</label>
+            <input id="imagesource" type="text" @bind="Item.ImageSource" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <h2>Video</h2>
+        <div class="ils-input-entry">
+            <label for="video">Video</label>
+            <input id="video" type="text" @bind="Item.VideoUrl" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}
+

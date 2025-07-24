@@ -10,8 +10,8 @@
         public override string NameType => "Publication";
         public string PageNumbers { get; set; } = "";
         public string PublicationType { get; set; } = "";
-        public DateTime PublishedDate { get; set; }
-        public string PublishedDateNumeric => PublishedDate.ToString("yyyyMMdd");
+        public string PublishedDate { get; set; } = "";
+        public string PublishedDateNumeric => DateTime.TryParse(PublishedDate, out var date) ? date.ToString("yyyyMMdd") : "";
         public string Status { get; set; } = "";
         public string Volume { get; set; } = "";
     }

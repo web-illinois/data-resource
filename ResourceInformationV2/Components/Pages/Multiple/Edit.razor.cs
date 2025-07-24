@@ -23,7 +23,7 @@ namespace ResourceInformationV2.Components.Pages.Multiple {
         protected SourceHelper SourceHelper { get; set; } = default!;
 
         protected override async Task OnInitializedAsync() {
-            Layout.SetSidebar(SidebarEnum.AddEditInformation, "Resources");
+            Layout.SetSidebar(SidebarEnum.AddEditInformation, "Add / Edit Items");
             var sourceCode = await Layout.CheckSource();
             (UseEvents, UseFaqs, UseNotes, UseResources, UsePeople, UsePublications) = await SourceHelper.DoesSourceUseItemCheckAll(sourceCode);
             if (!UseEvents && !UseFaqs && !UseNotes && !UseResources && !UsePeople && !UsePublications) {

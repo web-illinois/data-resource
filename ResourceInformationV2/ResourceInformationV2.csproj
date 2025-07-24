@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazored.TextEditor" Version="1.1.3" />
+    <PackageReference Include="Blazored.TextEditor" Version="1.1.2" />
     <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.436" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.16" />
@@ -30,7 +30,6 @@
     <Folder Include="Components\Pages\Event\" />
     <Folder Include="Components\Pages\Note\" />
     <Folder Include="Components\Pages\Person\" />
-    <Folder Include="Components\Pages\Faq\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 

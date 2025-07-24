@@ -1,0 +1,14 @@
+﻿@page "/faq/filters"
+@layout SidebarLayout
+
+<PageTitle>FAQs - Filters</PageTitle>
+
+<ilw-content>
+    <h1>Filters</h1>
+    <Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.Filters"></Instruction>
+    @if (Item != null)
+    {
+        <FilterListToggle @ref="_filterListToggle" AudienceEnabledTags="@Item.AudienceList.ToList()" TopicEnabledTags="@Item.TopicList.ToList()" Tag1EnabledTags="@Item.TagList.ToList()" Tag2EnabledTags="@Item.Tag2List.ToList()" Tag3EnabledTags="@Item.Tag3List.ToList()" Tag4EnabledTags="@Item.Tag4List.ToList()"></FilterListToggle>
+        <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+    }
+</ilw-content>

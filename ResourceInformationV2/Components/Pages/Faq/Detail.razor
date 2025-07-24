@@ -1,0 +1,12 @@
+﻿@page "/faq/detail"
+@layout SidebarLayout
+
+<PageTitle>FAQ - Detail Information</PageTitle>
+
+<ilw-content>
+    <h1>Detail Information</h1>
+</ilw-content>
+
+<Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.Specific"></Instruction>
+<RichTextEditor @ref="@_rteDescription" Title="Description"></RichTextEditor>
+<button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>

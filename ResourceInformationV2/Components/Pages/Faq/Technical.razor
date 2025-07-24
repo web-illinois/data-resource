@@ -1,0 +1,41 @@
+﻿@page "/faq/technical"
+@layout SidebarLayout
+
+<PageTitle>FAQs - Technical Information</PageTitle>
+
+<ilw-content>
+    <h1>Technical Information</h1>
+    <Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.Technical"></Instruction>
+</ilw-content>
+@if (Item != null)
+{
+    <StatusOnSite @bind-Value="Item.IsActive"></StatusOnSite>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="fragment">URL Fragment</label>
+            <input id="fragment" type="text" @bind="Item.Fragment" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <p>Note that the URL fragment is used to make searching for this item easier and to meet SEO standards. This needs to be unique and consist of lower-case letters, numbers, dashes, and the '/' character. Do not use this if you cannot meet these requirements and rely on the ID to be a unique identifier.</p>
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="review">Email for Review</label>
+            <input id="review" type="text" @bind="Item.ReviewEmail" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <p>If you are using the review process, what email should be sent to review the item? You can include multiple emails as a comma or semicolon list.</p>
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="notes">Internal Notes</label>
+            <textarea id="notes" @bind="Item.Notes" @bind:after="Layout.SetDirty" />
+            <p>This will not show up in the search results.</p>
+        </div>
+    </ilw-content>
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+    <div class="information-to-copy">
+        <ilw-content class="header"><h2>Information to Copy</h2></ilw-content>
+        <IdList Title="Id" Id="@Item.Id"></IdList>
+        <IdList Title="Edit Link" Id="@Item.EditLink"></IdList>
+    </div>
+    <DeleteNotice DeleteClicked="Delete" ItemTitle="@Item.Title" ItemText="This will delete this resource"></DeleteNotice>
+}

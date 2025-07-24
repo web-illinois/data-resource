@@ -1,0 +1,15 @@
+﻿@page "/faq/relatedlinks"
+@layout SidebarLayout
+
+<PageTitle>FAQs - Related Links Information</PageTitle>
+
+<ilw-content>
+    <h1>Related Links Information</h1>
+    <Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.Links"></Instruction>
+</ilw-content>
+
+@if (Item != null)
+{
+    <LinkList @ref="_linkList" Links="@Item.LinkList?.ToList()"></LinkList>
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}

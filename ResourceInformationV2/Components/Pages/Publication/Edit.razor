@@ -7,7 +7,7 @@
     <h1>Edit Publications</h1>
 </ilw-content>
 
-@if (_usePublications ?? false)
+@if (_useItem ?? false)
 {
-    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@PublicationList" ItemTitle="Publication" AddClicked="SetNewPublication" EditClicked="ChoosePublication" SearchClicked="GetPublications"></SearchGenericItem>
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@ItemList" ItemTitle="Publication" AddClicked="SetNewItem" EditClicked="ChooseItem" SearchClicked="GetItems"></SearchGenericItem>
 }

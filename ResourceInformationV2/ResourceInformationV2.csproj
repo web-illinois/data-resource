@@ -28,8 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Components\Pages\Event\" />
-    <Folder Include="Components\Pages\Note\" />
-    <Folder Include="Components\Pages\Person\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 

@@ -1,0 +1,13 @@
+﻿@page "/note/edit"
+@layout SidebarLayout
+
+<PageTitle>Note - Edit</PageTitle>
+
+<ilw-content>
+    <h1>Edit Notes</h1>
+</ilw-content>
+
+@if (_useItem ?? false)
+{
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@ItemList" ItemTitle="Note" AddClicked="SetNewItem" EditClicked="ChooseItem" SearchClicked="GetItems"></SearchGenericItem>
+}

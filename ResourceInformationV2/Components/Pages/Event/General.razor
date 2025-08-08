@@ -1,0 +1,29 @@
+﻿@page "/event/general"
+@layout SidebarLayout
+
+<PageTitle>Event - General Information</PageTitle>
+
+<ilw-content>
+    <h1>General Information</h1>
+</ilw-content>
+
+@if (Item != null)
+{
+    <Instruction CategoryType="CategoryType.Event" FieldType="FieldType.General"></Instruction>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Title</label>
+            <input id="title" type="text" @bind="Item.Title" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="description">Description</label>
+            <textarea id="description" @bind="Item.Description" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}
+

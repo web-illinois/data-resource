@@ -7,7 +7,7 @@ using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Models;
 
-namespace ResourceInformationV2.Components.Pages.Resource {
+namespace ResourceInformationV2.Components.Pages.Event {
 
     public partial class Edit {
         private SearchGenericItem _searchGenericItem = default!;
@@ -21,10 +21,10 @@ namespace ResourceInformationV2.Components.Pages.Resource {
         public SidebarLayout Layout { get; set; } = default!;
 
         [Inject]
-        protected NavigationManager NavigationManager { get; set; } = default!;
+        protected EventGetter EventGetter { get; set; } = default!;
 
         [Inject]
-        protected ResourceGetter ResourceGetter { get; set; } = default!;
+        protected NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
@@ -32,26 +32,26 @@ namespace ResourceInformationV2.Components.Pages.Resource {
         protected async Task ChooseItem() {
             if (!string.IsNullOrWhiteSpace(_searchGenericItem.SelectedItemId)) {
                 await Layout.SetCacheId(_searchGenericItem.SelectedItemId);
-                NavigationManager.NavigateTo("/resource/general");
+                NavigationManager.NavigateTo("/event/general");
             }
         }
 
         protected async Task GetItems() {
-            ItemList = await ResourceGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
+            ItemList = await EventGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
             StateHasChanged();
         }
 
         protected override async Task OnInitializedAsync() {
-            Layout.SetSidebar(SidebarEnum.AddEditInformation, "Resources");
+            Layout.SetSidebar(SidebarEnum.AddEditInformation, "Events");
             _sourceCode = await Layout.CheckSource();
-            _useItem = await SourceHelper.DoesSourceUseItem(_sourceCode, CategoryType.Resource);
+            _useItem = await SourceHelper.DoesSourceUseItem(_sourceCode, CategoryType.Faq);
             await GetItems();
             await base.OnInitializedAsync();
         }
 
         protected async Task SetNewItem() {
             await Layout.ClearCacheId();
-            NavigationManager.NavigateTo("/resource/general");
+            NavigationManager.NavigateTo("/event/general");
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿@page "/publication/detail"
 @layout SidebarLayout
 
-<PageTitle>Publications - Detail Information</PageTitle>
+<PageTitle>Publication - Detail Information</PageTitle>
 
 <ilw-content>
     <h1>Detail Information</h1>
 </ilw-content>
 
+<Instruction CategoryType="CategoryType.Publication" FieldType="FieldType.Specific"></Instruction>
 @if (Item != null)
 {
-    <Instruction CategoryType="CategoryType.Publication" FieldType="FieldType.Specific"></Instruction>
     <ilw-content>
         <div class="ils-input-entry">
             <label for="booktitle">Book Title</label>

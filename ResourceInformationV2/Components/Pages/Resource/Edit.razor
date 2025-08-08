@@ -7,7 +7,8 @@
     <h1>Edit Resources</h1>
 </ilw-content>
 
-@if (_useResources ?? false)
+@if (_useItem ?? false)
 {
-    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@ResourceList" ItemTitle="Resource" AddClicked="SetNewResource" EditClicked="ChooseResource" SearchClicked="GetResources"></SearchGenericItem>
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@ItemList" ItemTitle="Resource" AddClicked="SetNewItem" EditClicked="ChooseItem" SearchClicked="GetItems"></SearchGenericItem>
 }
+

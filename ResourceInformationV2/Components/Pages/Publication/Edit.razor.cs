@@ -13,12 +13,12 @@ namespace ResourceInformationV2.Components.Pages.Publication {
         private SearchGenericItem _searchGenericItem = default!;
 
         private string _sourceCode = "";
-        private bool? _usePublications;
+        private bool? _useItem;
+
+        public List<GenericItem> ItemList { get; set; } = default!;
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
-
-        public List<GenericItem> PublicationList { get; set; } = default!;
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
@@ -29,27 +29,27 @@ namespace ResourceInformationV2.Components.Pages.Publication {
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
 
-        protected async Task ChoosePublication() {
+        protected async Task ChooseItem() {
             if (!string.IsNullOrWhiteSpace(_searchGenericItem.SelectedItemId)) {
                 await Layout.SetCacheId(_searchGenericItem.SelectedItemId);
                 NavigationManager.NavigateTo("/publication/general");
             }
         }
 
-        protected async Task GetPublications() {
-            PublicationList = await PublicationGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
+        protected async Task GetItems() {
+            ItemList = await PublicationGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
             StateHasChanged();
         }
 
         protected override async Task OnInitializedAsync() {
             Layout.SetSidebar(SidebarEnum.AddEditInformation, "Publications");
             _sourceCode = await Layout.CheckSource();
-            _usePublications = await SourceHelper.DoesSourceUseItem(_sourceCode, CategoryType.Publication);
-            await GetPublications();
+            _useItem = await SourceHelper.DoesSourceUseItem(_sourceCode, CategoryType.Publication);
+            await GetItems();
             await base.OnInitializedAsync();
         }
 
-        protected async Task SetNewPublication() {
+        protected async Task SetNewItem() {
             await Layout.ClearCacheId();
             NavigationManager.NavigateTo("/publication/general");
         }

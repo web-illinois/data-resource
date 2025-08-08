@@ -1,7 +1,7 @@
 ﻿@page "/faq/general"
 @layout SidebarLayout
 
-<PageTitle>FAQs - General Information</PageTitle>
+<PageTitle>FAQ - General Information</PageTitle>
 
 <ilw-content>
     <h1>General Information</h1>
@@ -12,15 +12,15 @@
     <Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.General"></Instruction>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">Title</label>
-            <input id="title" type="text" @bind="Item.Title" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <label for="title">Question</label>
+            <textarea id="title" @bind="Item.Question" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
 
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="description">Description</label>
-            <textarea id="description" @bind="Item.Description" @bind:after="Layout.SetDirty" />
+            <label for="description">Summary Answer</label>
+            <textarea id="description" @bind="Item.SummaryAnswer" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
 

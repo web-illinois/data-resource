@@ -8,5 +8,8 @@
 </ilw-content>
 
 <Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.Specific"></Instruction>
-<RichTextEditor @ref="@_rteDescription" Title="Description"></RichTextEditor>
-<button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+@if (Item != null)
+{
+    <RichTextEditor @ref="@_rteDescription" Title="Description"></RichTextEditor>
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}

@@ -1,0 +1,50 @@
+﻿@page "/event/detail"
+@layout SidebarLayout
+
+<PageTitle>Event - Detail Information</PageTitle>
+
+<ilw-content>
+    <h1>Detail Information</h1>
+</ilw-content>
+
+<Instruction CategoryType="CategoryType.Event" FieldType="FieldType.Specific"></Instruction>
+@if (Item != null) {
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Start Date</label>
+            <input id="title" type="datetime-local" @bind="Item.StartDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">End Date</label>
+            <input id="title" type="datetime-local" @bind="Item.EndDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Is this an all-day event?</label>
+            <input id="title" type="checkbox" @bind="Item.IsAllDay" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Location</label>
+            <input id="title" type="text" @bind="Item.Location" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Speaker</label>
+            <input id="title" type="text" @bind="Item.Speaker" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Sponsor</label>
+            <input id="title" type="text" @bind="Item.Sponsor" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}

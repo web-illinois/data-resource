@@ -1,0 +1,13 @@
+﻿@page "/event/edit"
+@layout SidebarLayout
+
+<PageTitle>Event - Edit</PageTitle>
+
+<ilw-content>
+    <h1>Edit Events</h1>
+</ilw-content>
+
+@if (_useItem ?? false)
+{
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@ItemList" ItemTitle="Event" AddClicked="SetNewItem" EditClicked="ChooseItem" SearchClicked="GetItems"></SearchGenericItem>
+}

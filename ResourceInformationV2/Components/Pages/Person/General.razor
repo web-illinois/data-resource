@@ -1,0 +1,46 @@
+﻿@page "/person/general"
+@layout SidebarLayout
+
+<PageTitle>Person - General Information</PageTitle>
+
+<ilw-content>
+    <h1>General Information</h1>
+</ilw-content>
+
+@if (Item != null)
+{
+    <Instruction CategoryType="CategoryType.Person" FieldType="FieldType.General"></Instruction>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">First Name</label>
+            <input id="title" type="text" @bind="Item.FirstName" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Last Name</label>
+            <input id="title" type="text" @bind="Item.LastName" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Job Title</label>
+            <input id="title" type="text" @bind="Item.JobTitle" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="title">Job Location</label>
+            <input id="title" type="text" @bind="Item.JobLocation" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="description">Description</label>
+            <textarea id="description" @bind="Item.Description" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+}
+

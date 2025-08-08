@@ -1,11 +1,11 @@
-﻿@page "/faq/filters"
+﻿@page "/note/filters"
 @layout SidebarLayout
 
-<PageTitle>FAQ - Filters</PageTitle>
+<PageTitle>Note - Filters</PageTitle>
 
 <ilw-content>
     <h1>Filters</h1>
-    <Instruction CategoryType="CategoryType.Faq" FieldType="FieldType.Filters"></Instruction>
+    <Instruction CategoryType="CategoryType.Note" FieldType="FieldType.Filters"></Instruction>
     @if (Item != null)
     {
         <FilterListToggle @ref="_filterListToggle" AudienceEnabledTags="@Item.AudienceList.ToList()" TopicEnabledTags="@Item.TopicList.ToList()" Tag1EnabledTags="@Item.TagList.ToList()" Tag2EnabledTags="@Item.Tag2List.ToList()" Tag3EnabledTags="@Item.Tag3List.ToList()" Tag4EnabledTags="@Item.Tag4List.ToList()"></FilterListToggle>

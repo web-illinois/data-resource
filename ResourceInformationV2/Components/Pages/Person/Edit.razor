@@ -1,0 +1,13 @@
+﻿@page "/person/edit"
+@layout SidebarLayout
+
+<PageTitle>Person - Edit</PageTitle>
+
+<ilw-content>
+    <h1>Edit People</h1>
+</ilw-content>
+
+@if (_useItem ?? false)
+{
+    <SearchGenericItem @ref="@_searchGenericItem" GenericItems="@ItemList" ItemTitle="Person" AddClicked="SetNewItem" EditClicked="ChooseItem" SearchClicked="GetItems"></SearchGenericItem>
+}

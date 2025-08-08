@@ -15,7 +15,7 @@ namespace ResourceInformationV2.Components.Pages.Faq {
         private string _sourceCode = "";
         private bool? _useItem;
 
-        public List<GenericItem> FaqList { get; set; } = default!;
+        public List<GenericItem> ItemList { get; set; } = default!;
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
@@ -37,7 +37,7 @@ namespace ResourceInformationV2.Components.Pages.Faq {
         }
 
         protected async Task GetItems() {
-            FaqList = await FaqGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
+            ItemList = await FaqGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
             StateHasChanged();
         }
 

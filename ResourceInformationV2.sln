@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceInformationV2", "ResourceInformationV2\ResourceInformationV2.csproj", "{BB72C320-FC9B-4B8D-AE96-2417A099B41B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceInformationV2.Function", "ResourceInformationV2.Function\ResourceInformationV2.Function.csproj", "{F82970C4-B5DE-48CE-82F9-5EF121B144DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EED53964-B987-46E6-8B9F-A4D195B7DFBA} = {EED53964-B987-46E6-8B9F-A4D195B7DFBA}
+		{F0A49177-15F5-445A-82EE-BE7B31EA5F57} = {F0A49177-15F5-445A-82EE-BE7B31EA5F57}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceInformationV2.Data", "ResourceInformationV2.Data\ResourceInformationV2.Data.csproj", "{F0A49177-15F5-445A-82EE-BE7B31EA5F57}"
 EndProject

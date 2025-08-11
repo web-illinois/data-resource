@@ -1,5 +1,27 @@
-﻿<h3>ViewDraft</h3>
+﻿@page "/review/viewdrafts"
+@layout SidebarLayout
 
-@code {
+<PageTitle>View Drafts</PageTitle>
 
-}
+<ilw-content>
+    <h1>View Drafts</h1>
+
+    <p>This will list all drafts for all items.</p>
+
+    @if (Listing != null)
+    {
+        @if (Listing.Count == 0)
+        {
+            <p>No drafts are created.</p>
+        }
+        else
+        {
+            <ul>
+                @foreach (var item in Listing.OrderBy(t => t.Title))
+                {
+                    <li><a href="@item.EditLink">@item.Title</a></li>
+                }
+            </ul>
+        }
+    }
+</ilw-content>

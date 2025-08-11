@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="JsonThinModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenSearch.Client" Version="1.8.0" />
     <PackageReference Include="OpenSearch.Net.Auth.AwsSigV4" Version="1.8.0" />
   </ItemGroup>

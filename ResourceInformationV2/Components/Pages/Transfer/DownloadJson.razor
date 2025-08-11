@@ -1,5 +1,23 @@
-﻿<h3>DownloadJson</h3>
+﻿@page "/transfer/savejson"
+@layout SidebarLayout
 
-@code {
+<PageTitle>Save JSON File</PageTitle>
 
-}
+<ilw-content>
+    <h1>Save JSON File</h1>
+    <p>This allows you to save to a JSON file. Note that downloading a lot of records at once will take a while. Please do not leave this page while your information is saving.</p>
+</ilw-content>
+
+<ilw-content>
+    <div class="ils-input-entry">
+        <label for="title">Select Type to Load</label>
+        <select id="title" @bind="SelectedOption">
+            @foreach (var option in Options)
+            {
+                <option value="@option">@option</option>
+            }
+        </select>
+    </div>
+
+    <p><button @onclick="Download" class="ilw-button">Download File</button></p>
+</ilw-content>

@@ -6,6 +6,13 @@ namespace ResourceInformationV2.Search.Setters {
     public abstract class BaseSetter<T>(OpenSearchClient? openSearchClient) where T : BaseObject, new() {
         internal readonly OpenSearchClient _openSearchClient = openSearchClient ?? default!;
 
+        private static readonly char[] _trimChars = [' ', '\n', '\r'];
+        public List<string> AddedAudience { get; private set; } = [];
+        public List<string> AddedTag { get; private set; } = [];
+        public List<string> AddedTag2 { get; private set; } = [];
+        public List<string> AddedTag3 { get; private set; } = [];
+        public List<string> AddedTag4 { get; private set; } = [];
+        public List<string> AddedTopic { get; private set; } = [];
         internal abstract string IndexName { get; }
 
         public async Task<string> DeleteItem(string id) {
@@ -17,6 +24,51 @@ namespace ResourceInformationV2.Search.Setters {
             item.Prepare();
             var response = await _openSearchClient.IndexAsync(item, i => i.Index(IndexName));
             return response.IsValid ? item.Id : "";
+        }
+
+        public async Task<string> UploadFile(string source, string file, bool validateTags, IEnumerable<string> tag1, IEnumerable<string> tag2, IEnumerable<string> tag3, IEnumerable<string> tag4, IEnumerable<string> audience, IEnumerable<string> topic) {
+            var countSuccess = 0;
+            var lineNumber = 0;
+            var headerErrorMessage = "";
+            var badLineNumbers = new List<string>();
+            var lines = file.Split('\n').Select(line => line.Trim(_trimChars));
+            foreach (var line in lines) {
+                lineNumber++;
+                var item = new T();
+                var (successful, headerIssue, message) = item.LoadFromString(source, line);
+                if (successful) {
+                    if (validateTags) {
+                        item.TagList = item.TagList.Where(t => tag1.Contains(t));
+                        item.Tag2List = item.Tag2List.Where(t => tag2.Contains(t));
+                        item.Tag3List = item.Tag3List.Where(t => tag3.Contains(t));
+                        item.Tag4List = item.Tag4List.Where(t => tag4.Contains(t));
+                        item.AudienceList = item.AudienceList.Where(t => audience.Contains(t));
+                        item.TopicList = item.TopicList.Where(t => topic.Contains(t));
+                    } else {
+                        AddedTag.AddRange(item.TagList.Where(t => !AddedTag.Contains(t)));
+                        AddedTag2.AddRange(item.Tag2List.Where(t => !AddedTag2.Contains(t)));
+                        AddedTag3.AddRange(item.Tag3List.Where(t => !AddedTag3.Contains(t)));
+                        AddedTag4.AddRange(item.Tag4List.Where(t => !AddedTag4.Contains(t)));
+                        AddedAudience.AddRange(item.AudienceList.Where(t => !AddedAudience.Contains(t)));
+                        AddedTopic.AddRange(item.TopicList.Where(t => !AddedTopic.Contains(t)));
+                    }
+                    _ = await SetItem(item);
+                    countSuccess++;
+                } else if (headerIssue && string.IsNullOrWhiteSpace(headerErrorMessage)) {
+                    headerErrorMessage = message;
+                } else {
+                    badLineNumbers.Add(lineNumber.ToString());
+                }
+            }
+            if (countSuccess == 0) {
+                return string.IsNullOrWhiteSpace(headerErrorMessage) ? "No valid items found in file" : "Bad file: " + headerErrorMessage;
+            }
+            if (badLineNumbers.Count > 20) {
+                return $"File loaded - number of items: {countSuccess}. Number of failures: {badLineNumbers.Count}";
+            }
+            return badLineNumbers.Count > 0
+                ? $"File loaded - number of items: {countSuccess}. Failure at line numbers {string.Join(", ", badLineNumbers)}"
+                : $"File loaded - number of items: {countSuccess}.";
         }
     }
 }

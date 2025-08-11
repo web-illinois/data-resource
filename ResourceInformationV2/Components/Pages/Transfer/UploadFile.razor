@@ -1,5 +1,39 @@
-﻿<h3>UploadFile</h3>
+﻿@page "/transfer/load"
+@layout SidebarLayout
 
-@code {
+<PageTitle>Load File</PageTitle>
 
-}
+<ilw-content>
+    <h1>Load File</h1>
+    <p>This allows you to load a tab-delimited file. Note that uploading a lot of records at once will take a while. Please do not leave this page while your information is loading.</p>
+    <p>IDs that are not added will be added automatically. Note that all IDs must start with the source, followed by a dash.</p>
+    <p>Tags, Audience, and Topics may be separated by a semi-colon. Filters are case-sensitive.</p>
+    <p>Related Links are separated by a semi-colon, and are in Markdown format (text is first in square brackets, link follows and is in parenthesis).</p>
+    <p><strong>If you are loading an Excel file, make sure you save it as a tab-delimited text file first!</strong></p>
+</ilw-content>
+
+<ilw-content>
+    <div class="ils-input-entry">
+        <label for="title">Select Type to Load</label>
+        <select id="title" @bind="SelectedOption">
+            @foreach (var option in Options)
+            {
+                <option value="@option">@option</option>
+            }
+        </select>
+    </div>
+
+    <div class="ils-input-entry">
+        <label for="deleteall">Should you delete all items first?</label>
+        <input id="deleteall" type="checkbox" @bind="DeleteAllFirst" />
+    </div>
+    <div class="ils-input-entry">
+        <label for="validatetags">Should you only use filters you have set up? If not, then your filter list will be overwritten with any filters in your file. If you do this, existing items with filters may have unpredictable results.</label>
+        <input id="validatetags" type="checkbox" @bind="ValidateTags" />
+    </div>
+
+    <InputFile OnChange="@LoadFile" />
+
+    <p><button @onclick="Upload" class="ilw-button">Upload File</button></p>
+</ilw-content>
+

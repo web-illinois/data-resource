@@ -5,6 +5,7 @@
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>ab9883e2-ecdc-4ada-a3a5-c2d6d3e3f594</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -12,6 +13,14 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.0.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.0.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.5.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.OpenApi" Version="1.5.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.19" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ResourceInformationV2.Data\ResourceInformationV2.Data.csproj" />
+    <ProjectReference Include="..\ResourceInformationV2.Search\ResourceInformationV2.Search.csproj" />
   </ItemGroup>
 </Project>

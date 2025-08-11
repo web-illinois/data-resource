@@ -42,6 +42,7 @@ builder.Services.AddScoped<ResourceRepository>();
 builder.Services.AddSingleton(b => OpenSearchFactory.CreateClient(builder.Configuration["SearchUrl"], builder.Configuration["SearchAccessKey"], builder.Configuration["SearchSecretAccessKey"], bool.Parse(builder.Configuration["SearchDebug"] ?? "false")));
 builder.Services.AddSingleton(b => OpenSearchFactory.CreateLowLevelClient(builder.Configuration["SearchUrl"], builder.Configuration["SearchAccessKey"], builder.Configuration["SearchSecretAccessKey"], bool.Parse(builder.Configuration["SearchDebug"] ?? "false")));
 builder.Services.AddScoped<BulkEditor>();
+builder.Services.AddScoped<JsonHelper>();
 builder.Services.AddSingleton<CacheHolder>();
 builder.Services.AddScoped<SourceHelper>();
 builder.Services.AddScoped<InstructionHelper>();
@@ -78,6 +79,7 @@ app.UseWebOptimizer();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.MapControllers();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

@@ -5,7 +5,7 @@
 
         public bool ClearCache(string netid) => _dictionary.Remove(netid);
 
-        public string? GetCacheSource(string netid) => _dictionary.ContainsKey(netid) ? _dictionary[netid].Source : null;
+        public string? GetCacheSource(string netid) => !string.IsNullOrWhiteSpace(netid) && _dictionary.ContainsKey(netid) ? _dictionary[netid].Source : null;
 
         public CacheThinObject? GetItem(string netid) => _dictionary.ContainsKey(netid) ? _dictionary[netid] : null;
 

@@ -29,6 +29,19 @@ namespace ResourceInformationV2.Data.DataHelpers {
             return (returnValue, sourceId);
         }
 
+        public async Task<bool> ReplaceFilters(IEnumerable<Tag> tags, IEnumerable<Tag> tagsForDeletion, string sourceName) {
+            var i = 1;
+
+            foreach (var tag in tagsForDeletion.ToList().Where(t => t.Id != 0)) {
+                _ = await _resourceRepository.DeleteAsync(tag);
+            }
+            foreach (var tag in tags.Where(t => t.Title != "")) {
+                tag.Order = i++;
+                _ = await _resourceRepository.CreateAsync(tag);
+            }
+            return true;
+        }
+
         public async Task<bool> SaveFilters(IEnumerable<Tag> tags, IEnumerable<Tag> tagsForDeletion, string sourceName) {
             var i = 1;
             var tagsForDeletionList = tagsForDeletion.ToList();

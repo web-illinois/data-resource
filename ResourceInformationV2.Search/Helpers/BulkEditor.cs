@@ -16,6 +16,36 @@ namespace ResourceInformationV2.Search.Helpers {
             return responseResources.Success && responsePublications.Success && responsePeople.Success && responseNotes.Success && responseFaqs.Success && responseEvents.Success ? source + " deleted" : source + " not deleted";
         }
 
+        public async Task<string> DeleteEvents(string source) {
+            var response = await _openSearchLowLevelClient.DeleteByQueryAsync<StringResponse>(UrlTypes.Events.ConvertToUrlString(), GenerateDeleteJson(source));
+            return response.Success ? "Items deleted" : "Items not deleted";
+        }
+
+        public async Task<string> DeleteFaqs(string source) {
+            var response = await _openSearchLowLevelClient.DeleteByQueryAsync<StringResponse>(UrlTypes.Faqs.ConvertToUrlString(), GenerateDeleteJson(source));
+            return response.Success ? "Items deleted" : "Items not deleted";
+        }
+
+        public async Task<string> DeleteNotes(string source) {
+            var response = await _openSearchLowLevelClient.DeleteByQueryAsync<StringResponse>(UrlTypes.Notes.ConvertToUrlString(), GenerateDeleteJson(source));
+            return response.Success ? "Items deleted" : "Items not deleted";
+        }
+
+        public async Task<string> DeletePeople(string source) {
+            var response = await _openSearchLowLevelClient.DeleteByQueryAsync<StringResponse>(UrlTypes.People.ConvertToUrlString(), GenerateDeleteJson(source));
+            return response.Success ? "Items deleted" : "Items not deleted";
+        }
+
+        public async Task<string> DeletePublications(string source) {
+            var response = await _openSearchLowLevelClient.DeleteByQueryAsync<StringResponse>(UrlTypes.Publications.ConvertToUrlString(), GenerateDeleteJson(source));
+            return response.Success ? "Items deleted" : "Items not deleted";
+        }
+
+        public async Task<string> DeleteResources(string source) {
+            var response = await _openSearchLowLevelClient.DeleteByQueryAsync<StringResponse>(UrlTypes.Resources.ConvertToUrlString(), GenerateDeleteJson(source));
+            return response.Success ? "Items deleted" : "Items not deleted";
+        }
+
         public async Task<string> DeleteTags(string source, string listName, string oldTag) => await UpdateTags(source, listName, oldTag, "");
 
         public async Task<string> UpdateTags(string source, string listName, string oldTag, string newTag) {

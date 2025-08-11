@@ -81,6 +81,8 @@ namespace ResourceInformationV2.Search.Models {
         [Keyword]
         public string VideoUrl { get; set; } = "";
 
+        internal abstract string[] Headings { get; }
+
         public static string CleanHtml(string s) => string.IsNullOrWhiteSpace(s) || _badHtmlItems.Contains(s) ? string.Empty : s.Replace(" style=", " data-style=", StringComparison.OrdinalIgnoreCase);
 
         public static string ConvertVideoToEmbed(string href) {
@@ -96,12 +98,34 @@ namespace ResourceInformationV2.Search.Models {
             return href;
         }
 
-        public static string ProcessTagName(string tag) => tag.Replace("\"", "");
+        public static string ProcessTagName(string tag) => tag.Replace("\"", "").Trim();
 
         public virtual void CleanHtmlFields() {
         }
 
-        public virtual GenericItem GetGenericItem() => new() { Id = Id, IsActive = IsActive, Order = Order, Title = Title };
+        public virtual GenericItem GetGenericItem() => new() { Id = Id, IsActive = IsActive, Order = Order, Title = Title, EditLink = EditLink };
+
+        public (bool successful, bool headerIssue, string message) LoadFromString(string source, string line) {
+            var array = line.Split('\t');
+            if (array.Length == 0 || (array.Length == 1 && string.IsNullOrWhiteSpace(array[0]))) {
+                return (false, true, string.Empty);
+            }
+            if (array.Length != Headings.Length) {
+                return (false, true, $"Expecting {Headings.Length} and received {array.Length} items");
+            }
+            if (array[0].Equals("id", StringComparison.OrdinalIgnoreCase) || array[1].Equals("title", StringComparison.OrdinalIgnoreCase)) {
+                return (false, true, string.Empty);
+            }
+            if (string.IsNullOrWhiteSpace(array[1])) {
+                return (false, false, string.Empty);
+            }
+            if (!string.IsNullOrWhiteSpace(array[0]) && !array[0].StartsWith(source + "-", StringComparison.OrdinalIgnoreCase)) {
+                array[0] = source + "-" + array[0];
+            }
+            Source = source.Trim();
+            LastUpdated = DateTime.Now;
+            return (LoadFromStringPrivate(array), false, string.Empty);
+        }
 
         public virtual void Prepare() {
             LastUpdated = DateTime.Now;
@@ -113,9 +137,18 @@ namespace ResourceInformationV2.Search.Models {
             Tag2List = Tag2List == null ? [] : Tag2List.Select(ProcessTagName).ToList();
             Tag3List = Tag3List == null ? [] : Tag3List.Select(ProcessTagName).ToList();
             Tag4List = Tag4List == null ? [] : Tag4List.Select(ProcessTagName).ToList();
+            LinkList = LinkList ?? [];
             CleanHtmlFields();
         }
 
         public override string ToString() => JsonSerializer.Serialize(this, _serializer);
+
+        internal static List<Link> GetLinksFromString(string s) => [.. s.Split(';').Where(t => !string.IsNullOrWhiteSpace(t)).Select(Link.Translate)];
+
+        internal static List<string> GetTagsFromString(string s) => [.. s.Split(';').Select(ProcessTagName).Where(t => !string.IsNullOrWhiteSpace(t)).Distinct()];
+
+        internal abstract bool LoadFromStringPrivate(string[] lineArray);
+
+        internal abstract string[] SaveToStringPrivate();
     }
 }

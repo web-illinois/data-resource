@@ -62,6 +62,10 @@ namespace ResourceInformationV2.Components.Layout {
             _ = await LogHelper.Log(categoryType, fieldType, await GetNetId(), await CheckSource(), data, subject);
         }
 
+        public async Task LogGeneric(CategoryType categoryType, string subject = "") {
+            _ = await LogHelper.LogGeneric(categoryType, await GetNetId(), await CheckSource(), subject);
+        }
+
         public void RemoveDirty() => IsDirty = false;
 
         public async Task RemoveMessage() => _ = await JsRuntime.InvokeAsync<bool>("removeAlertOnScreen");

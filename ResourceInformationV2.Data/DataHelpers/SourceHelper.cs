@@ -66,6 +66,20 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 (source.UseEvents, source.UseFaqs, source.UseNotes, source.UseResources, source.UsePeople, source.UsePublications);
         }
 
+        public async Task<IEnumerable<string>> DoesSourceUseItemCheckAllAndConcatenate(string sourceCode) {
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            return source == null
+                ? []
+                : new List<string> {
+                source.UseEvents ? "Events" : "",
+                source.UseFaqs ? "Faqs" : "",
+                source.UseNotes ? "Notes" : "",
+                source.UseResources ? "Resources" : "",
+                source.UsePeople ? "People" : "",
+                source.UsePublications ? "Publications" : ""
+            }.Where(s => !string.IsNullOrEmpty(s));
+        }
+
         public async Task<string> GetBaseUrlFromSource(string sourceCode) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
             return source?.BaseUrl ?? "";

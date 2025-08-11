@@ -75,6 +75,7 @@
                                  new ("Related Links", "/event/relatedlinks"),
                                  new ("Technical Information", "/event/technical") } },
             { SidebarEnum.Review, new() { new ("View Drafts", "/review/viewdrafts"),
+                                 new ("Review Tag Use", "/review/taguse"),
                                  new ("Review Old Items", "/review/old"),
                                  new ("Link Check", "/review/linkcheck"),
                                  new ("Edit Review Process", "/review/edit") } },

@@ -1,0 +1,22 @@
+﻿@page "/review/taguse"
+@layout SidebarLayout
+
+<PageTitle>Review - Review Tag Use</PageTitle>
+
+<ilw-content>
+    <h1>Review Tag Use</h1>
+    <p>This is a list of tags used in your source.</p>
+    @if (Tags != null)
+    {
+        @foreach (var tagList in Tags)
+        {
+            <h2>@tagList.Title</h2>
+            <ul>
+                @foreach (var tag in tagList.TagItems)
+                {
+                    <li>@tag</li>
+                }
+            </ul>
+        }
+    }
+</ilw-content>

@@ -73,6 +73,33 @@ namespace ResourceInformationV2.Search.Getters {
             return response.IsValid ? response.Documents?.FirstOrDefault() ?? new() : new();
         }
 
+        public async Task<List<TagList>> GetTagCount(string source) {
+            var response = await _openSearchClient.SearchAsync<T>(s => s.Index(IndexName)
+                .Size(0)
+                .Aggregations(a => a
+                .Terms("tags1", t => t.Field(f => f.TagList))
+                .Terms("tags2", t => t.Field(f => f.Tag2List))
+                .Terms("tags3", t => t.Field(f => f.Tag3List))
+                .Terms("tags4", t => t.Field(f => f.Tag4List))
+                .Terms("audience", t => t.Field(f => f.AudienceList))
+                .Terms("topic", t => t.Field(f => f.TopicList)))
+                .Query(q => q
+                .Bool(b => b
+                .Filter(f => f.Term(m => m.Field(fld => fld.Source).Value(source)))
+                .Must(m => m.MatchAll()))));
+            LogDebug(response);
+
+            var returnValue = new List<TagList> {
+                new() { Title = "Tag 1", TagItems = ((BucketAggregate) response.Aggregations["tags1"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
+                new() { Title = "Tag 2", TagItems = ((BucketAggregate) response.Aggregations["tags2"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
+                new() { Title = "Tag 3", TagItems = ((BucketAggregate) response.Aggregations["tags3"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
+                new() { Title = "Tag 4", TagItems = ((BucketAggregate) response.Aggregations["tags4"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
+                new() { Title = "Audience", TagItems = ((BucketAggregate) response.Aggregations["audience"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
+                new() { Title = "Topic", TagItems = ((BucketAggregate) response.Aggregations["topic"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() }
+            };
+            return returnValue.Where(tl => tl.TagItems.Count > 0).ToList();
+        }
+
         public async Task<SearchObject<T>> Search(string source, string search, IEnumerable<string> tags, IEnumerable<string> tags2, IEnumerable<string> tags3, IEnumerable<string> tags4, IEnumerable<string> topics, IEnumerable<string> audience, int take, int skip) {
             var response = await _openSearchClient.SearchAsync<T>(s => s.Index(IndexName)
                     .Skip(skip)
@@ -111,6 +138,10 @@ namespace ResourceInformationV2.Search.Getters {
             if (_openSearchClient.ConnectionSettings.DisableDirectStreaming) {
                 Console.WriteLine(response.DebugInformation);
             }
+        }
+
+        private static string ConvertKeyedBucketToString(KeyedBucket<object> bucket) {
+            return $"{bucket.Key} (number of items: {bucket.DocCount})";
         }
     }
 }

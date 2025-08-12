@@ -30,6 +30,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         public SidebarLayout Layout { get; set; } = default!;
 
         public string NewFilterName { get; set; } = "";
+        public List<Tuple<string, string>> TagOrderList { get; set; } = [];
 
         [Inject]
         protected FilterHelper FilterHelper { get; set; } = default!;
@@ -55,6 +56,16 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
             FilterTags.MoveItemDown(tag);
         }
 
+        public void MoveGroupDown(Tuple<string, string> s) {
+            Layout.SetDirty();
+            TagOrderList.MoveItemDown(s);
+        }
+
+        public void MoveGroupUp(Tuple<string, string> s) {
+            Layout.SetDirty();
+            TagOrderList.MoveItemUp(s);
+        }
+
         public void MoveUp(Tag tag) {
             Layout.SetDirty();
             FilterTags.MoveItemUp(tag);
@@ -75,6 +86,19 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
             await FilterHelper.SaveFilters(FilterTags, FilterTagsForDeletion, sourceCode);
             await SourceHelper.SetSourceFilterName(sourceCode, FilterTypeEnum, FilterTitle);
             await Layout.AddMessage($"Filters for {FilterType} have been saved");
+            await OrderTagGroup(sourceCode);
+            Layout.RemoveDirty();
+            FilterTagsForDeletion.Clear();
+            return true;
+        }
+
+        public async Task<bool> SaveGroupOrder() {
+            var sourceCode = await Layout.CheckSource();
+            await SourceHelper.SetSourceFilterOrder(sourceCode, string.Join(';', TagOrderList.Select(t => t.Item1)));
+            foreach (var tag in TagOrderList) {
+                await SourceHelper.SetSourceFilterName(sourceCode, (TagType) Enum.Parse(typeof(TagType), tag.Item1, true), tag.Item2);
+            }
+            await Layout.AddMessage($"Filters order has been saved");
             Layout.RemoveDirty();
             FilterTagsForDeletion.Clear();
             return true;
@@ -83,7 +107,13 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
             await Layout.CheckSource();
+            var sourceCode = await Layout.CheckSource();
+            await OrderTagGroup(sourceCode);
             Layout.SetSidebar(SidebarEnum.Configuration, "Configuration");
+        }
+
+        private async Task OrderTagGroup(string sourceCode) {
+            TagOrderList = [.. await FilterHelper.GetTagTitles(sourceCode)];
         }
     }
 }

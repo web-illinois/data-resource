@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using ResourceInformationV2.Components.Layout;
 using ResourceInformationV2.Data.Cache;
 using ResourceInformationV2.Data.DataHelpers;
-using ResourceInformationV2.Data.DataModels;
 using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.JsonThinModels;
@@ -30,6 +29,9 @@ namespace ResourceInformationV2.Components.Pages.Review {
         protected FaqGetter FaqGetter { get; set; } = default!;
 
         [Inject]
+        protected FilterTranslator FilterTranslator { get; set; } = default!;
+
+        [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
@@ -51,14 +53,7 @@ namespace ResourceInformationV2.Components.Pages.Review {
             await base.OnInitializedAsync();
             Layout.SetSidebar(SidebarEnum.Review, "Review Items");
             var sourceCode = await Layout.CheckSource();
-            var tagTitles = new Dictionary<string, string> {
-                { "Tag 1", await SourceHelper.GetSourceFilterName(sourceCode, TagType.Tag1) },
-                { "Tag 2", await SourceHelper.GetSourceFilterName(sourceCode, TagType.Tag2) },
-                { "Tag 3", await SourceHelper.GetSourceFilterName(sourceCode, TagType.Tag3) },
-                { "Tag 4", await SourceHelper.GetSourceFilterName(sourceCode, TagType.Tag4) },
-                { "Topic", await SourceHelper.GetSourceFilterName(sourceCode, TagType.Topic) },
-                { "Audience", await SourceHelper.GetSourceFilterName(sourceCode, TagType.Audience) }
-            };
+            var tagTitles = await FilterTranslator.GetTagTitles(sourceCode);
             Tags = [.. Convert(await EventGetter.GetTagCount(sourceCode), "Events", tagTitles),
                 .. Convert(await FaqGetter.GetTagCount(sourceCode), "FAQs", tagTitles),
                 .. Convert(await NoteGetter.GetTagCount(sourceCode), "Notes", tagTitles),

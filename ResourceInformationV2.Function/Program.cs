@@ -7,8 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ResourceInformationV2.Data.DataContext;
+using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Search;
 using ResourceInformationV2.Search.Getters;
+using ResourceInformationV2.Search.Helpers;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
@@ -27,9 +29,19 @@ var host = new HostBuilder()
         });
         _ = services.ConfigureFunctionsApplicationInsights();
         _ = services.AddDbContextFactory<ResourceContext>(options => options.UseSqlServer(hostContext.Configuration["AppConnection"]).EnableSensitiveDataLogging(true));
+        _ = services.AddScoped<ResourceRepository>();
+        _ = services.AddScoped<BulkEditor>();
+        _ = services.AddScoped<SourceHelper>();
+        _ = services.AddScoped<FilterHelper>();
+        _ = services.AddScoped<FilterTranslator>();
         _ = services.AddSingleton(c => OpenSearchFactory.CreateLowLevelClient(hostContext.Configuration["SearchUrl"], hostContext.Configuration["AccessKey"], hostContext.Configuration["SecretKey"], hostContext.Configuration["Debug"] == "true"));
         _ = services.AddSingleton(c => OpenSearchFactory.CreateClient(hostContext.Configuration["SearchUrl"], hostContext.Configuration["AccessKey"], hostContext.Configuration["SecretKey"], true));
         _ = services.AddScoped<ResourceGetter>();
+        _ = services.AddScoped<PublicationGetter>();
+        _ = services.AddScoped<NoteGetter>();
+        _ = services.AddScoped<FaqGetter>();
+        _ = services.AddScoped<PersonGetter>();
+        _ = services.AddScoped<EventGetter>();
     })
     .Build();
 

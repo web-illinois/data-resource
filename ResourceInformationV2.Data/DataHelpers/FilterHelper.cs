@@ -29,6 +29,43 @@ namespace ResourceInformationV2.Data.DataHelpers {
             return (returnValue, sourceId);
         }
 
+        public async Task<IEnumerable<Tuple<string, string>>> GetTagTitles(string source) {
+            var returnValue = new List<Tuple<string, string>>();
+            var sourceValue = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == source));
+            if (sourceValue == null) {
+                return returnValue;
+            }
+            var filterOrder = string.IsNullOrWhiteSpace(sourceValue.FilterOrder) ? "topic;audience;tag1;tag2;tag3;tag4" : sourceValue.FilterOrder;
+            foreach (var filter in filterOrder.Split(';')) {
+                switch (filter) {
+                    case "topic":
+                        returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterTopicTitle));
+                        break;
+
+                    case "audience":
+                        returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterAudienceTitle));
+                        break;
+
+                    case "tag1":
+                        returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterTag1Title));
+                        break;
+
+                    case "tag2":
+                        returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterTag2Title));
+                        break;
+
+                    case "tag3":
+                        returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterTag3Title));
+                        break;
+
+                    case "tag4":
+                        returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterTag4Title));
+                        break;
+                }
+            }
+            return returnValue;
+        }
+
         public async Task<bool> ReplaceFilters(IEnumerable<Tag> tags, IEnumerable<Tag> tagsForDeletion, string sourceName) {
             var i = 1;
 

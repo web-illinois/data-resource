@@ -12,59 +12,51 @@ using ResourceInformationV2.Search.Models;
 
 namespace ResourceInformationV2.Function;
 
-public class Resources {
-    private readonly ILogger<Resources> _logger;
-    private readonly ResourceGetter _resourceGetter;
+public class Faqs {
+    private readonly FaqGetter _faqGetter;
+    private readonly ILogger<Faqs> _logger;
 
-    public Resources(ILogger<Resources> logger, ResourceGetter resourceGetter) {
+    public Faqs(ILogger<Faqs> logger, FaqGetter faqGetter) {
         _logger = logger;
-        _resourceGetter = resourceGetter;
+        _faqGetter = faqGetter;
     }
 
-    [Function("ResourceFragment")]
-    [OpenApiOperation(operationId: "ResourceFragment", tags: "Resources", Description = "Get a specific resource by using a URL-friendly fragment.")]
+    [Function("FaqFragment")]
+    [OpenApiOperation(operationId: "FaqFragment", tags: "FAQs", Description = "Get a specific FAQ by a URL-friendly string.")]
     [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **source** parameter given to you, can use 'test' to test.")]
     [OpenApiParameter(name: "fragment", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The fragment. If multiple items have the same fragment, this will return the first one it finds.")]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Resource), Description = "The resource. If the resource is not found, it will be blank.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(FaqItem), Description = "The FAQ. If the FAQ is not found, it will be blank.")]
     public async Task<HttpResponseData> GetByFragment([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
-        _logger.LogInformation("Called ResourceFragment.");
+        _logger.LogInformation("Called FaqFragment.");
         var requestHelper = RequestHelperFactory.Create();
         requestHelper.Initialize(req);
         var source = requestHelper.GetRequest(req, "source");
         var fragment = requestHelper.GetRequest(req, "fragment");
         requestHelper.Validate();
-        var returnItem = (await _resourceGetter.GetItem(source, fragment));
+        var returnItem = (await _faqGetter.GetItem(source, fragment));
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
     }
 
-    [Function("GetResourcesByFragment")]
-    [OpenApiOperation(operationId: "GetResourcesByFragment", tags: "Resources", Description = "A legacy version of ResourceFragment.")]
-    public async Task<HttpResponseData> GetByFragmentAlt([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) => await GetByFragment(req);
-
-    [Function("Resource")]
-    [OpenApiOperation(operationId: "Resource", tags: "Resources", Description = "Get a specific resource.")]
+    [Function("Faq")]
+    [OpenApiOperation(operationId: "Faq", tags: "FAQs", Description = "Get a specific FAQ.")]
     [OpenApiParameter(name: "id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The id of the item (the id includes the source).")]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Resource), Description = "The resource. If the resource is not found, it will be blank.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(FaqItem), Description = "The FAQ. If the FAQ is not found, it will be blank.")]
     public async Task<HttpResponseData> GetById([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
-        _logger.LogInformation("Called Resource.");
+        _logger.LogInformation("Called Faq.");
         var requestHelper = RequestHelperFactory.Create();
         requestHelper.Initialize(req);
         var id = requestHelper.GetRequest(req, "id");
         requestHelper.Validate();
-        var returnItem = await _resourceGetter.GetItem(id, true);
+        var returnItem = await _faqGetter.GetItem(id, true);
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
     }
 
-    [Function("GetResources")]
-    [OpenApiOperation(operationId: "GetResources", tags: "Resources", Description = "A legacy version of Resource.")]
-    public async Task<HttpResponseData> GetByIdAlt([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) => await GetById(req);
-
-    [Function("ResourceSearch")]
-    [OpenApiOperation(operationId: "ResourceSearch", tags: "Resources", Description = "Search resources by a specific source. The search can include both a free-query text search and filter list.")]
+    [Function("FaqSearch")]
+    [OpenApiOperation(operationId: "FaqSearch", tags: "FAQs", Description = "Search FAQs by a specific source. The search can include both a free-query text search and filter list.")]
     [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The source for the tags.")]
     [OpenApiParameter(name: "tags", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'.")]
     [OpenApiParameter(name: "tags2", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
@@ -75,9 +67,9 @@ public class Resources {
     [OpenApiParameter(name: "q", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A full text search string -- it will search the title and description for the search querystring.")]
     [OpenApiParameter(name: "take", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "How many items do you want? Defaults to 1000.")]
     [OpenApiParameter(name: "skip", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "A skip value to help with pagination. Defaults to 0.")]
-    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(SearchObject<Resource>), Description = "The list of resources")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(SearchObject<FaqItem>), Description = "The list of FAQs")]
     public async Task<HttpResponseData> Search([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
-        _logger.LogInformation("Called ResourceSearch.");
+        _logger.LogInformation("Called FaqSearch.");
         var requestHelper = RequestHelperFactory.Create();
         requestHelper.Initialize(req);
         var source = requestHelper.GetRequest(req, "source");
@@ -93,11 +85,7 @@ public class Resources {
 
         requestHelper.Validate();
         var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(await _resourceGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, take, skip));
+        await response.WriteAsJsonAsync(await _faqGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, take, skip));
         return response;
     }
-
-    [Function("SearchResources")]
-    [OpenApiOperation(operationId: "SearchResources", tags: "Resources", Description = "A legacy version of ResourceSearch")]
-    public async Task<HttpResponseData> SearchAlt([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) => await Search(req);
 }

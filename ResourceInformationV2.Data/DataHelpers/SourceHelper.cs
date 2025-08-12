@@ -175,6 +175,16 @@ namespace ResourceInformationV2.Data.DataHelpers {
             return source.Id;
         }
 
+        public async Task<int> SetSourceFilterOrder(string sourceCode, string order) {
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            if (source == null) {
+                return 0;
+            }
+            source.FilterOrder = order;
+            _ = await _resourceRepository.UpdateAsync(source);
+            return source.Id;
+        }
+
         public async Task<int> SetSourceItem(string sourceCode, CategoryType categoryType, bool isUsed) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {

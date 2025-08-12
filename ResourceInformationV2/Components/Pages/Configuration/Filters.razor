@@ -48,3 +48,17 @@
     </ilw-content>
     <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
 }
+
+<ilw-content>
+    <h2>Filter Names and Order</h2>
+    <p>You can re-order the filters if you are pulling them via an API.</p>
+    @if (TagOrderList != null)
+    {
+        @for (int i = 0; i < TagOrderList.Count; i++)
+        {
+            <FilterGroupEditor Id="@i" @bind-Value="@TagOrderList[i]" MoveUpCallback="e => MoveGroupUp(e)" MoveDownCallback="e => MoveGroupDown(e)" />
+        }
+    }
+
+</ilw-content>
+<button class="ilw-button ilw-theme-orange-2" @onclick="SaveGroupOrder" @onblur="Layout.RemoveMessage">Save Group Order</button>

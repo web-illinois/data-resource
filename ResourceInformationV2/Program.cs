@@ -47,6 +47,7 @@ builder.Services.AddSingleton<CacheHolder>();
 builder.Services.AddScoped<SourceHelper>();
 builder.Services.AddScoped<InstructionHelper>();
 builder.Services.AddScoped<FilterHelper>();
+builder.Services.AddScoped<FilterTranslator>();
 builder.Services.AddScoped<SecurityHelper>();
 builder.Services.AddScoped<LogHelper>();
 

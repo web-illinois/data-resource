@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ResourceInformationV2/Properties/ServiceDependencies/ResourceInformationV220250812162207 - Zip Deploy/profile.arm.json
+/ResourceInformationV2.Function/Properties/ServiceDependencies/ResourceRepositoryFunctionTest - Zip Deploy
+/ResourceInformationV2.Function/Properties/ServiceDependencies/ResourceRepositoryFunctionTest - Zip Deploy/storage1.arm.json
+/ResourceInformationV2.Function/Properties/serviceDependencies.json
+/ResourceInformationV2.Function/Properties/serviceDependencies.ResourceRepositoryFunctionTest - Zip Deploy.json
+/ResourceInformationV2.Function/Properties/serviceDependencies.ResourceRepositoryFunctionTest - Zip Deploy.json
+/ResourceInformationV2.Function/Properties/serviceDependencies.json

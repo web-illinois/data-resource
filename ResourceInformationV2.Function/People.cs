@@ -58,11 +58,11 @@ public class People {
     [Function("PersonSearch")]
     [OpenApiOperation(operationId: "PersonSearch", tags: "People", Description = "Search people by a specific source. The search can include both a free-query text search and filter list.")]
     [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The source for the tags.")]
-    [OpenApiParameter(name: "tags", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'.")]
-    [OpenApiParameter(name: "tags2", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
-    [OpenApiParameter(name: "tags3", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
-    [OpenApiParameter(name: "tags4", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
-    [OpenApiParameter(name: "topics", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of topics. You can separate the topics by the characters '[-]'.")]
+    [OpenApiParameter(name: "tag1", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'.")]
+    [OpenApiParameter(name: "tag2", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
+    [OpenApiParameter(name: "tag3", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
+    [OpenApiParameter(name: "tag4", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
+    [OpenApiParameter(name: "topic", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of topics. You can separate the topics by the characters '[-]'.")]
     [OpenApiParameter(name: "audience", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of audiences. You can separate the audiences by the characters '[-]'.")]
     [OpenApiParameter(name: "q", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A full text search string -- it will search the title and description for the search querystring.")]
     [OpenApiParameter(name: "take", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "How many items do you want? Defaults to 1000.")]
@@ -73,11 +73,11 @@ public class People {
         var requestHelper = RequestHelperFactory.Create();
         requestHelper.Initialize(req);
         var source = requestHelper.GetRequest(req, "source");
-        var tags = requestHelper.GetArray(req, "tags");
-        var tags2 = requestHelper.GetArray(req, "tags2");
-        var tags3 = requestHelper.GetArray(req, "tags3");
-        var tags4 = requestHelper.GetArray(req, "tags4");
-        var topics = requestHelper.GetArray(req, "topics");
+        var tags = requestHelper.GetArray(req, "tag1");
+        var tags2 = requestHelper.GetArray(req, "tag2");
+        var tags3 = requestHelper.GetArray(req, "tag3");
+        var tags4 = requestHelper.GetArray(req, "tag4");
+        var topics = requestHelper.GetArray(req, "topic");
         var audience = requestHelper.GetArray(req, "audience");
         var query = requestHelper.GetRequest(req, "q", false);
         var take = requestHelper.GetInteger(req, "take", 1000);

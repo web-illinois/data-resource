@@ -29,6 +29,9 @@ namespace ResourceInformationV2.Components.Pages.Review {
         protected FaqGetter FaqGetter { get; set; } = default!;
 
         [Inject]
+        protected FilterHelper FilterHelper { get; set; } = default!;
+
+        [Inject]
         protected FilterTranslator FilterTranslator { get; set; } = default!;
 
         [Inject]
@@ -53,6 +56,7 @@ namespace ResourceInformationV2.Components.Pages.Review {
             await base.OnInitializedAsync();
             Layout.SetSidebar(SidebarEnum.Review, "Review Items");
             var sourceCode = await Layout.CheckSource();
+            var tagList = await FilterHelper.GetAllFilters(sourceCode);
             var tagTitles = await FilterTranslator.GetTagTitles(sourceCode);
             Tags = [.. Convert(await EventGetter.GetTagCount(sourceCode), "Events", tagTitles),
                 .. Convert(await FaqGetter.GetTagCount(sourceCode), "FAQs", tagTitles),

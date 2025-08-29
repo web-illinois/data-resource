@@ -6,9 +6,9 @@
         public string JobLocation { get; set; } = "";
         public string JobTitle { get; set; } = "";
         public string LastName { get; set; } = "";
-        public string NameReversed => LastName + ", " + FirstName;
+        public string NameReversed => FirstName + " " + LastName;
         public override string NameType => "Person";
-        public override string Title => FirstName + " " + LastName;
+        public override string Title => LastName + ", " + FirstName;
 
         internal override string[] Headings => ["Id", "First Name", "Last Name", "Job Title", "Job Location", "Biography", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
 

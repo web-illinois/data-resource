@@ -16,6 +16,12 @@
             <input id="title" type="text" @bind="Item.Title" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="link">Link</label>
+            <input id="link" type="text" class="ils-input-long" @bind="Item.Url" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
 
     <ilw-content>
         <div class="ils-input-entry">

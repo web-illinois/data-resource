@@ -26,9 +26,9 @@
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="notes">Internal Notes</label>
+            <label for="notes">Internal Search Notes</label>
             <textarea id="notes" @bind="Item.Notes" @bind:after="Layout.SetDirty" />
-            <p>This will not show up in the search results.</p>
+            <p>This will not show up in the search results, although the information listed will show up if people search for it.</p>
         </div>
     </ilw-content>
     <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>

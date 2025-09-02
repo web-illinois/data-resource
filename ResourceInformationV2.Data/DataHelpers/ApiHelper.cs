@@ -1,4 +1,6 @@
-﻿using ResourceInformationV2.Data.DataContext;
+﻿using System.Security.Cryptography;
+using System.Text;
+using ResourceInformationV2.Data.DataContext;
 
 namespace ResourceInformationV2.Data.DataHelpers {
 
@@ -11,19 +13,21 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 return "";
             }
             var guid = Guid.NewGuid().ToString().ToLowerInvariant();
+            var guidHash = HashWithSHA256(guid);
             sourceItem.ApiSecretPrevious = sourceItem.ApiSecretCurrent;
-            sourceItem.ApiSecretCurrent = guid;
+            sourceItem.ApiSecretCurrent = guidHash;
             sourceItem.ForceApiToDraft = true;
             sourceItem.ApiSecretLastChanged = DateTime.Now;
             return await _resourceRepository.UpdateAsync(sourceItem) > 0 ? guid : "";
         }
 
         public async Task<(bool allowApi, bool forceDraft)> CheckApi(string source, string key) {
+            var guidHash = HashWithSHA256(key);
             var sourceItem = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == source));
             if (sourceItem == null || string.IsNullOrWhiteSpace(sourceItem.ApiSecretCurrent)) {
                 return (false, false);
             }
-            return (key.Equals(sourceItem.ApiSecretCurrent, StringComparison.OrdinalIgnoreCase) || key.Equals(sourceItem.ApiSecretPrevious, StringComparison.OrdinalIgnoreCase), sourceItem.ForceApiToDraft);
+            return (guidHash.Equals(sourceItem.ApiSecretCurrent, StringComparison.OrdinalIgnoreCase) || guidHash.Equals(sourceItem.ApiSecretPrevious, StringComparison.OrdinalIgnoreCase), sourceItem.ForceApiToDraft);
         }
 
         public async Task<(bool isValid, DateTime lastChanged, bool forceDraft)> GetApi(string source) {
@@ -50,5 +54,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
             sourceItem.ForceApiToDraft = force;
             return await _resourceRepository.UpdateAsync(sourceItem);
         }
+
+        private static string HashWithSHA256(string value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(value + "-Important-Excellent-Information-Board")));
     }
 }

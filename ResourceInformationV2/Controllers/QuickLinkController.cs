@@ -42,7 +42,7 @@ namespace ResourceInformationV2.Controllers {
             if (string.IsNullOrWhiteSpace(netId)) {
                 return Content("Error: Net ID not found");
             }
-            var sourceName = id.Split('-')[0];
+            var sourceName = id.Split('-')[0].Replace("!", "");
             if (!await _securityHelper.ConfirmNetIdCanAccessSource(sourceName, netId)) {
                 return Content($"Error: Net ID not allowed for source {sourceName} / {netId}");
             }

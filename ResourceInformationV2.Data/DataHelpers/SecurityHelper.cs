@@ -24,7 +24,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
         }
 
         public async Task<bool> ConfirmNetIdCanAccessSource(string sourceName, string netId) {
-            return await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(c => c.Source).Any(se => se.Source != null && se.Source.Code == sourceName && se.Email == netId));
+            return await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(c => c.Source).Any(se => se.Source != null && se.Source.Code == sourceName.Replace("!", "") && se.Email == netId));
         }
 
         public async Task<List<string>> GetNames(string sourceName) {

@@ -1,7 +1,13 @@
 ﻿<ilw-content>
     <fieldset>
         <legend>Status on Site</legend>
-        <p class="top">Make this live on the source website?</p>
+        @if (IsNewerDraft)
+        {
+            <p class="top">Note that this is a newer draft of an existing item. Publishing this will overwrite the old version and will exit you out of this screen.</p>
+        } else
+        {
+            <p class="top">Make this live on the source website?</p>
+        }
         <div style="display: flex;">
             <div class="ils-input-entry-compact">
                 <label for="status-true">Published</label>

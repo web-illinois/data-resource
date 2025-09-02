@@ -10,6 +10,13 @@
         Event
     }
 
+    public enum EmailType {
+        None,
+        OnSubmission,
+        OnPublication,
+        OnDraft
+    }
+
     public enum FieldType {
         None,
         General,

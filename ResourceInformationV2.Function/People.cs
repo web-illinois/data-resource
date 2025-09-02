@@ -5,20 +5,30 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ResourceInformationV2.Data.DataHelpers;
+using ResourceInformationV2.Data.DataModels;
 using ResourceInformationV2.Function.Helper;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.JsonThinModels;
 using ResourceInformationV2.Search.Models;
+using ResourceInformationV2.Search.Setters;
+using LogHelper = ResourceInformationV2.Data.DataHelpers.LogHelper;
 
 namespace ResourceInformationV2.Function;
 
 public class People {
+    private readonly ApiHelper _apiHelper;
     private readonly ILogger<People> _logger;
+    private readonly LogHelper _logHelper;
     private readonly PersonGetter _personGetter;
+    private readonly PersonSetter _personSetter;
 
-    public People(ILogger<People> logger, PersonGetter personGetter) {
+    public People(ILogger<People> logger, PersonGetter personGetter, PersonSetter personSetter, ApiHelper apiHelper, LogHelper logHelper) {
         _logger = logger;
         _personGetter = personGetter;
+        _personSetter = personSetter;
+        _apiHelper = apiHelper;
+        _logHelper = logHelper;
     }
 
     [Function("PersonFragment")]
@@ -52,6 +62,27 @@ public class People {
         var returnItem = await _personGetter.GetItem(id, true);
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
+        return response;
+    }
+
+    [Function("PersonLoad")]
+    [OpenApiOperation(operationId: "PersonLoad", tags: "People", Description = "Load a people by API.")]
+    [OpenApiParameter(name: "ilw-key", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "The API Key.")]
+    [OpenApiParameter(name: "person", In = ParameterLocation.Query, Required = false, Type = typeof(Person), Description = "A json implementation of a person.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The ID of the person that was loaded.")]
+    public async Task<HttpResponseData> Load([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
+        _logger.LogInformation("Called PersonLoad.");
+        var requestHelper = RequestHelperFactory.Create();
+        requestHelper.Initialize(req);
+        var key = requestHelper.GetCodeFromHeader(req);
+        var item = await req.ReadFromJsonAsync<Person>() ?? new Person();
+        var results = await _apiHelper.CheckApi(item.Source, key);
+        if (!results.allowApi) {
+            throw new Exception("API Key in header ilw-key is needed, was sent " + key);
+        }
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        await response.WriteAsJsonAsync(results.forceDraft ? await _personSetter.SetItemWithDraft(item) : await _personSetter.SetItem(item));
+        await _logHelper.Log(CategoryType.Person, FieldType.None, "API", item.Source, item, "API Load", EmailType.OnSubmission);
         return response;
     }
 

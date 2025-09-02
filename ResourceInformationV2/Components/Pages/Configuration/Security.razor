@@ -21,5 +21,27 @@
     </div>
     <p><button class="ilw-button" @onclick="Add">Add Net ID</button></p>
     <h2>API Updates</h2>
-    <p><strong>Phase 2</strong> will allow you to generate an API key that will allow you to programatically add, update, and delete items within your source.</p>
+    <p>This generates an API key that will allow you to programatically add, update, and delete items within your source.</p>
+    @if (UseApi)
+    {
+        <p>You currently have an API key active. This was last changed on @LastDateApiChanged.ToShortDateString().</p>
+        <p><button class="ilw-button" @onclick="CreateApi">Create a New API key</button></p>
+        <p><button class="ilw-button" @onclick="InvalidateApi">Invalidate the API key</button></p>
+        <div class="ils-input-entry">
+            <label for="draft">Will an API call be forced to Draft mode?</label>
+            <input id="draft" type="checkbox" checked="@ApiDraft" @onchange="Draft">
+        </div>
+    }
+    else
+    {
+        <p>You do not currently have an API key active.</p>
+        <p><button class="ilw-button" @onclick="CreateApi">Create a New API key</button></p>
+    }
+    @if (ApiGuid != "")
+    {
+        <p>The API key has been generated. Please record this as you will not be able to access this after your leave this page.</p>
+        <p>When creating an API key, the default is to set the item to Draft mode so it can be reviewed by an administrator. We recommend keeping this set unless you are using the API under a controlled process.</p>
+        <p>If you had a valid API key before creating this new API key, it will be usable as well. If you wish to deactivate the old API key (because it has been compromised), then you should invalidate the API key and then create a new key.</p>
+        <p><code>API Key: <strong>@ApiGuid</strong></code></p>
+    }
 </ilw-content>

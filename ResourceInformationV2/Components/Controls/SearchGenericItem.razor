@@ -10,7 +10,7 @@
             <select id="choose" size="10" class="ils-input-long" @bind="SelectedItemId">
                 @foreach (var item in GenericItems)
                 {
-                    <option value="@item.Id">@(item.IsActive ? "" : "(Inactive)") @item.Title</option>
+                    <option value="@item.Id">@(item.IsNewerDraft ? "(Newer Draft)" : item.IsActive ? "" : "(Inactive)") @item.Title</option>
                 }
             </select>
         </div>

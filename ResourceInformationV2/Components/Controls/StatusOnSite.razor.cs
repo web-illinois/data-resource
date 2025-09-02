@@ -6,6 +6,9 @@ namespace ResourceInformationV2.Components.Controls {
     public partial class StatusOnSite {
         private bool _value;
 
+        [Parameter]
+        public bool IsNewerDraft { get; set; } = false;
+
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
 

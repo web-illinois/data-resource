@@ -5,7 +5,7 @@ using OpenSearch.Client;
 namespace ResourceInformationV2.Search.Models {
 
     public abstract class BaseObject {
-        protected static readonly string _editLink = "https://resource.itpartners.illinois.edu/quicklink/";
+        protected static readonly string _editLink = "https://resourceinformationv220250812162207-h0a9djedenhve6ev.northcentralus-01.azurewebsites.net/quicklink/";
         private static readonly string[] _badHtmlItems = ["<br>", "<p></p>", "<p><br></p>", "<p>&nbsp;</p>", "<p> </p>", "&nbsp;"];
         private readonly JsonSerializerOptions _serializer = new() { PropertyNamingPolicy = new JsonNamingPolicyLowerCase() };
 
@@ -33,11 +33,12 @@ namespace ResourceInformationV2.Search.Models {
 
         public bool IsActive { get; set; }
 
-        public bool IsDeletable => false;
+        public bool IsDraftAvailable { get; set; } = false;
 
         [JsonIgnore]
-        public virtual bool IsIdValid => !string.IsNullOrWhiteSpace(Id) && !string.IsNullOrWhiteSpace(Source) && Id.StartsWith(Source + "-");
+        public virtual bool IsIdValid => !string.IsNullOrWhiteSpace(Id) && !string.IsNullOrWhiteSpace(Source) && (Id.StartsWith(Source + "-") || Id.StartsWith(Source + "!-"));
 
+        public bool IsNewerDraft => Id.StartsWith(Source + "!-");
         public DateTime LastUpdated { get; set; }
 
         public IEnumerable<Link> LinkList { get; set; } = default!;
@@ -103,7 +104,7 @@ namespace ResourceInformationV2.Search.Models {
         public virtual void CleanHtmlFields() {
         }
 
-        public virtual GenericItem GetGenericItem() => new() { Id = Id, IsActive = IsActive, Order = Order, Title = Title, EditLink = EditLink };
+        public virtual GenericItem GetGenericItem() => new() { Id = Id, IsActive = IsActive, IsNewerDraft = IsNewerDraft, Order = Order, Title = Title, EditLink = EditLink };
 
         public (bool successful, bool headerIssue, string message) LoadFromString(string source, string line) {
             var array = line.Split('\t');
@@ -130,6 +131,9 @@ namespace ResourceInformationV2.Search.Models {
         public virtual void Prepare() {
             LastUpdated = DateTime.Now;
             Id = string.IsNullOrWhiteSpace(Id) ? Source + "-" + Guid.NewGuid().ToString() : Id;
+            if (!Id.StartsWith(Source + "-") && !Id.StartsWith(Source + "!-")) {
+                throw new ArgumentException("ID needs to start with source");
+            }
             Fragment = string.IsNullOrWhiteSpace(Fragment) ? "" : new string([.. Fragment.Where(c => char.IsLetterOrDigit(c) || c == ' ' || c == '-' || c == '/')]).Replace(" ", "-").ToLowerInvariant();
             AudienceList = AudienceList == null ? [] : AudienceList.Select(ProcessTagName).ToList();
             TopicList = TopicList == null ? [] : TopicList.Select(ProcessTagName).ToList();

@@ -58,8 +58,8 @@ namespace ResourceInformationV2.Components.Layout {
 
         public async Task<string> GetNetId() => await AuthenticationStateProvider.GetUser();
 
-        public async Task Log(CategoryType categoryType, FieldType fieldType, BaseObject data, string subject = "") {
-            _ = await LogHelper.Log(categoryType, fieldType, await GetNetId(), await CheckSource(), data, subject);
+        public async Task Log(CategoryType categoryType, FieldType fieldType, BaseObject data, string subject = "", EmailType emailOption = EmailType.None) {
+            _ = await LogHelper.Log(categoryType, fieldType, await GetNetId(), await CheckSource(), data, subject, emailOption);
         }
 
         public async Task LogGeneric(CategoryType categoryType, string subject = "") {

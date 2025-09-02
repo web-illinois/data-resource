@@ -36,7 +36,7 @@ namespace ResourceInformationV2.Components.Pages.Review {
             var sourceCode = await Layout.CheckSource();
             Listing = [.. await ResourceGetter.GetAllDraftItemsBySource(sourceCode), .. await PublicationGetter.GetAllDraftItemsBySource(sourceCode),
                 .. await NoteGetter.GetAllDraftItemsBySource(sourceCode), .. await FaqGetter.GetAllDraftItemsBySource(sourceCode),
-                .. await EventGetter.GetAllDraftItemsBySource(sourceCode), .. await EventGetter.GetAllDraftItemsBySource(sourceCode)];
+                .. await EventGetter.GetAllDraftItemsBySource(sourceCode), .. await PersonGetter.GetAllDraftItemsBySource(sourceCode)];
         }
     }
 }

@@ -8,9 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ResourceInformationV2.Data.DataContext;
 using ResourceInformationV2.Data.DataHelpers;
+using ResourceInformationV2.Data.Email;
 using ResourceInformationV2.Search;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Helpers;
+using ResourceInformationV2.Search.Setters;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
@@ -34,6 +36,10 @@ var host = new HostBuilder()
         _ = services.AddScoped<SourceHelper>();
         _ = services.AddScoped<FilterHelper>();
         _ = services.AddScoped<FilterTranslator>();
+        _ = services.AddScoped<ApiHelper>();
+        _ = services.AddScoped(b => new EmailClient(hostContext.Configuration["EmailApiKey"] ?? "", hostContext.Configuration["EmailFromEmail"] ?? "", hostContext.Configuration["EmailServerId"] ?? "", hostContext.Configuration["EmailUrl"] ?? ""));
+        _ = services.AddScoped<SourceEmailHelper>();
+        _ = services.AddScoped<LogHelper>();
         _ = services.AddSingleton(c => OpenSearchFactory.CreateLowLevelClient(hostContext.Configuration["SearchUrl"], hostContext.Configuration["AccessKey"], hostContext.Configuration["SecretKey"], hostContext.Configuration["Debug"] == "true"));
         _ = services.AddSingleton(c => OpenSearchFactory.CreateClient(hostContext.Configuration["SearchUrl"], hostContext.Configuration["AccessKey"], hostContext.Configuration["SecretKey"], true));
         _ = services.AddScoped<ResourceGetter>();
@@ -41,6 +47,7 @@ var host = new HostBuilder()
         _ = services.AddScoped<NoteGetter>();
         _ = services.AddScoped<FaqGetter>();
         _ = services.AddScoped<PersonGetter>();
+        _ = services.AddScoped<PersonSetter>();
         _ = services.AddScoped<EventGetter>();
     })
     .Build();

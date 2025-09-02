@@ -30,10 +30,14 @@ namespace ResourceInformationV2.Components.Pages.Person {
 
         public async Task Save() {
             Layout.RemoveDirty();
+            if (string.IsNullOrWhiteSpace(await Layout.GetCachedId())) {
+                await Layout.Log(CategoryType.Person, FieldType.General, Item, "Item added", EmailType.OnSubmission);
+            } else {
+                await Layout.Log(CategoryType.Person, FieldType.General, Item);
+            }
             _ = await PersonSetter.SetItem(Item);
             await Layout.SetCacheId(Item.Id);
             Layout.SetSidebar(SidebarEnum.PeopleItem, Item.Title);
-            await Layout.Log(CategoryType.Person, FieldType.General, Item);
             await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 

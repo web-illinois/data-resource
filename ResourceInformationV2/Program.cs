@@ -7,6 +7,7 @@ using ResourceInformationV2.Components;
 using ResourceInformationV2.Data.Cache;
 using ResourceInformationV2.Data.DataContext;
 using ResourceInformationV2.Data.DataHelpers;
+using ResourceInformationV2.Data.Email;
 using ResourceInformationV2.Data.Uploads;
 using ResourceInformationV2.Search;
 using ResourceInformationV2.Search.Getters;
@@ -44,11 +45,14 @@ builder.Services.AddSingleton(b => OpenSearchFactory.CreateLowLevelClient(builde
 builder.Services.AddScoped<BulkEditor>();
 builder.Services.AddScoped<JsonHelper>();
 builder.Services.AddSingleton<CacheHolder>();
+builder.Services.AddScoped(b => new EmailClient(builder.Configuration["EmailApiKey"] ?? "", builder.Configuration["EmailFromEmail"] ?? "", builder.Configuration["EmailServerId"] ?? "", builder.Configuration["EmailUrl"] ?? ""));
 builder.Services.AddScoped<SourceHelper>();
 builder.Services.AddScoped<InstructionHelper>();
 builder.Services.AddScoped<FilterHelper>();
 builder.Services.AddScoped<FilterTranslator>();
 builder.Services.AddScoped<SecurityHelper>();
+builder.Services.AddScoped<SourceEmailHelper>();
+builder.Services.AddScoped<ApiHelper>();
 builder.Services.AddScoped<LogHelper>();
 
 builder.Services.AddScoped<ResourceGetter>();
@@ -89,7 +93,7 @@ app.Lifetime.ApplicationStarted.Register(() => {
     using var serviceScope = factory.CreateScope();
     // Ensure the database is created
     var context = serviceScope.ServiceProvider.GetRequiredService<ResourceContext>();
-    _ = context.Database.EnsureCreated();
+    context.Database.Migrate();
     // Ensure the search index is created
     var openSearchClient = serviceScope.ServiceProvider.GetRequiredService<OpenSearchClient>();
     Console.WriteLine(OpenSearchFactory.MapIndex(openSearchClient));

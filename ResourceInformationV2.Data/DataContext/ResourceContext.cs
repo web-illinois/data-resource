@@ -20,6 +20,7 @@ namespace ResourceInformationV2.Data.DataContext {
         public DbSet<Instruction> Instructions { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<SecurityEntry> SecurityEntries { get; set; }
+        public DbSet<SourceEmail> SourceEmails { get; set; }
         public DbSet<Source> Sources { get; set; }
         public DbSet<Tag> Tags { get; set; }
 

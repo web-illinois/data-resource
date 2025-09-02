@@ -1,0 +1,60 @@
+﻿@page "/configuration/email"
+@layout SidebarLayout
+
+<PageTitle>Configuration - Email Setup</PageTitle>
+
+<ilw-content>
+    <h1>Email Setup</h1>
+
+    <p>You can set up emails when an item is submitted, when an item is published, or when an item is moved back to draft. These emails will email the <em>Email for Review</em> email or a fixed email, depending on how the email is configured. If you want multiple emails sent (when an item is submitted and when an item is published), then you must set each one independently.</p>
+
+    <div class="ils-input-entry">
+        <label for="emailchoice">Select Trigger Option</label>
+        <select class="ils-input-long" id="emailchoice" @onchange="ChangeEmailOption">
+            <option value="None">-- Choose one --</option>
+            <option value="OnSubmission">When an item is submitted for review</option>
+            <option value="OnPublication">When an item is published</option>
+            <option value="OnDraft">When an item is moved back to draft</option>
+        </select>
+    </div>
+
+    @if (SourceEmail != null)
+    {
+        <div class="ils-input-entry">
+            <label for="to">To Email (may be a semicolon list)</label>
+            <input id="to" type="text" class="ils-input-long" @bind=" SourceEmail.To" @bind:after="Layout.SetDirty">
+        </div>
+        <div class="ils-input-entry">
+            <label for="cc">CC Email (may be a semicolon list)</label>
+            <input id="cc" type="text" class="ils-input-long" @bind=" SourceEmail.Cc" @bind:after="Layout.SetDirty">
+        </div>
+        <div class="ils-input-entry">
+            <label for="reply">Reply-to Email</label>
+            <input id="reply" type="text" class="ils-input-long" @bind=" SourceEmail.ReplyTo" @bind:after="Layout.SetDirty">
+        </div>
+        <div class="ils-input-entry">
+            <label for="addreview">Add review email listed on resource to "To:" email list?</label>
+            <input id="addreview" type="checkbox" @bind=" SourceEmail.SendToReviewEmail" @bind:after="Layout.SetDirty">
+        </div>
+        <div class="ils-input-entry">
+            <label for="subject">Subject Line</label>
+            <input id="subject" type="text" class="ils-input-long" @bind="SourceEmail.Subject" @bind:after="Layout.SetDirty">
+        </div>
+        <div class="ils-input-entry">
+            <label for="body">Body (plain text for clients that cannot accept HTML)</label>
+            <textarea id="body" @bind="SourceEmail.BodyText" @bind:after="Layout.SetDirty" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="bodyhtml">HTML Body (for clients that can accept HTML)</label>
+            <textarea id="bodyhtml" @bind="SourceEmail.Body" @bind:after="Layout.SetDirty" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="active">Is this active?</label>
+            <input id="active" type="checkbox" @bind="SourceEmail.IsActive" @bind:after="Layout.SetDirty">
+        </div>
+
+        <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+        <button class="ilw-button" @onclick="Delete" @onblur="Layout.RemoveMessage">Remove Email</button>
+    }
+
+</ilw-content>

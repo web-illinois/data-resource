@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResourceInformationV2.Data.DataContext;
 
@@ -11,9 +12,11 @@ using ResourceInformationV2.Data.DataContext;
 namespace ResourceInformationV2.Data.Migrations
 {
     [DbContext(typeof(ResourceContext))]
-    partial class ResourceContextModelSnapshot : ModelSnapshot
+    [Migration("20250829203852_EmailAndApiKey")]
+    partial class EmailAndApiKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,7 +166,7 @@ namespace ResourceInformationV2.Data.Migrations
                             IsOwner = true,
                             IsPublic = false,
                             IsRequested = false,
-                            LastUpdated = new DateTime(2025, 8, 30, 16, 30, 6, 41, DateTimeKind.Local).AddTicks(9589),
+                            LastUpdated = new DateTime(2025, 8, 29, 15, 38, 50, 863, DateTimeKind.Local).AddTicks(2570),
                             SourceId = -1
                         });
                 });
@@ -300,7 +303,7 @@ namespace ResourceInformationV2.Data.Migrations
                             ForceApiToDraft = true,
                             IsActive = false,
                             IsTest = true,
-                            LastUpdated = new DateTime(2025, 8, 30, 16, 30, 6, 41, DateTimeKind.Local).AddTicks(9450),
+                            LastUpdated = new DateTime(2025, 8, 29, 15, 38, 50, 863, DateTimeKind.Local).AddTicks(2254),
                             NumberOfDaysForReview = 0,
                             ReviewEmail = "",
                             Title = "Test Entry",
@@ -311,60 +314,6 @@ namespace ResourceInformationV2.Data.Migrations
                             UsePublications = false,
                             UseResources = false
                         });
-                });
-
-            modelBuilder.Entity("ResourceInformationV2.Data.DataModels.SourceEmail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BodyText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EmailType")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ReplyTo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SendToReviewEmail")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SourceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("To")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SourceId");
-
-                    b.ToTable("SourceEmails");
                 });
 
             modelBuilder.Entity("ResourceInformationV2.Data.DataModels.Tag", b =>
@@ -428,17 +377,6 @@ namespace ResourceInformationV2.Data.Migrations
                     b.HasOne("ResourceInformationV2.Data.DataModels.Source", "Source")
                         .WithMany()
                         .HasForeignKey("SourceId");
-
-                    b.Navigation("Source");
-                });
-
-            modelBuilder.Entity("ResourceInformationV2.Data.DataModels.SourceEmail", b =>
-                {
-                    b.HasOne("ResourceInformationV2.Data.DataModels.Source", "Source")
-                        .WithMany()
-                        .HasForeignKey("SourceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Source");
                 });

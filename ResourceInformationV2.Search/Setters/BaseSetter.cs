@@ -20,8 +20,37 @@ namespace ResourceInformationV2.Search.Setters {
             return response.IsValid ? id : "";
         }
 
+        public async Task<string> PublishDraftItem(T item) {
+            var oldId = item.Id;
+            item.Id = item.Id.Replace(item.Source + "!-", item.Source + "-");
+            item.IsActive = true;
+            item.IsDraftAvailable = false;
+            item.Prepare();
+            var response = await _openSearchClient.IndexAsync(item, i => i.Index(IndexName));
+            if (response.IsValid) {
+                var responseDelete = await _openSearchClient.DeleteAsync<T>(oldId, i => i.Index(IndexName));
+                return responseDelete.IsValid ? item.Id : "";
+            }
+            return "";
+        }
+
         public async Task<string> SetItem(T item) {
             item.Prepare();
+            var response = await _openSearchClient.IndexAsync(item, i => i.Index(IndexName));
+            return response.IsValid ? item.Id : "";
+        }
+
+        public async Task<string> SetItemWithDraft(T item) {
+            if (!string.IsNullOrWhiteSpace(item.Id)) {
+                var responseOriginalItem = await _openSearchClient.GetAsync<T>(item.Id);
+                if (responseOriginalItem != null && responseOriginalItem.IsValid && responseOriginalItem.Source != null && responseOriginalItem.Source.IsActive) {
+                    var originalItem = responseOriginalItem.Source;
+                    originalItem.IsDraftAvailable = true;
+                    item.Id = item.Id.Replace(item.Source + "-", item.Source + "!-");
+                    var responseOriginalSave = await _openSearchClient.IndexAsync(originalItem, i => i.Index(IndexName));
+                }
+            }
+            item.IsActive = false;
             var response = await _openSearchClient.IndexAsync(item, i => i.Index(IndexName));
             return response.IsValid ? item.Id : "";
         }

@@ -4,9 +4,9 @@ using ResourceInformationV2.Components.Layout;
 using ResourceInformationV2.Data.Cache;
 using ResourceInformationV2.Data.PageList;
 
-namespace ResourceInformationV2.Components.Pages.Review {
+namespace ResourceInformationV2.Components.Pages.Configuration {
 
-    public partial class EditReview {
+    public partial class ReviewProcess {
 
         [Inject]
         public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
@@ -22,7 +22,7 @@ namespace ResourceInformationV2.Components.Pages.Review {
 
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
-            Layout.SetSidebar(SidebarEnum.Review, "Review Items");
+            Layout.SetSidebar(SidebarEnum.Configuration, "Configuration");
             var sourceCode = await Layout.CheckSource();
         }
     }

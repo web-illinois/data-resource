@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ResourceInformationV2.Data.DataModels {
 
     public class Source : BaseDataItem {
+        public string ApiSecretCurrent { get; set; } = "";
+        public DateTime? ApiSecretLastChanged { get; set; }
+        public string ApiSecretPrevious { get; set; } = "";
         public string BaseUrl { get; set; } = "";
         public string Code { get; set; } = "";
         public string CreatedByEmail { get; set; } = "";
@@ -12,14 +15,11 @@ namespace ResourceInformationV2.Data.DataModels {
         public string FilterAudienceTitle { get; set; } = "";
         public string FilterOrder { get; set; } = "";
         public string FilterTag1Title { get; set; } = "";
-
         public string FilterTag2Title { get; set; } = "";
-
         public string FilterTag3Title { get; set; } = "";
-
         public string FilterTag4Title { get; set; } = "";
-
         public string FilterTopicTitle { get; set; } = "";
+        public bool ForceApiToDraft { get; set; } = true;
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

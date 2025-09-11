@@ -37,7 +37,7 @@ namespace ResourceInformationV2.Data.Email {
                     return "no authorization code from successful credential call (url is '" + injectionUrl + "')";
                 }
 
-                var json = "{\"serverId\": " + _serverId + ", \"APIKey\": \"" + injectionApi + "\", \"Messages\": [ { \"To\": [ \"" + CreateAddress(to.Split(';')) + "\" ], \"Cc\": [ \"" + CreateAddress(cc.Split(';')) + "\" ], \"From\": { \"emailAddress\": \"" + _fromEmail + "\" }, \"ReplyTo\": { \"emailAddress\": \"" + replyTo + "\" }, \"Subject\": \"" + CleanText(subject) + "\", \"TextBody\": \"" + CleanText(bodyText) + "\", \"HtmlBody\": \"" + CleanText(body) + "\" } ] }";
+                var json = "{\"serverId\": " + _serverId + ", \"APIKey\": \"" + injectionApi + "\", \"Messages\": [ { \"To\": [ " + CreateAddress(to.Split(';')) + " ], \"Cc\": [ " + CreateAddress(cc.Split(';')) + " ], \"From\": { \"emailAddress\": \"" + _fromEmail + "\" }, \"ReplyTo\": { \"emailAddress\": \"" + replyTo + "\" }, \"Subject\": \"" + CleanText(subject) + "\", \"TextBody\": \"" + CleanText(bodyText) + "\", \"HtmlBody\": \"" + CleanText(body) + "\" } ] }";
 
                 using var client = new HttpClient();
                 using var message = new HttpRequestMessage(HttpMethod.Post, injectionUrl);

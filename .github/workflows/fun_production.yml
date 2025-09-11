@@ -38,6 +38,7 @@ jobs:
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: 'ResourceRepositoryFunctionTest'
+          app-name: 'itp-function-resource2'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          slot-name: staging
           publish-profile: ${{ secrets.AZURE_FUNCTION_PUBLISH_PROFILE_PRODUCTION }}

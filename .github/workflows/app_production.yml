@@ -54,6 +54,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ResourceInformationV220250812162207
+          app-name: itp-app-resource2
           package: .
+          slot-name: staging
           publish-profile: ${{ secrets.AZURE_WEB_PUBLISH_PROFILE_PRODUCTION }}

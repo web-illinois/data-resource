@@ -5,7 +5,7 @@ using OpenSearch.Client;
 namespace ResourceInformationV2.Search.Models {
 
     public abstract class BaseObject {
-        protected static readonly string _editLink = "https://resourceinformationv220250812162207-h0a9djedenhve6ev.northcentralus-01.azurewebsites.net/quicklink/";
+        protected static readonly string _editLink = "https://resource2.itpartners.illinois.edu/quicklink/";
         private static readonly string[] _badHtmlItems = ["<br>", "<p></p>", "<p><br></p>", "<p>&nbsp;</p>", "<p> </p>", "&nbsp;"];
         private readonly JsonSerializerOptions _serializer = new() { PropertyNamingPolicy = new JsonNamingPolicyLowerCase() };
 

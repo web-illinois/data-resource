@@ -33,7 +33,8 @@ public class Publications {
         var source = requestHelper.GetRequest(req, "source");
         var fragment = requestHelper.GetRequest(req, "fragment");
         requestHelper.Validate();
-        var returnItem = (await _publicationGetter.GetItem(source, fragment));
+        var returnItem = await _publicationGetter.GetItem(source, fragment);
+        returnItem.PrepareForExport();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
@@ -54,6 +55,7 @@ public class Publications {
         var id = requestHelper.GetRequest(req, "id");
         requestHelper.Validate();
         var returnItem = await _publicationGetter.GetItem(id, true);
+        returnItem.PrepareForExport();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
@@ -77,6 +79,7 @@ public class Publications {
     [OpenApiParameter(name: "q", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A full text search string -- it will search the title and description for the search querystring.")]
     [OpenApiParameter(name: "take", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "How many items do you want? Defaults to 1000.")]
     [OpenApiParameter(name: "skip", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "A skip value to help with pagination. Defaults to 0.")]
+    [OpenApiParameter(name: "sortorder", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "Sort order -- defaults to title, but if set to 'date', then it sorts by date descending")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(SearchObject<Publication>), Description = "The list of publications")]
     public async Task<HttpResponseData> Search([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
         _logger.LogInformation("Called PublicationSearch.");
@@ -94,10 +97,11 @@ public class Publications {
         var query = requestHelper.GetRequest(req, "q", false);
         var take = requestHelper.GetInteger(req, "take", 1000);
         var skip = requestHelper.GetInteger(req, "skip");
+        var sort = requestHelper.GetRequest(req, "sort", false).ToLowerInvariant();
 
         requestHelper.Validate();
         var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(await _publicationGetter.SearchPublications(source, query, tags, tags2, tags3, tags4, topics, audience, authors, status, take, skip));
+        await response.WriteAsJsonAsync(await _publicationGetter.SearchPublications(source, query, tags, tags2, tags3, tags4, topics, audience, authors, status, take, skip, sort));
         return response;
     }
 

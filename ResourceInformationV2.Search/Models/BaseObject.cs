@@ -48,6 +48,7 @@ namespace ResourceInformationV2.Search.Models {
 
         public string Notes { get; set; } = "";
         public int Order { get; set; }
+        public string PrivateNotes { get; set; } = "";
         public DateTime? ReviewDate { get; set; }
 
         [Keyword]
@@ -129,6 +130,9 @@ namespace ResourceInformationV2.Search.Models {
         }
 
         public virtual void Prepare() {
+            if (CreatedOn == default) {
+                CreatedOn = DateTime.Now;
+            }
             LastUpdated = DateTime.Now;
             Id = string.IsNullOrWhiteSpace(Id) ? Source + "-" + Guid.NewGuid().ToString() : Id;
             if (!Id.StartsWith(Source + "-") && !Id.StartsWith(Source + "!-")) {
@@ -144,6 +148,8 @@ namespace ResourceInformationV2.Search.Models {
             LinkList = LinkList ?? [];
             CleanHtmlFields();
         }
+
+        public virtual void PrepareForExport() => PrivateNotes = "";
 
         public override string ToString() => JsonSerializer.Serialize(this, _serializer);
 

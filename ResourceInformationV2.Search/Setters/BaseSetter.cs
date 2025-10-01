@@ -25,6 +25,7 @@ namespace ResourceInformationV2.Search.Setters {
             item.Id = item.Id.Replace(item.Source + "!-", item.Source + "-");
             item.IsActive = true;
             item.IsDraftAvailable = false;
+            item.CreatedOn = DateTime.Now;
             item.Prepare();
             var response = await _openSearchClient.IndexAsync(item, i => i.Index(IndexName));
             if (response.IsValid) {
@@ -51,6 +52,7 @@ namespace ResourceInformationV2.Search.Setters {
                 }
             }
             item.IsActive = false;
+            item.CreatedOn = DateTime.Now;
             var response = await _openSearchClient.IndexAsync(item, i => i.Index(IndexName));
             return response.IsValid ? item.Id : "";
         }

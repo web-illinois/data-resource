@@ -33,7 +33,8 @@ public class Resources {
         var source = requestHelper.GetRequest(req, "source");
         var fragment = requestHelper.GetRequest(req, "fragment");
         requestHelper.Validate();
-        var returnItem = (await _resourceGetter.GetItem(source, fragment));
+        var returnItem = await _resourceGetter.GetItem(source, fragment);
+        returnItem.PrepareForExport();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
@@ -54,6 +55,7 @@ public class Resources {
         var id = requestHelper.GetRequest(req, "id");
         requestHelper.Validate();
         var returnItem = await _resourceGetter.GetItem(id, true);
+        returnItem.PrepareForExport();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
@@ -90,10 +92,11 @@ public class Resources {
         var query = requestHelper.GetRequest(req, "q", false);
         var take = requestHelper.GetInteger(req, "take", 1000);
         var skip = requestHelper.GetInteger(req, "skip");
+        var sort = requestHelper.GetRequest(req, "sort", false).ToLowerInvariant();
 
         requestHelper.Validate();
         var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(await _resourceGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, take, skip));
+        await response.WriteAsJsonAsync(await _resourceGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, take, skip, sort));
         return response;
     }
 

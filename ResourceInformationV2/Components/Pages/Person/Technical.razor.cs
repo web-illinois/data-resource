@@ -41,14 +41,16 @@ namespace ResourceInformationV2.Components.Pages.Person {
                 await Layout.Log(CategoryType.Person, FieldType.Technical, Item, "Publish Draft Item", EmailType.OnPublication);
                 NavigationManager.NavigateTo("/person/edit");
             } else {
-                _ = await PersonSetter.SetItem(Item);
                 if (_originalStatus && !Item.IsActive) {
+                    Item.CreatedOn = DateTime.Now;
                     await Layout.Log(CategoryType.Person, FieldType.Technical, Item, "Moved To Draft", EmailType.OnDraft);
                 } else if (!_originalStatus && Item.IsActive) {
+                    Item.CreatedOn = DateTime.Now;
                     await Layout.Log(CategoryType.Person, FieldType.Technical, Item, "Published", EmailType.OnPublication);
                 } else {
                     await Layout.Log(CategoryType.Person, FieldType.Technical, Item);
                 }
+                _ = await PersonSetter.SetItem(Item);
                 _originalStatus = Item.IsActive;
                 await Layout.AddMessage(Item.NameType + " saved successfully.");
             }

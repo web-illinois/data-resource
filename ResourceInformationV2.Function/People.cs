@@ -12,6 +12,7 @@ using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.JsonThinModels;
 using ResourceInformationV2.Search.Models;
 using ResourceInformationV2.Search.Setters;
+using FieldType = ResourceInformationV2.Data.DataModels.FieldType;
 using LogHelper = ResourceInformationV2.Data.DataHelpers.LogHelper;
 
 namespace ResourceInformationV2.Function;
@@ -43,7 +44,8 @@ public class People {
         var source = requestHelper.GetRequest(req, "source");
         var fragment = requestHelper.GetRequest(req, "fragment");
         requestHelper.Validate();
-        var returnItem = (await _personGetter.GetItem(source, fragment));
+        var returnItem = await _personGetter.GetItem(source, fragment);
+        returnItem.PrepareForExport();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
@@ -60,6 +62,7 @@ public class People {
         var id = requestHelper.GetRequest(req, "id");
         requestHelper.Validate();
         var returnItem = await _personGetter.GetItem(id, true);
+        returnItem.PrepareForExport();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
@@ -80,6 +83,7 @@ public class People {
         if (!results.allowApi) {
             throw new Exception("API Key in header ilw-key is needed, was sent " + key);
         }
+        item.Prepare();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(results.forceDraft ? await _personSetter.SetItemWithDraft(item) : await _personSetter.SetItem(item));
         await _logHelper.Log(CategoryType.Person, FieldType.None, "API", item.Source, item, "API Load", EmailType.OnSubmission);
@@ -113,10 +117,52 @@ public class People {
         var query = requestHelper.GetRequest(req, "q", false);
         var take = requestHelper.GetInteger(req, "take", 1000);
         var skip = requestHelper.GetInteger(req, "skip");
+        var sort = requestHelper.GetRequest(req, "sort", false).ToLowerInvariant();
 
         requestHelper.Validate();
         var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(await _personGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, take, skip));
+        await response.WriteAsJsonAsync(await _personGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, take, skip, sort));
+        return response;
+    }
+
+    [Function("PersonSearchInactive")]
+    [OpenApiOperation(operationId: "PersonSearchAll", tags: "People", Description = "Search people by a specific source, including inactive items. The search can include both a free-query text search and filter list.")]
+    [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The source for the tags.")]
+    [OpenApiParameter(name: "ilw-key", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "The API Key.")]
+    [OpenApiParameter(name: "tag1", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'.")]
+    [OpenApiParameter(name: "tag2", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
+    [OpenApiParameter(name: "tag3", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
+    [OpenApiParameter(name: "tag4", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of tags. You can separate the tags by the characters '[-]'. Having multiple tags options allows you to vary the AND and OR options for the tags.")]
+    [OpenApiParameter(name: "topic", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of topics. You can separate the topics by the characters '[-]'.")]
+    [OpenApiParameter(name: "audience", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of audiences. You can separate the audiences by the characters '[-]'.")]
+    [OpenApiParameter(name: "q", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A full text search string -- it will search the title and description for the search querystring.")]
+    [OpenApiParameter(name: "take", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "How many items do you want? Defaults to 1000.")]
+    [OpenApiParameter(name: "skip", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "A skip value to help with pagination. Defaults to 0.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(SearchObject<Person>), Description = "The list of people")]
+    public async Task<HttpResponseData> SearchAll([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
+        _logger.LogInformation("Called PersonSearch.");
+        var requestHelper = RequestHelperFactory.Create();
+        requestHelper.Initialize(req);
+        var source = requestHelper.GetRequest(req, "source");
+        var key = requestHelper.GetCodeFromHeader(req);
+        var results = await _apiHelper.CheckApi(source, key);
+        if (!results.allowApi) {
+            throw new Exception("API Key in header ilw-key is needed, was sent " + key);
+        }
+        var tags = requestHelper.GetArray(req, "tag1");
+        var tags2 = requestHelper.GetArray(req, "tag2");
+        var tags3 = requestHelper.GetArray(req, "tag3");
+        var tags4 = requestHelper.GetArray(req, "tag4");
+        var topics = requestHelper.GetArray(req, "topic");
+        var audience = requestHelper.GetArray(req, "audience");
+        var query = requestHelper.GetRequest(req, "q", false);
+        var take = requestHelper.GetInteger(req, "take", 1000);
+        var skip = requestHelper.GetInteger(req, "skip");
+        var sort = requestHelper.GetRequest(req, "sort").ToLowerInvariant();
+
+        requestHelper.Validate();
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        await response.WriteAsJsonAsync(await _personGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, take, skip, sort, false));
         return response;
     }
 }

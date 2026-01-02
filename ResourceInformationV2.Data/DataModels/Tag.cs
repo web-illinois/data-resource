@@ -8,6 +8,7 @@ namespace ResourceInformationV2.Data.DataModels {
         private static readonly Dictionary<TagType, string> _translator = new() {
             { TagType.None, "" },
             { TagType.Audience, "audienceList" },
+            { TagType.Department, "departmentList" },
             { TagType.Topic, "topicList" },
             { TagType.Tag1, "tag1List" },
             { TagType.Tag2, "tag2List" },

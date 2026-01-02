@@ -12,6 +12,13 @@ namespace ResourceInformationV2.Components.Controls {
 
         public IEnumerable<Tag>? AudienceTags => FilterTags?.Where(f => f.Key == TagType.Audience).SelectMany(x => x);
         public string AudienceTitle { get; set; } = "";
+
+        [Parameter]
+        public List<string> DepartmentEnabledTags { get; set; } = [];
+
+        public IEnumerable<Tag>? DepartmentTags => FilterTags?.Where(f => f.Key == TagType.Department).SelectMany(x => x);
+        public string DepartmentTitle { get; set; } = "";
+
         public IEnumerable<IGrouping<TagType, Tag>> FilterTags { get; set; } = [];
 
         [CascadingParameter]
@@ -56,10 +63,12 @@ namespace ResourceInformationV2.Components.Controls {
         protected SourceHelper SourceHelper { get; set; } = default!;
 
         protected override async Task OnInitializedAsync() {
-            var sourceCode = await Layout.CheckSource();
+            DepartmentEnabledTags ??= [];
+            string sourceCode = await Layout.CheckSource();
             FilterTags = await FilterHelper.GetAllFilters(sourceCode);
-            foreach (var tag in FilterTags.SelectMany(x => x)) {
+            foreach (Tag? tag in FilterTags.SelectMany(x => x)) {
                 if ((AudienceEnabledTags.Contains(tag.Title) && tag.TagType == TagType.Audience) ||
+                    (DepartmentEnabledTags.Contains(tag.Title) && tag.TagType == TagType.Department) ||
                     (TopicEnabledTags.Contains(tag.Title) && tag.TagType == TagType.Topic) ||
                     (Tag1EnabledTags.Contains(tag.Title) && tag.TagType == TagType.Tag1) ||
                     (Tag2EnabledTags.Contains(tag.Title) && tag.TagType == TagType.Tag2) ||
@@ -69,6 +78,7 @@ namespace ResourceInformationV2.Components.Controls {
                 }
             }
             AudienceTitle = await SourceHelper.GetSourceFilterName(sourceCode, TagType.Audience);
+            DepartmentTitle = await SourceHelper.GetSourceFilterName(sourceCode, TagType.Department);
             TopicTitle = await SourceHelper.GetSourceFilterName(sourceCode, TagType.Topic);
             Tag1Title = await SourceHelper.GetSourceFilterName(sourceCode, TagType.Tag1);
             Tag2Title = await SourceHelper.GetSourceFilterName(sourceCode, TagType.Tag2);

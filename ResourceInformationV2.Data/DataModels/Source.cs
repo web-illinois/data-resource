@@ -13,6 +13,7 @@ namespace ResourceInformationV2.Data.DataModels {
         public bool DeactivateOnReview { get; set; }
         public string DeletedByEmail { get; set; } = "";
         public string FilterAudienceTitle { get; set; } = "";
+        public string FilterDepartmentTitle { get; set; } = "";
         public string FilterOrder { get; set; } = "";
         public string FilterTag1Title { get; set; } = "";
         public string FilterTag2Title { get; set; } = "";

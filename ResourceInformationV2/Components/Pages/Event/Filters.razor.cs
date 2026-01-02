@@ -27,8 +27,12 @@ namespace ResourceInformationV2.Components.Pages.Event {
 
         public async Task Save() {
             Item.AudienceList = _filterListToggle.AudienceTags?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
+            Item.DepartmentList = _filterListToggle.DepartmentTags?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
             Item.TopicList = _filterListToggle.TopicTags?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
             Item.TagList = _filterListToggle.Tags1?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
+            Item.Tag2List = _filterListToggle.Tags2?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
+            Item.Tag3List = _filterListToggle.Tags3?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
+            Item.Tag4List = _filterListToggle.Tags4?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
             Layout.RemoveDirty();
             await Layout.AddMessage(Item.NameType + " saved successfully.");
             await Layout.Log(CategoryType.Event, FieldType.Filters, Item);
@@ -36,8 +40,8 @@ namespace ResourceInformationV2.Components.Pages.Event {
         }
 
         protected override async Task OnInitializedAsync() {
-            var sourceCode = await Layout.CheckSource();
-            var id = await Layout.GetCachedId();
+            string sourceCode = await Layout.CheckSource();
+            string id = await Layout.GetCachedId();
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }

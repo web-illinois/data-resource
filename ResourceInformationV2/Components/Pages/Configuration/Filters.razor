@@ -6,6 +6,12 @@
 <ilw-content>
     <h1>Manage Filters</h1>
     <p>Audience, topics, and tags are keywords that can be configured per source and can be used as filters for various resources. Tags can be assigned a title and be used to set up your own filtering options.</p>
+    <p>There are three "preset" tags, which are used to standardize the tag list across multiple sources. If one of your keywords closely resembles one of the preset tags, consider using this instead of a generic tag. The preset tags are:</p>
+    <ul>
+        <li><em>Audience</em>: This is who the topic is considered appropriate for. It may be "student / staff / faculty" organization, or a "first grade / second grade / etc." organization. </li>
+        <li><em>Topic</em>: This is the general topic of the resource. This is going to be dependent on your specific needs.</li>
+        <li><em>Department</em>: This is used to indicate which department or group within your organization the resource is associated with. This is mainly used for internal documentation and will be used to handle permissions.</li>
+    </ul>
 
     <div class="ils-input-entry">
         <label for="filter-type">Type</label>
@@ -13,6 +19,7 @@
             <option value=""></option>
             <option value="Audience">Audience</option>
             <option value="Topic">Topic</option>
+            <option value="Department">Department</option>
             <option value="Tag 1">Generic Tag 1</option>
             <option value="Tag 2">Generic Tag 2</option>
             <option value="Tag 3">Generic Tag 3</option>
@@ -27,7 +34,7 @@
         <h2>@FilterType</h2>
 
         <h3>Filter Name</h3>
-        <p>The name of the filter as it appears to users. For example, "Audience", "Topic", "Grade Level", "Skilll", "Format", etc. This is required for it to be used.</p>
+        <p>The name of the filter as it appears to users. For example, "Audience", "Topic", "Grade Level", "Skilll", "Format", etc. This is required for it to be used, even if you are using a preset tag.</p>
 
         <div class="ils-input-entry">
             <label for="filter-title">Filter Title:</label>

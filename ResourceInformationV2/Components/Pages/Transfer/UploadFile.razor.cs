@@ -56,7 +56,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
         protected override async Task OnInitializedAsync() {
             ValidateTags = true;
             Layout.SetSidebar(SidebarEnum.Transfer, "Transfer Items");
-            var sourceCode = await Layout.CheckSource();
+            string sourceCode = await Layout.CheckSource();
             Options = [.. (await SourceHelper.DoesSourceUseItemCheckAllAndConcatenate(sourceCode))];
             SelectedOption = Options.First();
         }
@@ -69,22 +69,24 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
         private async Task Upload() {
             if (!string.IsNullOrWhiteSpace(_reader)) {
                 await Layout.AddMessage("In process of being uploaded -- please do not leave this page");
-                var sourceCode = await Layout.CheckSource();
-                var t = await FilterHelper.GetFilters(sourceCode, TagType.Tag1);
-                var sourceId = t.SourceId;
-                var tag1 = t.TagSources;
-                var tag2 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag2)).TagSources;
-                var tag3 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag3)).TagSources;
-                var tag4 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag4)).TagSources;
-                var audience = (await FilterHelper.GetFilters(sourceCode, TagType.Audience)).TagSources;
-                var topic = (await FilterHelper.GetFilters(sourceCode, TagType.Topic)).TagSources;
-                var displayString = DeleteAllFirst ? "Existing records deleted. " : "";
-                var newTag1 = new List<string>();
-                var newTag2 = new List<string>();
-                var newTag3 = new List<string>();
-                var newTag4 = new List<string>();
-                var newAudience = new List<string>();
-                var newTopic = new List<string>();
+                string? sourceCode = await Layout.CheckSource();
+                (List<Tag> TagSources, int SourceId) t = await FilterHelper.GetFilters(sourceCode, TagType.Tag1);
+                int sourceId = t.SourceId;
+                List<Tag> tag1 = t.TagSources;
+                List<Tag> tag2 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag2)).TagSources;
+                List<Tag> tag3 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag3)).TagSources;
+                List<Tag> tag4 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag4)).TagSources;
+                List<Tag> audience = (await FilterHelper.GetFilters(sourceCode, TagType.Audience)).TagSources;
+                List<Tag> topic = (await FilterHelper.GetFilters(sourceCode, TagType.Topic)).TagSources;
+                List<Tag> department = (await FilterHelper.GetFilters(sourceCode, TagType.Department)).TagSources;
+                string displayString = DeleteAllFirst ? "Existing records deleted. " : "";
+                List<string> newTag1 = new List<string>();
+                List<string> newTag2 = new List<string>();
+                List<string> newTag3 = new List<string>();
+                List<string> newTag4 = new List<string>();
+                List<string> newAudience = new List<string>();
+                List<string> newTopic = new List<string>();
+                List<string> newDepartment = new List<string>();
 
                 _ = Enum.TryParse(SelectedOption, out UrlTypes urlType);
 
@@ -93,78 +95,84 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteResources(sourceCode);
                         }
-                        displayString += await ResourceSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title));
+                        displayString += await ResourceSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = ResourceSetter.AddedTag;
                         newTag2 = ResourceSetter.AddedTag2;
                         newTag3 = ResourceSetter.AddedTag3;
                         newTag4 = ResourceSetter.AddedTag4;
                         newAudience = ResourceSetter.AddedAudience;
                         newTopic = ResourceSetter.AddedTopic;
+                        newDepartment = ResourceSetter.AddedDepartment;
                         break;
 
                     case UrlTypes.Events:
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteEvents(sourceCode);
                         }
-                        displayString += await EventSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title));
+                        displayString += await EventSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = EventSetter.AddedTag;
                         newTag2 = EventSetter.AddedTag2;
                         newTag3 = EventSetter.AddedTag3;
                         newTag4 = EventSetter.AddedTag4;
                         newAudience = EventSetter.AddedAudience;
                         newTopic = EventSetter.AddedTopic;
+                        newDepartment = EventSetter.AddedDepartment;
                         break;
 
                     case UrlTypes.Faqs:
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteFaqs(sourceCode);
                         }
-                        displayString += await FaqSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title));
+                        displayString += await FaqSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = FaqSetter.AddedTag;
                         newTag2 = FaqSetter.AddedTag2;
                         newTag3 = FaqSetter.AddedTag3;
                         newTag4 = FaqSetter.AddedTag4;
                         newAudience = FaqSetter.AddedAudience;
                         newTopic = FaqSetter.AddedTopic;
+                        newDepartment = FaqSetter.AddedDepartment;
                         break;
 
                     case UrlTypes.Notes:
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteNotes(sourceCode);
                         }
-                        displayString += await NoteSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title));
+                        displayString += await NoteSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = NoteSetter.AddedTag;
                         newTag2 = NoteSetter.AddedTag2;
                         newTag3 = NoteSetter.AddedTag3;
                         newTag4 = NoteSetter.AddedTag4;
                         newAudience = NoteSetter.AddedAudience;
                         newTopic = NoteSetter.AddedTopic;
+                        newDepartment = NoteSetter.AddedDepartment;
                         break;
 
                     case UrlTypes.Publications:
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeletePublications(sourceCode);
                         }
-                        displayString += await PublicationSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title));
+                        displayString += await PublicationSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = PublicationSetter.AddedTag;
                         newTag2 = PublicationSetter.AddedTag2;
                         newTag3 = PublicationSetter.AddedTag3;
                         newTag4 = PublicationSetter.AddedTag4;
                         newAudience = PublicationSetter.AddedAudience;
                         newTopic = PublicationSetter.AddedTopic;
+                        newDepartment = PublicationSetter.AddedDepartment;
                         break;
 
                     case UrlTypes.People:
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeletePeople(sourceCode);
                         }
-                        displayString += await PersonSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title));
+                        displayString += await PersonSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = PersonSetter.AddedTag;
                         newTag2 = PersonSetter.AddedTag2;
                         newTag3 = PersonSetter.AddedTag3;
                         newTag4 = PersonSetter.AddedTag4;
                         newAudience = PersonSetter.AddedAudience;
                         newTopic = PersonSetter.AddedTopic;
+                        newDepartment = PersonSetter.AddedDepartment;
                         break;
                 }
 
@@ -175,6 +183,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                     _ = await FilterHelper.ReplaceFilters(newTag4.OrderBy(a => a).Select(a => new Tag { Title = a, TagType = TagType.Tag4, SourceId = sourceId, IsActive = true }), tag4, sourceCode ?? "");
                     _ = await FilterHelper.ReplaceFilters(newAudience.OrderBy(a => a).Select(a => new Tag { Title = a, TagType = TagType.Audience, SourceId = sourceId, IsActive = true }), audience, sourceCode ?? "");
                     _ = await FilterHelper.ReplaceFilters(newTopic.OrderBy(a => a).Select(a => new Tag { Title = a, TagType = TagType.Topic, SourceId = sourceId, IsActive = true }), topic, sourceCode ?? "");
+                    _ = await FilterHelper.ReplaceFilters(newDepartment.OrderBy(a => a).Select(a => new Tag { Title = a, TagType = TagType.Department, SourceId = sourceId, IsActive = true }), topic, sourceCode ?? "");
                 }
                 await Layout.AddMessage(displayString);
             }

@@ -28,7 +28,14 @@
         <div class="ils-input-entry">
             <label for="notes">Internal Search Notes</label>
             <textarea id="notes" @bind="Item.Notes" @bind:after="Layout.SetDirty" />
-            <p>This will not show up in the search results, although the information listed will show up if people search for it.</p>
+            <p>This will not show up in the search results, although the information listed will show up if people search for it and it is disclosed to the calling application.</p>
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="private">Private Notes</label>
+            <textarea id="private" @bind="Item.PrivateNotes" @bind:after="Layout.SetDirty" />
+            <p>This will not show up in the search results.</p>
         </div>
     </ilw-content>
     <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
@@ -37,5 +44,11 @@
         <IdList Title="Id" Id="@Item.Id"></IdList>
         <IdList Title="Edit Link" Id="@Item.EditLink"></IdList>
     </div>
+    <ilw-content>
+        <div>
+            <p>Created on @Item.CreatedOn.ToString("g")</p>
+            <p>Last Modified on @Item.LastUpdated.ToString("g")</p>
+        </div>
+    </ilw-content>
     <DeleteNotice DeleteClicked="Delete" ItemTitle="@Item.Title" ItemText="This will delete this resource"></DeleteNotice>
 }

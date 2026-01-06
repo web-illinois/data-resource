@@ -17,9 +17,9 @@ namespace ResourceInformationV2.Data.DataHelpers {
             })];
 
         public async Task<(List<Tag> TagSources, int SourceId)> GetFilters(string source, TagType tagType) {
-            var returnValue = await _resourceRepository.ReadAsync(c => c.Tags.Include(c => c.Source).Where(ts => ts.Source != null && ts.Source.Code == source && ts.TagType == tagType).OrderBy(ts => ts.Order).ToList());
+            List<Tag> returnValue = await _resourceRepository.ReadAsync(c => c.Tags.Include(c => c.Source).Where(ts => ts.Source != null && ts.Source.Code == source && ts.TagType == tagType).OrderBy(ts => ts.Order).ToList());
             var sourceId = 0;
-            foreach (var item in returnValue) {
+            foreach (Tag? item in returnValue) {
                 item.OldTitle = item.Title;
                 sourceId = item.SourceId;
             }
@@ -31,11 +31,11 @@ namespace ResourceInformationV2.Data.DataHelpers {
 
         public async Task<IEnumerable<Tuple<string, string>>> GetTagTitles(string source) {
             var returnValue = new List<Tuple<string, string>>();
-            var sourceValue = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == source));
+            Source? sourceValue = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == source));
             if (sourceValue == null) {
                 return returnValue;
             }
-            var filterOrder = string.IsNullOrWhiteSpace(sourceValue.FilterOrder) ? "topic;audience;tag1;tag2;tag3;tag4" : sourceValue.FilterOrder;
+            var filterOrder = string.IsNullOrWhiteSpace(sourceValue.FilterOrder) ? "topic;audience;tag1;tag2;tag3;tag4;department" : sourceValue.FilterOrder;
             foreach (var filter in filterOrder.Split(';')) {
                 switch (filter) {
                     case "topic":
@@ -61,6 +61,10 @@ namespace ResourceInformationV2.Data.DataHelpers {
                     case "tag4":
                         returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterTag4Title));
                         break;
+
+                    case "department":
+                        returnValue.Add(new Tuple<string, string>(filter, sourceValue.FilterDepartmentTitle));
+                        break;
                 }
             }
             return returnValue;
@@ -69,10 +73,10 @@ namespace ResourceInformationV2.Data.DataHelpers {
         public async Task<bool> ReplaceFilters(IEnumerable<Tag> tags, IEnumerable<Tag> tagsForDeletion, string sourceName) {
             var i = 1;
 
-            foreach (var tag in tagsForDeletion.ToList().Where(t => t.Id != 0)) {
+            foreach (Tag? tag in tagsForDeletion.ToList().Where(t => t.Id != 0)) {
                 _ = await _resourceRepository.DeleteAsync(tag);
             }
-            foreach (var tag in tags.Where(t => t.Title != "")) {
+            foreach (Tag? tag in tags.Where(t => t.Title != "")) {
                 tag.Order = i++;
                 _ = await _resourceRepository.CreateAsync(tag);
             }
@@ -86,7 +90,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
             if (duplicateTags.Count > 0) {
                 foreach (var duplicateTag in duplicateTags) {
                     bool firstOne = true;
-                    foreach (var tag in duplicateTag) {
+                    foreach (Tag? tag in duplicateTag) {
                         if (tag.Id != 0 && !string.IsNullOrWhiteSpace(tag.OldTitle) && tag.Title != tag.OldTitle && _bulkEditor != null) {
                             _ = await _bulkEditor.UpdateTags(sourceName, tag.TagTypeSourceName, tag.OldTitle, tag.Title);
                         }
@@ -100,7 +104,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 }
             }
 
-            foreach (var tag in tags.Where(t => t.Title != "")) {
+            foreach (Tag? tag in tags.Where(t => t.Title != "")) {
                 tag.Order = i++;
                 if (tag.Id == 0) {
                     _ = await _resourceRepository.CreateAsync(tag);
@@ -111,7 +115,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
                     }
                 }
             }
-            foreach (var tag in tagsForDeletionList.Where(t => t.Id != 0)) {
+            foreach (Tag? tag in tagsForDeletionList.Where(t => t.Id != 0)) {
                 _ = await _resourceRepository.DeleteAsync(tag);
                 if (_bulkEditor != null && !string.IsNullOrWhiteSpace(tag.OldTitle)) {
                     _ = await _bulkEditor.DeleteTags(sourceName, tag.TagTypeSourceName, tag.OldTitle);

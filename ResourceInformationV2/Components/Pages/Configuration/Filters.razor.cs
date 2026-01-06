@@ -12,6 +12,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
             { "", TagType.None },
             { "Audience", TagType.Audience },
             { "Topic", TagType.Topic },
+            { "Department", TagType.Department },
             { "Tag 1", TagType.Tag1 },
             { "Tag 2", TagType.Tag2 },
             { "Tag 3", TagType.Tag3 },
@@ -45,7 +46,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         }
 
         public async Task ChangeFilter() {
-            var sourceCode = await Layout.CheckSource();
+            string sourceCode = await Layout.CheckSource();
             (FilterTags, _sourceId) = await FilterHelper.GetFilters(sourceCode, FilterTypeEnum);
             FilterTitle = await SourceHelper.GetSourceFilterName(sourceCode, FilterTypeEnum);
             FilterTagsForDeletion.Clear();
@@ -82,7 +83,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
                 await Layout.AddMessage("You must enter a filter title before adding filters");
                 return false;
             }
-            var sourceCode = await Layout.CheckSource();
+            string sourceCode = await Layout.CheckSource();
             await FilterHelper.SaveFilters(FilterTags, FilterTagsForDeletion, sourceCode);
             await SourceHelper.SetSourceFilterName(sourceCode, FilterTypeEnum, FilterTitle);
             await Layout.AddMessage($"Filters for {FilterType} have been saved");
@@ -93,10 +94,10 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         }
 
         public async Task<bool> SaveGroupOrder() {
-            var sourceCode = await Layout.CheckSource();
+            string sourceCode = await Layout.CheckSource();
             await SourceHelper.SetSourceFilterOrder(sourceCode, string.Join(';', TagOrderList.Select(t => t.Item1)));
             foreach (var tag in TagOrderList) {
-                await SourceHelper.SetSourceFilterName(sourceCode, (TagType) Enum.Parse(typeof(TagType), tag.Item1, true), tag.Item2);
+                await SourceHelper.SetSourceFilterName(sourceCode, (TagType)Enum.Parse(typeof(TagType), tag.Item1, true), tag.Item2);
             }
             await Layout.AddMessage($"Filters order has been saved");
             Layout.RemoveDirty();
@@ -107,7 +108,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
             await Layout.CheckSource();
-            var sourceCode = await Layout.CheckSource();
+            string sourceCode = await Layout.CheckSource();
             await OrderTagGroup(sourceCode);
             Layout.SetSidebar(SidebarEnum.Configuration, "Configuration");
         }

@@ -19,7 +19,7 @@
             <ul>
                 @foreach (var item in Listing.OrderBy(t => t.Title))
                 {
-                    <li><a href="@item.EditLink">@item.Title @(item.IsNewerDraft ? "(newer draft)" : "")</a></li>
+                    <li><a href="@item.EditLink\technical">@item.Title @(item.IsNewerDraft ? "(newer draft)" : "")</a></li>
                 }
             </ul>
         }

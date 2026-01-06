@@ -1,11 +1,11 @@
-﻿using System.Text.Json;
+﻿using OpenSearch.Client;
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using OpenSearch.Client;
 
 namespace ResourceInformationV2.Search.Models {
 
     public abstract class BaseObject {
-        protected static readonly string _editLink = "https://resourceinformationv220250812162207-h0a9djedenhve6ev.northcentralus-01.azurewebsites.net/quicklink/";
+        protected static readonly string _editLink = "https://resource2.itpartners.illinois.edu/quicklink/";
         private static readonly string[] _badHtmlItems = ["<br>", "<p></p>", "<p><br></p>", "<p>&nbsp;</p>", "<p> </p>", "&nbsp;"];
         private readonly JsonSerializerOptions _serializer = new() { PropertyNamingPolicy = new JsonNamingPolicyLowerCase() };
 
@@ -14,6 +14,8 @@ namespace ResourceInformationV2.Search.Models {
 
         public DateTime CreatedOn { get; set; }
 
+        [Keyword]
+        public IEnumerable<string> DepartmentList { get; set; } = default!;
         public virtual string Description { get; set; } = "";
 
         [Keyword]
@@ -48,6 +50,7 @@ namespace ResourceInformationV2.Search.Models {
 
         public string Notes { get; set; } = "";
         public int Order { get; set; }
+        public string PrivateNotes { get; set; } = "";
         public DateTime? ReviewDate { get; set; }
 
         [Keyword]
@@ -107,7 +110,7 @@ namespace ResourceInformationV2.Search.Models {
         public virtual GenericItem GetGenericItem() => new() { Id = Id, IsActive = IsActive, IsNewerDraft = IsNewerDraft, Order = Order, Title = Title, EditLink = EditLink };
 
         public (bool successful, bool headerIssue, string message) LoadFromString(string source, string line) {
-            var array = line.Split('\t');
+            string[] array = line.Split('\t');
             if (array.Length == 0 || (array.Length == 1 && string.IsNullOrWhiteSpace(array[0]))) {
                 return (false, true, string.Empty);
             }
@@ -129,6 +132,9 @@ namespace ResourceInformationV2.Search.Models {
         }
 
         public virtual void Prepare() {
+            if (CreatedOn == default) {
+                CreatedOn = DateTime.Now;
+            }
             LastUpdated = DateTime.Now;
             Id = string.IsNullOrWhiteSpace(Id) ? Source + "-" + Guid.NewGuid().ToString() : Id;
             if (!Id.StartsWith(Source + "-") && !Id.StartsWith(Source + "!-")) {
@@ -136,6 +142,7 @@ namespace ResourceInformationV2.Search.Models {
             }
             Fragment = string.IsNullOrWhiteSpace(Fragment) ? "" : new string([.. Fragment.Where(c => char.IsLetterOrDigit(c) || c == ' ' || c == '-' || c == '/')]).Replace(" ", "-").ToLowerInvariant();
             AudienceList = AudienceList == null ? [] : AudienceList.Select(ProcessTagName).ToList();
+            DepartmentList = DepartmentList == null ? [] : DepartmentList.Select(ProcessTagName).ToList();
             TopicList = TopicList == null ? [] : TopicList.Select(ProcessTagName).ToList();
             TagList = TagList == null ? [] : TagList.Select(ProcessTagName).ToList();
             Tag2List = Tag2List == null ? [] : Tag2List.Select(ProcessTagName).ToList();
@@ -144,6 +151,8 @@ namespace ResourceInformationV2.Search.Models {
             LinkList = LinkList ?? [];
             CleanHtmlFields();
         }
+
+        public virtual void PrepareForExport() => PrivateNotes = "";
 
         public override string ToString() => JsonSerializer.Serialize(this, _serializer);
 

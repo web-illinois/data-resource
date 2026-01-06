@@ -14,25 +14,49 @@ namespace ResourceInformationV2.Controllers {
         [HttpGet]
         public async Task<IActionResult> Event(string id) => await Set(id, "/event/general");
 
+        [Route("event/{id}/technical")]
+        [HttpGet]
+        public async Task<IActionResult> EventTechnical(string id) => await Set(id, "/event/technical");
+
         [Route("faq/{id}")]
         [HttpGet]
         public async Task<IActionResult> Faq(string id) => await Set(id, "/faq/general");
+
+        [Route("faq/{id}/technical")]
+        [HttpGet]
+        public async Task<IActionResult> FaqTechnical(string id) => await Set(id, "/faq/technical");
 
         [Route("note/{id}")]
         [HttpGet]
         public async Task<IActionResult> Note(string id) => await Set(id, "/note/general");
 
+        [Route("note/{id}/technical")]
+        [HttpGet]
+        public async Task<IActionResult> NoteTechnical(string id) => await Set(id, "/note/technical");
+
         [Route("person/{id}")]
         [HttpGet]
         public async Task<IActionResult> Person(string id) => await Set(id, "/person/general");
+
+        [Route("person/{id}/technical")]
+        [HttpGet]
+        public async Task<IActionResult> PersonTechnical(string id) => await Set(id, "/person/technical");
 
         [Route("publication/{id}")]
         [HttpGet]
         public async Task<IActionResult> Publication(string id) => await Set(id, "/publication/general");
 
+        [Route("publication/{id}/technical")]
+        [HttpGet]
+        public async Task<IActionResult> PublicationTechnical(string id) => await Set(id, "/publication/technical");
+
         [Route("resource/{id}")]
         [HttpGet]
         public async Task<IActionResult> Resource(string id) => await Set(id, "/resource/general");
+
+        [Route("resource/{id}/technical")]
+        [HttpGet]
+        public async Task<IActionResult> ResourceTechnical(string id) => await Set(id, "/resource/technical");
 
         private async Task<IActionResult> Set(string id, string url) {
             if (string.IsNullOrEmpty(id)) {

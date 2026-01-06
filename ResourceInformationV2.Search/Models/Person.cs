@@ -10,7 +10,7 @@
         public override string NameType => "Person";
         public override string Title => LastName + ", " + FirstName;
 
-        internal override string[] Headings => ["Id", "First Name", "Last Name", "Job Title", "Job Location", "Biography", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
+        internal override string[] Headings => ["Id", "First Name", "Last Name", "Job Title", "Job Location", "Biography", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
@@ -26,21 +26,22 @@
             ImageSource = lineArray[10];
             VideoUrl = lineArray[11];
             Notes = lineArray[12];
-            _ = DateTime.TryParse(lineArray[13], out var createdDate);
+            _ = DateTime.TryParse(lineArray[13], out DateTime createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
             _ = bool.TryParse(lineArray[14], out var isActive);
             IsActive = isActive;
             AudienceList = GetTagsFromString(lineArray[15]);
-            TopicList = GetTagsFromString(lineArray[16]);
-            TagList = GetTagsFromString(lineArray[17]);
-            Tag2List = GetTagsFromString(lineArray[18]);
-            Tag3List = GetTagsFromString(lineArray[19]);
-            Tag4List = GetTagsFromString(lineArray[20]);
-            LinkList = GetLinksFromString(lineArray[21]);
-            _ = int.TryParse(lineArray[22], out var order);
+            DepartmentList = GetTagsFromString(lineArray[16]);
+            TopicList = GetTagsFromString(lineArray[17]);
+            TagList = GetTagsFromString(lineArray[18]);
+            Tag2List = GetTagsFromString(lineArray[19]);
+            Tag3List = GetTagsFromString(lineArray[20]);
+            Tag4List = GetTagsFromString(lineArray[21]);
+            LinkList = GetLinksFromString(lineArray[22]);
+            _ = int.TryParse(lineArray[23], out var order);
             Order = order;
-            ReviewEmail = lineArray[23];
-            _ = DateTime.TryParse(lineArray[24], out var lastUpdatedDate);
+            ReviewEmail = lineArray[24];
+            _ = DateTime.TryParse(lineArray[25], out DateTime lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -62,6 +63,7 @@
             CreatedOn.ToString("g"),
             IsActive.ToString(),
             string.Join(";", AudienceList),
+            string.Join(";", DepartmentList),
             string.Join(";", TopicList),
             string.Join(";", TagList),
             string.Join(";", Tag2List),

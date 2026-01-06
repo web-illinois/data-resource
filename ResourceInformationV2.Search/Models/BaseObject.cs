@@ -1,6 +1,6 @@
-﻿using System.Text.Json;
+﻿using OpenSearch.Client;
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using OpenSearch.Client;
 
 namespace ResourceInformationV2.Search.Models {
 
@@ -14,6 +14,8 @@ namespace ResourceInformationV2.Search.Models {
 
         public DateTime CreatedOn { get; set; }
 
+        [Keyword]
+        public IEnumerable<string> DepartmentList { get; set; } = default!;
         public virtual string Description { get; set; } = "";
 
         [Keyword]
@@ -108,7 +110,7 @@ namespace ResourceInformationV2.Search.Models {
         public virtual GenericItem GetGenericItem() => new() { Id = Id, IsActive = IsActive, IsNewerDraft = IsNewerDraft, Order = Order, Title = Title, EditLink = EditLink };
 
         public (bool successful, bool headerIssue, string message) LoadFromString(string source, string line) {
-            var array = line.Split('\t');
+            string[] array = line.Split('\t');
             if (array.Length == 0 || (array.Length == 1 && string.IsNullOrWhiteSpace(array[0]))) {
                 return (false, true, string.Empty);
             }
@@ -140,6 +142,7 @@ namespace ResourceInformationV2.Search.Models {
             }
             Fragment = string.IsNullOrWhiteSpace(Fragment) ? "" : new string([.. Fragment.Where(c => char.IsLetterOrDigit(c) || c == ' ' || c == '-' || c == '/')]).Replace(" ", "-").ToLowerInvariant();
             AudienceList = AudienceList == null ? [] : AudienceList.Select(ProcessTagName).ToList();
+            DepartmentList = DepartmentList == null ? [] : DepartmentList.Select(ProcessTagName).ToList();
             TopicList = TopicList == null ? [] : TopicList.Select(ProcessTagName).ToList();
             TagList = TagList == null ? [] : TagList.Select(ProcessTagName).ToList();
             Tag2List = Tag2List == null ? [] : Tag2List.Select(ProcessTagName).ToList();

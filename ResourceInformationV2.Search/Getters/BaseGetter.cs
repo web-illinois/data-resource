@@ -77,6 +77,7 @@ namespace ResourceInformationV2.Search.Getters {
             var response = await _openSearchClient.SearchAsync<T>(s => s.Index(IndexName)
                 .Size(0)
                 .Aggregations(a => a
+                .Terms("department", t => t.Field(f => f.DepartmentList))
                 .Terms("tags1", t => t.Field(f => f.TagList))
                 .Terms("tags2", t => t.Field(f => f.Tag2List))
                 .Terms("tags3", t => t.Field(f => f.Tag3List))
@@ -95,12 +96,13 @@ namespace ResourceInformationV2.Search.Getters {
                 new() { Title = "Tag 3", TagItems = ((BucketAggregate) response.Aggregations["tags3"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
                 new() { Title = "Tag 4", TagItems = ((BucketAggregate) response.Aggregations["tags4"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
                 new() { Title = "Audience", TagItems = ((BucketAggregate) response.Aggregations["audience"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
-                new() { Title = "Topic", TagItems = ((BucketAggregate) response.Aggregations["topic"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() }
+                new() { Title = "Topic", TagItems = ((BucketAggregate) response.Aggregations["topic"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
+                new() { Title = "Department", TagItems = ((BucketAggregate) response.Aggregations["department"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() }
             };
-            return returnValue.Where(tl => tl.TagItems.Count > 0).ToList();
+            return [.. returnValue.Where(tl => tl.TagItems.Count > 0)];
         }
 
-        public async Task<SearchObject<T>> Search(string source, string search, IEnumerable<string> tags, IEnumerable<string> tags2, IEnumerable<string> tags3, IEnumerable<string> tags4, IEnumerable<string> topics, IEnumerable<string> audience, int take, int skip, string sort, bool isActive = true) {
+        public async Task<SearchObject<T>> Search(string source, string search, IEnumerable<string> tags, IEnumerable<string> tags2, IEnumerable<string> tags3, IEnumerable<string> tags4, IEnumerable<string> topics, IEnumerable<string> audience, IEnumerable<string> departments, int take, int skip, string sort, bool isActive = true) {
             var response = await _openSearchClient.SearchAsync<T>(s => s.Index(IndexName)
                     .Skip(skip)
                     .Size(take)
@@ -113,7 +115,8 @@ namespace ResourceInformationV2.Search.Getters {
                         f => tags3.Any() ? f.Terms(m => m.Field(fld => fld.Tag3List).Terms(tags3)) : f.MatchAll(),
                         f => tags4.Any() ? f.Terms(m => m.Field(fld => fld.Tag4List).Terms(tags4)) : f.MatchAll(),
                         f => topics.Any() ? f.Term(m => m.Field(fld => fld.TopicList).Value(topics)) : f.MatchAll(),
-                        f => audience.Any() ? f.Terms(m => m.Field(fld => fld.AudienceList).Terms(audience)) : f.MatchAll())
+                        f => audience.Any() ? f.Terms(m => m.Field(fld => fld.AudienceList).Terms(audience)) : f.MatchAll(),
+                        f => departments.Any() ? f.Terms(m => m.Field(fld => fld.DepartmentList).Terms(departments)) : f.MatchAll())
                     .Must(m => !string.IsNullOrWhiteSpace(search) ? m.MultiMatch(m => m.Fields(fld => fld.Field("title^10").Field("description^5").Field("notes")).Query(search)) : m.MatchAll())))
                     .Sort(srt => sort == "date" ? srt.Descending(f => f.CreatedOn) : srt.Ascending(f => f.TitleSortKeyword))
                     .Suggest(a => a.Phrase("didyoumean", p => p.Text(search).Field(fld => fld.Title))));

@@ -11,6 +11,13 @@
             }
         }
 
+        @if (DepartmentTags.Count() > 0 && DepartmentTitle != "") {
+            <h2>@DepartmentTitle (department)</h2>
+            @foreach (var tag in DepartmentTags.OrderBy(t => t.Order).ThenBy(t => t.Title)) {
+                <FilterToggle Filter="@tag"></FilterToggle>
+            }
+        }
+
         @if (TopicTags.Count() > 0 && TopicTitle != "")
         {
             <h2>@TopicTitle (topics)</h2>

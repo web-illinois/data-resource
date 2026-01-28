@@ -39,7 +39,7 @@ namespace ResourceInformationV2.Components.Pages.Note {
 
         protected override async Task OnInitializedAsync() {
             SourceCode = await Layout.CheckSource();
-            string id = await Layout.GetCachedId();
+            var id = await Layout.GetCachedId();
 
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await NoteGetter.GetItem(id);

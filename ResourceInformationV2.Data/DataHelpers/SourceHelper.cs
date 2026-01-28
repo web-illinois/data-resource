@@ -8,12 +8,12 @@ namespace ResourceInformationV2.Data.DataHelpers {
         private readonly ResourceRepository _resourceRepository = resourceRepository;
 
         public async Task<string> CreateSource(string newSourceCode, string newTitle, string email) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == newSourceCode.ToLowerInvariant() || s.Title == newTitle));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == newSourceCode.ToLowerInvariant() || s.Title == newTitle));
             if (source != null) {
                 return "Source code or name is in use";
             }
             _ = await _resourceRepository.CreateAsync(new Source { Code = newSourceCode.ToLowerInvariant(), CreatedByEmail = email, IsActive = true, IsTest = false, Title = newTitle });
-            Source? newSource = await _resourceRepository.ReadAsync(pr => pr.Sources.FirstOrDefault(s => s.Code == newSourceCode.ToLowerInvariant()));
+            var newSource = await _resourceRepository.ReadAsync(pr => pr.Sources.FirstOrDefault(s => s.Code == newSourceCode.ToLowerInvariant()));
             if (newSource != null) {
                 _ = await _resourceRepository.CreateAsync(new SecurityEntry { SourceId = newSource.Id, IsActive = true, IsFullAdmin = true, IsOwner = true, IsPublic = true, IsRequested = false, Email = email });
             }
@@ -21,7 +21,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
         }
 
         public async Task<string> DeleteSource(string sourceCode, string email) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
             if (source == null) {
                 return "Source Code not found";
             } else if (source.IsTest) {
@@ -34,7 +34,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
         }
 
         public async Task<bool> DoesSourceUseItem(string sourceCode, CategoryType categoryType) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {
                 return false;
             }
@@ -61,13 +61,13 @@ namespace ResourceInformationV2.Data.DataHelpers {
         }
 
         public async Task<(bool eventItem, bool faqItem, bool noteItem, bool resourceItem, bool personItem, bool publicationItem)> DoesSourceUseItemCheckAll(string sourceCode) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             return source == null ? (false, false, false, false, false, false) :
                 (source.UseEvents, source.UseFaqs, source.UseNotes, source.UseResources, source.UsePeople, source.UsePublications);
         }
 
         public async Task<IEnumerable<string>> DoesSourceUseItemCheckAllAndConcatenate(string sourceCode) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             return source == null
                 ? []
                 : new List<string> {
@@ -81,14 +81,14 @@ namespace ResourceInformationV2.Data.DataHelpers {
         }
 
         public async Task<string> GetBaseUrlFromSource(string sourceCode) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
             return source?.BaseUrl ?? "";
         }
 
         public async Task<Source?> GetSourceByCode(string sourceCode) => await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
 
         public async Task<string> GetSourceFilterName(string sourceCode, TagType tagType) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {
                 return "";
             }
@@ -122,12 +122,12 @@ namespace ResourceInformationV2.Data.DataHelpers {
         public async Task<IEnumerable<Tuple<string, string>>> GetSourcesAndOwners() => await _resourceRepository.ReadAsync(c => c.Sources.Where(s => s.IsActive).OrderBy(s => s.Title).Select(s => new Tuple<string, string>(s.CreatedByEmail, $"{s.Title} ({s.Code})")));
 
         public async Task<string> RequestAccess(string sourceCode, string email) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {
                 return "Source Code not found";
             }
 
-            SecurityEntry? existingItem = await _resourceRepository.ReadAsync(c => c.SecurityEntries.FirstOrDefault(s => s.SourceId == source.Id && s.Email == email));
+            var existingItem = await _resourceRepository.ReadAsync(c => c.SecurityEntries.FirstOrDefault(s => s.SourceId == source.Id && s.Email == email));
             if (existingItem != null) {
                 if (existingItem.IsActive) {
                     return "You already have access";
@@ -145,7 +145,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
         public async Task<int> SaveSource(Source source) => await _resourceRepository.UpdateAsync(source);
 
         public async Task<int> SetSourceFilterName(string sourceCode, TagType tagType, string title) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {
                 return 0;
             }
@@ -183,7 +183,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
         }
 
         public async Task<int> SetSourceFilterOrder(string sourceCode, string order) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {
                 return 0;
             }
@@ -193,7 +193,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
         }
 
         public async Task<int> SetSourceItem(string sourceCode, CategoryType categoryType, bool isUsed) {
-            Source? source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {
                 return 0;
             }

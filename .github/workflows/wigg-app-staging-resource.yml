@@ -1,16 +1,13 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Production WIGG Build and deploy ASP.Net Core app to Azure Web App
+name: Staging WIGG Build and deploy ASP.Net Core app to Azure Web App
 
 on:
   push:
     branches:
-      - main
+      - develop
   workflow_dispatch:
-
-env:
-  DOTNET_VERSION: '8.0.x' # set this to the dotnet version to use
 
 jobs:
   build:
@@ -19,17 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: '8.x'
           include-prerelease: true
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ResourceInformationV2 -c Release -r linux-x64 --property:PublishDir=${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -54,7 +51,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: itp-app-resource2
+          app-name: 'wigg-resource-infra-winapp01'
+          slot-name: 'staging'
+          publish-profile: ${{ secrets.AZURE_WEB_PUBLISH_PROFILE_STAGING }}
           package: .
-          slot-name: staging
-          publish-profile: ${{ secrets.AZURE_WEB_PUBLISH_PROFILE_PRODUCTION }}

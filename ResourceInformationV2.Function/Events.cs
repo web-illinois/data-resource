@@ -12,13 +12,11 @@ using System.Net;
 
 namespace ResourceInformationV2.Function;
 
-public class Events
-{
+public class Events {
     private readonly EventGetter _eventGetter;
     private readonly ILogger<Events> _logger;
 
-    public Events(ILogger<Events> logger, EventGetter eventGetter)
-    {
+    public Events(ILogger<Events> logger, EventGetter eventGetter) {
         _logger = logger;
         _eventGetter = eventGetter;
     }
@@ -28,17 +26,16 @@ public class Events
     [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **source** parameter given to you, can use 'test' to test.")]
     [OpenApiParameter(name: "fragment", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The fragment. If multiple items have the same fragment, this will return the first one it finds.")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Event), Description = "The event. If the event is not found, it will be blank.")]
-    public async Task<HttpResponseData> GetByFragment([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
-    {
+    public async Task<HttpResponseData> GetByFragment([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
         _logger.LogInformation("Called EventFragment.");
-        RequestHelper requestHelper = RequestHelperFactory.Create();
+        var requestHelper = RequestHelperFactory.Create();
         requestHelper.Initialize(req);
         var source = requestHelper.GetRequest(req, "source");
         var fragment = requestHelper.GetRequest(req, "fragment");
         requestHelper.Validate();
-        Event returnItem = await _eventGetter.GetItem(source, fragment);
+        var returnItem = await _eventGetter.GetItem(source, fragment);
         returnItem.PrepareForExport();
-        HttpResponseData response = req.CreateResponse(HttpStatusCode.OK);
+        var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
     }
@@ -47,16 +44,15 @@ public class Events
     [OpenApiOperation(operationId: "Event", tags: "Events", Description = "Get a specific event.")]
     [OpenApiParameter(name: "id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The id of the item (the id includes the source).")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(Event), Description = "The event. If the event is not found, it will be blank.")]
-    public async Task<HttpResponseData> GetById([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
-    {
+    public async Task<HttpResponseData> GetById([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
         _logger.LogInformation("Called Event.");
-        RequestHelper requestHelper = RequestHelperFactory.Create();
+        var requestHelper = RequestHelperFactory.Create();
         requestHelper.Initialize(req);
         var id = requestHelper.GetRequest(req, "id");
         requestHelper.Validate();
-        Event returnItem = await _eventGetter.GetItem(id, true);
+        var returnItem = await _eventGetter.GetItem(id, true);
         returnItem.PrepareForExport();
-        HttpResponseData response = req.CreateResponse(HttpStatusCode.OK);
+        var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
         return response;
     }
@@ -75,26 +71,25 @@ public class Events
     [OpenApiParameter(name: "take", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "How many items do you want? Defaults to 1000.")]
     [OpenApiParameter(name: "skip", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "A skip value to help with pagination. Defaults to 0.")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(SearchObject<Event>), Description = "The list of events")]
-    public async Task<HttpResponseData> Search([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
-    {
+    public async Task<HttpResponseData> Search([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
         _logger.LogInformation("Called EventSearch.");
-        RequestHelper requestHelper = RequestHelperFactory.Create();
+        var requestHelper = RequestHelperFactory.Create();
         requestHelper.Initialize(req);
         var source = requestHelper.GetRequest(req, "source");
-        IEnumerable<string> tags = requestHelper.GetArray(req, "tag1");
-        IEnumerable<string> tags2 = requestHelper.GetArray(req, "tag2");
-        IEnumerable<string> tags3 = requestHelper.GetArray(req, "tag3");
-        IEnumerable<string> tags4 = requestHelper.GetArray(req, "tag4");
-        IEnumerable<string> topics = requestHelper.GetArray(req, "topic");
-        IEnumerable<string> audience = requestHelper.GetArray(req, "audience");
-        IEnumerable<string> department = requestHelper.GetArray(req, "department");
+        var tags = requestHelper.GetArray(req, "tag1");
+        var tags2 = requestHelper.GetArray(req, "tag2");
+        var tags3 = requestHelper.GetArray(req, "tag3");
+        var tags4 = requestHelper.GetArray(req, "tag4");
+        var topics = requestHelper.GetArray(req, "topic");
+        var audience = requestHelper.GetArray(req, "audience");
+        var department = requestHelper.GetArray(req, "department");
         var query = requestHelper.GetRequest(req, "q", false);
         var take = requestHelper.GetInteger(req, "take", 1000);
         var skip = requestHelper.GetInteger(req, "skip");
         var sort = requestHelper.GetRequest(req, "sort", false).ToLowerInvariant();
 
         requestHelper.Validate();
-        HttpResponseData response = req.CreateResponse(HttpStatusCode.OK);
+        var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(await _eventGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, department, take, skip, sort));
         return response;
     }

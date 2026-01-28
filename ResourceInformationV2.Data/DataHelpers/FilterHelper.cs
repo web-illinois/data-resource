@@ -17,9 +17,9 @@ namespace ResourceInformationV2.Data.DataHelpers {
             })];
 
         public async Task<(List<Tag> TagSources, int SourceId)> GetFilters(string source, TagType tagType) {
-            List<Tag> returnValue = await _resourceRepository.ReadAsync(c => c.Tags.Include(c => c.Source).Where(ts => ts.Source != null && ts.Source.Code == source && ts.TagType == tagType).OrderBy(ts => ts.Order).ToList());
+            var returnValue = await _resourceRepository.ReadAsync(c => c.Tags.Include(c => c.Source).Where(ts => ts.Source != null && ts.Source.Code == source && ts.TagType == tagType).OrderBy(ts => ts.Order).ToList());
             var sourceId = 0;
-            foreach (Tag? item in returnValue) {
+            foreach (var item in returnValue) {
                 item.OldTitle = item.Title;
                 sourceId = item.SourceId;
             }
@@ -31,7 +31,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
 
         public async Task<IEnumerable<Tuple<string, string>>> GetTagTitles(string source) {
             var returnValue = new List<Tuple<string, string>>();
-            Source? sourceValue = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == source));
+            var sourceValue = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == source));
             if (sourceValue == null) {
                 return returnValue;
             }
@@ -73,10 +73,10 @@ namespace ResourceInformationV2.Data.DataHelpers {
         public async Task<bool> ReplaceFilters(IEnumerable<Tag> tags, IEnumerable<Tag> tagsForDeletion, string sourceName) {
             var i = 1;
 
-            foreach (Tag? tag in tagsForDeletion.ToList().Where(t => t.Id != 0)) {
+            foreach (var tag in tagsForDeletion.ToList().Where(t => t.Id != 0)) {
                 _ = await _resourceRepository.DeleteAsync(tag);
             }
-            foreach (Tag? tag in tags.Where(t => t.Title != "")) {
+            foreach (var tag in tags.Where(t => t.Title != "")) {
                 tag.Order = i++;
                 _ = await _resourceRepository.CreateAsync(tag);
             }
@@ -89,8 +89,8 @@ namespace ResourceInformationV2.Data.DataHelpers {
             var duplicateTags = tags.GroupBy(t => new { t.Title, t.TagType }).Where(g => g.Count() > 1).ToList();
             if (duplicateTags.Count > 0) {
                 foreach (var duplicateTag in duplicateTags) {
-                    bool firstOne = true;
-                    foreach (Tag? tag in duplicateTag) {
+                    var firstOne = true;
+                    foreach (var tag in duplicateTag) {
                         if (tag.Id != 0 && !string.IsNullOrWhiteSpace(tag.OldTitle) && tag.Title != tag.OldTitle && _bulkEditor != null) {
                             _ = await _bulkEditor.UpdateTags(sourceName, tag.TagTypeSourceName, tag.OldTitle, tag.Title);
                         }
@@ -104,7 +104,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 }
             }
 
-            foreach (Tag? tag in tags.Where(t => t.Title != "")) {
+            foreach (var tag in tags.Where(t => t.Title != "")) {
                 tag.Order = i++;
                 if (tag.Id == 0) {
                     _ = await _resourceRepository.CreateAsync(tag);
@@ -115,7 +115,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
                     }
                 }
             }
-            foreach (Tag? tag in tagsForDeletionList.Where(t => t.Id != 0)) {
+            foreach (var tag in tagsForDeletionList.Where(t => t.Id != 0)) {
                 _ = await _resourceRepository.DeleteAsync(tag);
                 if (_bulkEditor != null && !string.IsNullOrWhiteSpace(tag.OldTitle)) {
                     _ = await _bulkEditor.DeleteTags(sourceName, tag.TagTypeSourceName, tag.OldTitle);

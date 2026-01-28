@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace ResourceInformationV2.Search.Models {
 
     public abstract class BaseObject {
-        protected static readonly string _editLink = "https://resource2.itpartners.illinois.edu/quicklink/";
+        protected static readonly string _editLink = "https://resource.wigg.illinois.edu/quicklink/";
         private static readonly string[] _badHtmlItems = ["<br>", "<p></p>", "<p><br></p>", "<p>&nbsp;</p>", "<p> </p>", "&nbsp;"];
         private readonly JsonSerializerOptions _serializer = new() { PropertyNamingPolicy = new JsonNamingPolicyLowerCase() };
 
@@ -110,7 +110,7 @@ namespace ResourceInformationV2.Search.Models {
         public virtual GenericItem GetGenericItem() => new() { Id = Id, IsActive = IsActive, IsNewerDraft = IsNewerDraft, Order = Order, Title = Title, EditLink = EditLink };
 
         public (bool successful, bool headerIssue, string message) LoadFromString(string source, string line) {
-            string[] array = line.Split('\t');
+            var array = line.Split('\t');
             if (array.Length == 0 || (array.Length == 1 && string.IsNullOrWhiteSpace(array[0]))) {
                 return (false, true, string.Empty);
             }

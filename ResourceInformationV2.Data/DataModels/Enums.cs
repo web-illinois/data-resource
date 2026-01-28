@@ -1,8 +1,6 @@
-﻿namespace ResourceInformationV2.Data.DataModels
-{
+﻿namespace ResourceInformationV2.Data.DataModels {
 
-    public enum CategoryType
-    {
+    public enum CategoryType {
         None,
         Person,
         Publication,
@@ -12,16 +10,14 @@
         Event
     }
 
-    public enum EmailType
-    {
+    public enum EmailType {
         None,
         OnSubmission,
         OnPublication,
         OnDraft
     }
 
-    public enum FieldType
-    {
+    public enum FieldType {
         None,
         General,
         ImageAndVideo,
@@ -31,8 +27,7 @@
         Technical
     }
 
-    public enum TagType
-    {
+    public enum TagType {
         None,
         Tag1,
         Tag2,

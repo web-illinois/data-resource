@@ -7,8 +7,8 @@ This is the new Resource Information for IT Partners, used to organize resources
 ## Production location: 
 
 This consists of five applications:
-* **ResourceInformationV2**: The Blazor server application to handle back-end functions. https://resource.itpartners.illinois.edu
-* **ResourceInformationV2.Function**: The Function Application for the API. https://resourceapi.itpartners.illinois.edu
+* **ResourceInformationV2**: The Blazor server application to handle back-end functions. https://resource.wigg.illinois.edu
+* **ResourceInformationV2.Function**: The Function Application for the API. https://resourceapi.wigg.illinois.edu
 * **ResourceInformationV2.Data**: The data access for all the processes
 * **ResourceInformationV2.Search**: The data access for searching (accessing AWS OpenSearch Service)
 * **ResourceInformationV2.Template**: The templating tool for creating high-quality HTML pages for notes

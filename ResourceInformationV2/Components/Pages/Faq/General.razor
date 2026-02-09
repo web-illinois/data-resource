@@ -19,15 +19,15 @@
 
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="description">Summary Answer</label>
-            <input id="link" type="text" class="ils-input-long" @bind="Item.Url" @bind:after="Layout.SetDirty" />
+            <label for="link">Summary URL</label>
+            <textarea id="link" @bind="Item.SummaryAnswer" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
 
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="link">Link</label>
-            <textarea id="link" @bind="Item.Url" @bind:after="Layout.SetDirty" />
+            <label for="description">Link</label>
+            <input id="link" type="text" class="ils-input-long" @bind="Item.Url" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
 

@@ -15,7 +15,7 @@ namespace ResourceInformationV2.Data.Uploads {
         }
 
         public UploadStorage(string? azureClientUrl, string? azureAccountName, string? azureAccountKey, string? azureImageContainerName) {
-            _azureClientUrl = azureClientUrl ?? "";
+            _azureClientUrl = azureClientUrl?.Trim('/') ?? "";
             _azureAccountName = azureAccountName ?? "";
             _azureAccountKey = azureAccountKey ?? "";
             _azureImageContainerName = azureImageContainerName ?? "";

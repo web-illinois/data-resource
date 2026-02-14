@@ -12,7 +12,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
             if (source != null) {
                 return "Source code or name is in use";
             }
-            _ = await _resourceRepository.CreateAsync(new Source { Code = newSourceCode.ToLowerInvariant(), CreatedByEmail = email, IsActive = true, IsTest = false, Title = newTitle });
+            _ = await _resourceRepository.CreateAsync(new Source { Code = newSourceCode.ToLowerInvariant(), CreatedByEmail = email, IsActive = true, IsTest = false, Title = newTitle, UseResources = true });
             var newSource = await _resourceRepository.ReadAsync(pr => pr.Sources.FirstOrDefault(s => s.Code == newSourceCode.ToLowerInvariant()));
             if (newSource != null) {
                 _ = await _resourceRepository.CreateAsync(new SecurityEntry { SourceId = newSource.Id, IsActive = true, IsFullAdmin = true, IsOwner = true, IsPublic = true, IsRequested = false, Email = email });

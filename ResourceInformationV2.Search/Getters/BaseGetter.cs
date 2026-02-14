@@ -1,7 +1,7 @@
-﻿using System.Text;
-using OpenSearch.Client;
+﻿using OpenSearch.Client;
 using ResourceInformationV2.Search.JsonThinModels;
 using ResourceInformationV2.Search.Models;
+using System.Text;
 
 namespace ResourceInformationV2.Search.Getters {
 
@@ -114,7 +114,7 @@ namespace ResourceInformationV2.Search.Getters {
                         f => tags2.Any() ? f.Terms(m => m.Field(fld => fld.Tag2List).Terms(tags2)) : f.MatchAll(),
                         f => tags3.Any() ? f.Terms(m => m.Field(fld => fld.Tag3List).Terms(tags3)) : f.MatchAll(),
                         f => tags4.Any() ? f.Terms(m => m.Field(fld => fld.Tag4List).Terms(tags4)) : f.MatchAll(),
-                        f => topics.Any() ? f.Term(m => m.Field(fld => fld.TopicList).Value(topics)) : f.MatchAll(),
+                        f => topics.Any() ? f.Terms(m => m.Field(fld => fld.TopicList).Terms(topics)) : f.MatchAll(),
                         f => audience.Any() ? f.Terms(m => m.Field(fld => fld.AudienceList).Terms(audience)) : f.MatchAll(),
                         f => departments.Any() ? f.Terms(m => m.Field(fld => fld.DepartmentList).Terms(departments)) : f.MatchAll())
                     .Must(m => !string.IsNullOrWhiteSpace(search) ? m.MultiMatch(m => m.Fields(fld => fld.Field("title^10").Field("description^5").Field("notes")).Query(search)) : m.MatchAll())))
@@ -127,7 +127,7 @@ namespace ResourceInformationV2.Search.Getters {
             return new SearchObject<T>() {
                 Error = !response.IsValid ? response.ServerError.Error.ToString() : "",
                 DidYouMean = response.Suggest["didyoumean"].FirstOrDefault()?.Options?.FirstOrDefault()?.Text ?? "",
-                Total = (int) response.Total,
+                Total = (int)response.Total,
                 Items = documents
             };
         }

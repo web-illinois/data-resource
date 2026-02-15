@@ -73,9 +73,9 @@ namespace ResourceInformationV2.Search.Getters {
             return response.IsValid ? response.Documents?.FirstOrDefault() ?? new() : new();
         }
 
-        public async Task<List<TagList>> GetTagCount(string source) {
+        public async Task<(bool, List<TagList>)> GetTagCount(string source) {
             var response = await _openSearchClient.SearchAsync<T>(s => s.Index(IndexName)
-                .Size(0)
+                .Size(50)
                 .Aggregations(a => a
                 .Terms("department", t => t.Field(f => f.DepartmentList))
                 .Terms("tags1", t => t.Field(f => f.TagList))
@@ -89,17 +89,20 @@ namespace ResourceInformationV2.Search.Getters {
                 .Filter(f => f.Term(m => m.Field(fld => fld.Source).Value(source)))
                 .Must(m => m.MatchAll()))));
             LogDebug(response);
-
-            var returnValue = new List<TagList> {
-                new() { Title = "Tag 1", TagItems = ((BucketAggregate) response.Aggregations["tags1"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
-                new() { Title = "Tag 2", TagItems = ((BucketAggregate) response.Aggregations["tags2"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
-                new() { Title = "Tag 3", TagItems = ((BucketAggregate) response.Aggregations["tags3"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
-                new() { Title = "Tag 4", TagItems = ((BucketAggregate) response.Aggregations["tags4"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
-                new() { Title = "Audience", TagItems = ((BucketAggregate) response.Aggregations["audience"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
-                new() { Title = "Topic", TagItems = ((BucketAggregate) response.Aggregations["topic"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() },
-                new() { Title = "Department", TagItems = ((BucketAggregate) response.Aggregations["department"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t).ToList() }
-            };
-            return [.. returnValue.Where(tl => tl.TagItems.Count > 0)];
+            if (response.IsValid) {
+                var returnValue = new List<TagList> {
+                    new() { Title = "Tag 1", TagItems = [.. ((BucketAggregate) response.Aggregations["tags1"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t)] },
+                    new() { Title = "Tag 2", TagItems = [.. ((BucketAggregate) response.Aggregations["tags2"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t)] },
+                    new() { Title = "Tag 3", TagItems = [.. ((BucketAggregate) response.Aggregations["tags3"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t)] },
+                    new() { Title = "Tag 4", TagItems = [.. ((BucketAggregate) response.Aggregations["tags4"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t)] },
+                    new() { Title = "Audience", TagItems = [.. ((BucketAggregate) response.Aggregations["audience"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t)] },
+                    new() { Title = "Topic", TagItems = [.. ((BucketAggregate) response.Aggregations["topic"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t)] },
+                    new() { Title = "Department", TagItems = [.. ((BucketAggregate) response.Aggregations["department"]).Items.Select(i => ConvertKeyedBucketToString((KeyedBucket<object>) i)).OrderBy(t => t)] }
+                };
+                return (true, [.. returnValue.Where(tl => tl.TagItems.Count > 0)]);
+            } else {
+                return (false, []);
+            }
         }
 
         public async Task<SearchObject<T>> Search(string source, string search, IEnumerable<string> tags, IEnumerable<string> tags2, IEnumerable<string> tags3, IEnumerable<string> tags4, IEnumerable<string> topics, IEnumerable<string> audience, IEnumerable<string> departments, int take, int skip, string sort, bool isActive = true) {

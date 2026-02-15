@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using ResourceInformationV2.Components.Layout;
+using ResourceInformationV2.Data.Cache;
 using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Helpers;
@@ -17,6 +18,10 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         [Inject]
         public BulkEditor BulkEditor { get; set; } = default!;
 
+        [Inject]
+        protected CacheHolder CacheHolder { get; set; } = default!;
+        [Inject]
+        public NavigationManager NavigationManager { get; set; } = default!;
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
 
@@ -30,7 +35,9 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         protected async Task DeleteSource() {
             var message = await BulkEditor.DeleteAllItems(_sourceCode);
             message += await SourceHelper.DeleteSource(_sourceCode, await UserHelper.GetUser(AuthenticationStateProvider));
-            await Layout.AddMessage(message);
+            var email = await UserHelper.GetUser(AuthenticationStateProvider);
+            CacheHolder.ClearCache(email);
+            NavigationManager.NavigateTo("/");
         }
 
         protected override async Task OnInitializedAsync() {

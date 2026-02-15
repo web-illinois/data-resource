@@ -66,11 +66,15 @@ namespace ResourceInformationV2.Components.Pages.Review {
                 .. Convert(await ResourceGetter.GetTagCount(sourceCode), "Resources", tagTitles)];
         }
 
-        private List<TagList> Convert(List<TagList> lists, string mainTitle, Dictionary<string, string> tagTitles) {
-            foreach (var list in lists) {
-                list.Title = mainTitle + " " + tagTitles[list.Title];
+        private List<TagList> Convert((bool, List<TagList>) lists, string mainTitle, Dictionary<string, string> tagTitles) {
+            if (lists.Item1) {
+                foreach (var list in lists.Item2) {
+                    list.Title = mainTitle + " " + tagTitles[list.Title];
+                }
+                return lists.Item2;
+            } else {
+                return new List<TagList> { new TagList { Title = "error" } };
             }
-            return lists;
         }
     }
 }

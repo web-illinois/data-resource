@@ -10,6 +10,7 @@ namespace ResourceInformationV2.Data.DataModels {
         public string BaseUrl { get; set; } = "";
         public string Code { get; set; } = "";
         public string CreatedByEmail { get; set; } = "";
+        public DateTime? DateLastUrlCheck { get; set; }
         public bool DeactivateOnReview { get; set; }
         public string DeletedByEmail { get; set; } = "";
         public string FilterAudienceTitle { get; set; } = "";

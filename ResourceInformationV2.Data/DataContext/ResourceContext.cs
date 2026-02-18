@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ResourceInformationV2.Data.DataModels;
+using System.Diagnostics;
 
 namespace ResourceInformationV2.Data.DataContext {
 
@@ -18,6 +18,7 @@ namespace ResourceInformationV2.Data.DataContext {
         }
 
         public DbSet<Instruction> Instructions { get; set; }
+        public DbSet<LinkCheck> LinkChecks { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<SecurityEntry> SecurityEntries { get; set; }
         public DbSet<SourceEmail> SourceEmails { get; set; }

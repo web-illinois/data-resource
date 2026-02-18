@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
@@ -13,6 +12,7 @@ using ResourceInformationV2.Search;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Helpers;
 using ResourceInformationV2.Search.Setters;
+using System.Text.Json;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
@@ -43,12 +43,14 @@ var host = new HostBuilder()
         _ = services.AddSingleton(c => OpenSearchFactory.CreateLowLevelClient(hostContext.Configuration["Values:SearchUrl"], hostContext.Configuration["Values:AccessKey"], hostContext.Configuration["Values:SecretKey"], hostContext.Configuration["Values:Debug"] == "true"));
         _ = services.AddSingleton(c => OpenSearchFactory.CreateClient(hostContext.Configuration["Values:SearchUrl"], hostContext.Configuration["Values:AccessKey"], hostContext.Configuration["Values:SecretKey"], true));
         _ = services.AddScoped<ResourceGetter>();
+        _ = services.AddScoped<ResourceSetter>();
         _ = services.AddScoped<PublicationGetter>();
         _ = services.AddScoped<NoteGetter>();
         _ = services.AddScoped<FaqGetter>();
         _ = services.AddScoped<PersonGetter>();
         _ = services.AddScoped<PersonSetter>();
         _ = services.AddScoped<EventGetter>();
+        _ = services.AddScoped<LinkCheckHelper>();
     })
     .Build();
 

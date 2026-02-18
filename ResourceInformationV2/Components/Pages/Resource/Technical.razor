@@ -31,6 +31,13 @@
             <p>This will not show up in the search results, although the information listed will show up if people search for it.</p>
         </div>
     </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="review">Use Manual Check</label>
+            <input id="review" type="checkbox" @bind="Item.UseManualCheck" @bind:after="Layout.SetDirty" />
+            <p>If you are using the link check process, should this be manually checked? This is if the server does not return a proper response.</p>
+        </div>
+    </ilw-content>
     <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
     <div class="information-to-copy">
         <ilw-content class="header"><h2>Information to Copy</h2></ilw-content>

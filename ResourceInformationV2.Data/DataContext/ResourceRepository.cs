@@ -40,10 +40,18 @@ namespace ResourceInformationV2.Data.DataContext {
 
         public async Task<int> DeleteBySourceAsync(Source source) {
             using var context = _factory.CreateDbContext();
+            context.RemoveRange(context.Logs.Where(i => i.SourceId == source.Id));
+            context.RemoveRange(context.LinkChecks.Where(i => i.SourceId == source.Id));
             context.RemoveRange(context.Instructions.Where(i => i.SourceId == source.Id));
             context.RemoveRange(context.Tags.Where(i => i.SourceId == source.Id));
             context.RemoveRange(context.SecurityEntries.Where(i => i.SourceId == source.Id));
             context.Remove(source);
+            return await context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteLinkCheckBySourceAsync(int sourceId) {
+            using var context = _factory.CreateDbContext();
+            context.RemoveRange(context.LinkChecks.Where(i => i.SourceId == sourceId));
             return await context.SaveChangesAsync();
         }
 

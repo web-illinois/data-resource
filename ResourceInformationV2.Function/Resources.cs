@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Function.Helper;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.JsonThinModels;
@@ -12,14 +13,10 @@ using System.Net;
 
 namespace ResourceInformationV2.Function;
 
-public class Resources {
-    private readonly ILogger<Resources> _logger;
-    private readonly ResourceGetter _resourceGetter;
-
-    public Resources(ILogger<Resources> logger, ResourceGetter resourceGetter) {
-        _logger = logger;
-        _resourceGetter = resourceGetter;
-    }
+public class Resources(ILogger<Resources> logger, ResourceGetter resourceGetter, LinkCheckHelper linkCheckHelper) {
+    private readonly ILogger<Resources> _logger = logger;
+    private readonly ResourceGetter _resourceGetter = resourceGetter;
+    private readonly LinkCheckHelper _linkCheckHelper = linkCheckHelper;
 
     [Function("ResourceFragment")]
     [OpenApiOperation(operationId: "ResourceFragment", tags: "Resources", Description = "Get a specific resource by using a URL-friendly fragment.")]
@@ -37,6 +34,21 @@ public class Resources {
         returnItem.PrepareForExport();
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(returnItem);
+        return response;
+    }
+
+    [Function("ResourceLinkCheck")]
+    [OpenApiOperation(operationId: "ResourceLinkCheck", tags: "Resources", Description = "Check the status of resource links.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "A list of resources checked along with the status.")]
+    public async Task<HttpResponseData> LinkCheck([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
+        _logger.LogInformation("Called ResourceLinkCheck.");
+        var requestHelper = RequestHelperFactory.Create();
+        requestHelper.Initialize(req);
+        var count = requestHelper.GetInteger(req, "count", 10);
+        requestHelper.Validate();
+        var returnItem = await _linkCheckHelper.CheckLink(count);
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        await response.WriteStringAsync(returnItem);
         return response;
     }
 

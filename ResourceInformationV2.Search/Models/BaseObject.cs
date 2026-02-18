@@ -85,6 +85,9 @@ namespace ResourceInformationV2.Search.Models {
         [Keyword]
         public string VideoUrl { get; set; } = "";
 
+        public bool UseManualCheck { get; set; }
+
+
         internal abstract string[] Headings { get; }
 
         public static string CleanHtml(string s) => string.IsNullOrWhiteSpace(s) || _badHtmlItems.Contains(s) ? string.Empty : s.Replace(" style=", " data-style=", StringComparison.OrdinalIgnoreCase);

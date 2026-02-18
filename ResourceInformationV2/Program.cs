@@ -68,6 +68,8 @@ builder.Services.AddScoped<PersonSetter>();
 builder.Services.AddScoped<EventGetter>();
 builder.Services.AddScoped<EventSetter>();
 
+builder.Services.AddScoped<LinkCheckHelper>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

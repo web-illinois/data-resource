@@ -5,5 +5,21 @@
 
 <ilw-content>
     <h1>Validate Links</h1>
-    <p><strong>Phase 2</strong> will allow you to schedule a link check to run in the background to flag links that no longer exist.</p>
+    <p>You can schedule a link check for your resources to validate they are valid links. Note that this will only check if the link is valid, not if it has been moved or repurposed.</p>
+    <p>You may only schedule one link check per day, and you may not schedule a second link check before the first link check has finished.</p>
+    <button class="ilw-button" @onclick="ScheduleLinkCheck">Schedule Link Check</button>
+    <h2>Link Check Status</h2>
+    <p>Last Link Check: @DateLastLinkCheckFormatted</p>
+    <p>Number of Links Left to Check: @LinksLeftToCheck</p>
+
+    @if (Links != null)
+    {
+        <h2>List of Bad Links</h2>
+        <ul>
+        @foreach (var linkCheckItem in Links)
+        {
+            <li><a href="@linkCheckItem.Url">@linkCheckItem.Title</a>: @linkCheckItem.ResponseMessage (<a href="@linkCheckItem.EditLink" aria-label="Edit @linkCheckItem.Title">Edit Resource</a>)</li>
+        }
+        </ul>
+    }
 </ilw-content>

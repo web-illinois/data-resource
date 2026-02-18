@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResourceInformationV2.Data.DataContext;
 
@@ -11,9 +12,11 @@ using ResourceInformationV2.Data.DataContext;
 namespace ResourceInformationV2.Data.Migrations
 {
     [DbContext(typeof(ResourceContext))]
-    partial class ResourceContextModelSnapshot : ModelSnapshot
+    [Migration("20260218142135_LinkCheck")]
+    partial class LinkCheck
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

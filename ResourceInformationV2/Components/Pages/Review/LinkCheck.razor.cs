@@ -29,6 +29,8 @@ namespace ResourceInformationV2.Components.Pages.Review {
 
         public DateTime? DateLastLinkCheck { get; set; }
 
+        public bool IsInProcess => LinksLeftToCheck > 0;
+
         public string DateLastLinkCheckFormatted => DateLastLinkCheck.HasValue ? DateLastLinkCheck.Value.ToString("g") : "Never";
 
         public List<Model.LinkCheck> Links { get; set; } = [];

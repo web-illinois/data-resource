@@ -5,16 +5,28 @@
 
 <ilw-content>
     <h1>Validate Links</h1>
-    <p>You can schedule a link check for your resources to validate they are valid links. Note that this will only check if the link is valid, not if it has been moved or repurposed.</p>
-    <p>You may only schedule one link check per day, and you may not schedule a second link check before the first link check has finished.</p>
-    <button class="ilw-button" @onclick="ScheduleLinkCheck">Schedule Link Check</button>
-    <h2>Link Check Status</h2>
-    <p>Last Link Check: @DateLastLinkCheckFormatted</p>
-    <p>Number of Links Left to Check: @LinksLeftToCheck</p>
+    <p>You can schedule a link check for your resources to validate they are valid links. Note that this will only check if the link is valid (resolve to a website), not if it has been moved or repurposed.</p>
+    <p>You may not schedule a second link check if a link check is in progress. The process runs about 60 links an hour, so it may be several days before the process is complete. After you trigger the process, check back on this page to see the progress.</p>
+    <p>Note that if a link does not resolve to a website, the system will convert it to draft mode and it will not show up in searches. If you find a link is consistently getting triggered as "not resolved" but it is a good link (because the website has software that prevents this type of link check), you can go to the resource technical area and click the <em>Use Manual Check</em> option. This will prevent the link from going to draft if it doesn't resolve.</p>
+
+    @if (IsInProcess)
+    {
+        <h2>Link Check Status In Process</h2>
+        <p>Last Link Check: @DateLastLinkCheckFormatted</p>
+        <p>Number of Links Left to Check: @LinksLeftToCheck</p>
+    } else
+    {
+        <button class="ilw-button" @onclick="ScheduleLinkCheck">Schedule Link Check</button>
+        <h2>Link Check Status</h2>
+        <p>Last Link Check: @DateLastLinkCheckFormatted</p>
+        <p>Number of Links Left to Check: @LinksLeftToCheck</p>
+    }
+
 
     @if (Links != null)
     {
         <h2>List of Bad Links</h2>
+        <p>This is a list of links that were marked as not resolved. This list will stay until you run another link check. You can get a dynamic list of "items in draft mode" by going to the <a href="/review/viewdrafts">View Drafts page</a> in the application. </p>
         <ul>
         @foreach (var linkCheckItem in Links)
         {

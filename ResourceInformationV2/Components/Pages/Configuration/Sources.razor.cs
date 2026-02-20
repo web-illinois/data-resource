@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using ResourceInformationV2.Components.Layout;
+using ResourceInformationV2.Data.Cache;
 using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Helpers;
@@ -22,12 +23,20 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         public IEnumerable<Tuple<string, string>> SourceEntries { get; set; } = default!;
 
         [Inject]
+        protected CacheHolder CacheHolder { get; set; } = default!;
+
+        [Inject]
         public SourceHelper SourceHelper { get; set; } = default!;
 
-        protected async Task CreateSource() => await Layout.AddMessage(await SourceHelper.CreateSource(NewSourceCode, NewSource, await UserHelper.GetUser(AuthenticationStateProvider)));
+        protected async Task CreateSource() {
+            await Layout.AddMessage(await SourceHelper.CreateSource(NewSourceCode, NewSource, await UserHelper.GetUser(AuthenticationStateProvider)));
+            var email = await UserHelper.GetUser(AuthenticationStateProvider);
+            var baseUrl = await SourceHelper.GetBaseUrlFromSource(NewSourceCode);
+            CacheHolder.SetCacheSource(email, NewSourceCode, baseUrl);
+        }
 
         protected override async Task OnInitializedAsync() {
-            base.OnInitialized();
+            await base.OnInitializedAsync();
             var sidebar = string.IsNullOrWhiteSpace(await Layout.CheckSource(false)) ? SidebarEnum.ConfigurationNoSource : SidebarEnum.Configuration;
             Layout.SetSidebar(sidebar, "Configuration");
             SourceEntries = await SourceHelper.GetSourcesAndOwners();

@@ -32,10 +32,6 @@ namespace ResourceInformationV2.Search {
             returnValue += $"Notes {(indexNotes.IsValid ? "created" : "failed")} - {indexNotes.DebugInformation}; ";
             var indexPeople = openSearchClient.Indices.Create(UrlTypes.People.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Person>()));
             returnValue += $"FAQs {(indexPeople.IsValid ? "created" : "failed")} - {indexPeople.DebugInformation}; ";
-
-            // Need to rebuild publication index. DELETE AFTER DEPLOY
-            openSearchClient.Indices.Delete(UrlTypes.Publications.ConvertToUrlString());
-
             var indexPublications = openSearchClient.Indices.Create(UrlTypes.Publications.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Publication>()));
             returnValue += $"Publications {(indexPublications.IsValid ? "created" : "failed")} - {indexPublications.DebugInformation}; ";
             var indexResources = openSearchClient.Indices.Create(UrlTypes.Resources.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Resource>()));

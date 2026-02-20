@@ -1,21 +1,23 @@
-﻿namespace ResourceInformationV2.Search.Models {
+﻿using OpenSearch.Client;
+
+namespace ResourceInformationV2.Search.Models {
 
     public class Publication : BaseObject {
         public IEnumerable<string> Authors { get; set; } = [];
         public string BookTitle { get; set; } = "";
-        public string Doi { get; set; } = "";
-        public override string EditLink => _editLink + "publication/" + Id;
-        public string Issue { get; set; } = "";
+        [Keyword] public string Doi { get; set; } = "";
+        public override string EditLink => EditLinkRoot + "publication/" + Id;
+        [Keyword] public string Issue { get; set; } = "";
         public string JournalName { get; set; } = "";
         public override string NameType => "Publication";
-        public string PageNumbers { get; set; } = "";
-        public string PublicationType { get; set; } = "";
-        public string PublishedDate { get; set; } = "";
-        public string PublishedDateNumeric => DateTime.TryParse(PublishedDate, out DateTime date) ? date.ToString("yyyyMMdd") : "";
-        public string Status { get; set; } = "";
-        public string Volume { get; set; } = "";
+        [Keyword] public string PageNumbers { get; set; } = "";
+        [Keyword] public string PublicationType { get; set; } = "";
+        [Keyword] public string PublishedDate { get; set; } = "";
+        [Keyword] public string PublishedDateNumeric => DateTime.TryParse(PublishedDate, out var date) ? date.ToString("yyyyMMdd") : "";
+        [Keyword] public string Status { get; set; } = "";
+        [Keyword] public string Volume { get; set; } = "";
 
-        internal override string[] Headings => ["Id", "Title", "Description", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Authors", "Book Title", "Issue", "Journal Name", "Page Numbers", "Publication Type", "PublishedDate", "Status", "Volume", "Related Links", "Order", "Review Email", "Last Updated Date"];
+        internal override string[] Headings => ["Id", "Title", "Description", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Authors", "Book Title", "Issue", "Journal Name", "Page Numbers", "Publication Type", "PublishedDate", "Status", "Volume", "DOI", "Related Links", "Order", "Review Email", "Last Updated Date"];
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
@@ -28,7 +30,7 @@
             ImageSource = lineArray[7];
             VideoUrl = lineArray[8];
             Notes = lineArray[9];
-            _ = DateTime.TryParse(lineArray[10], out DateTime createdDate);
+            _ = DateTime.TryParse(lineArray[10], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
             _ = bool.TryParse(lineArray[11], out var isActive);
             IsActive = isActive;
@@ -48,11 +50,12 @@
             PublishedDate = lineArray[25];
             Status = lineArray[26];
             Volume = lineArray[27];
-            LinkList = GetLinksFromString(lineArray[28]);
-            _ = int.TryParse(lineArray[29], out var order);
+            Doi = lineArray[28];
+            LinkList = GetLinksFromString(lineArray[29]);
+            _ = int.TryParse(lineArray[30], out var order);
             Order = order;
-            ReviewEmail = lineArray[30];
-            _ = DateTime.TryParse(lineArray[31], out DateTime lastUpdatedDate);
+            ReviewEmail = lineArray[31];
+            _ = DateTime.TryParse(lineArray[32], out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -86,6 +89,7 @@
             PublishedDate,
             Status,
             Volume,
+            Doi,
             LinkList == null ? "" : string.Join(";", LinkList.Select(link => link.ToString())),
             Order.ToString(),
             ReviewEmail,

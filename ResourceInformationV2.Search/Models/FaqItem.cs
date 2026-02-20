@@ -3,7 +3,7 @@
     public class FaqItem : BaseObject {
         public override string Description { get => SummaryAnswer; set => SummaryAnswer = value; }
         public string DetailAnswer { get; set; } = "";
-        public override string EditLink => _editLink + "faq/" + Id;
+        public override string EditLink => EditLinkRoot + "faq/" + Id;
         public override string NameType => "FAQ Item";
         public string Question { get; set; } = "";
         public string SummaryAnswer { get; set; } = "";

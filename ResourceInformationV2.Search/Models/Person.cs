@@ -1,7 +1,7 @@
 ﻿namespace ResourceInformationV2.Search.Models {
 
     public class Person : BaseObject {
-        public override string EditLink => _editLink + "person/" + Id;
+        public override string EditLink => EditLinkRoot + "person/" + Id;
         public string FirstName { get; set; } = "";
         public string JobLocation { get; set; } = "";
         public string JobTitle { get; set; } = "";

@@ -1,7 +1,7 @@
 ﻿namespace ResourceInformationV2.Search.Models {
 
     public class Resource : BaseObject {
-        public override string EditLink => _editLink + "resource/" + Id;
+        public override string EditLink => EditLinkRoot + "resource/" + Id;
         public override string NameType => "Resource";
 
         internal override string[] Headings => ["Id", "Title", "Description", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];

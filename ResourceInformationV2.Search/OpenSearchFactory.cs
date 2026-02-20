@@ -24,8 +24,6 @@ namespace ResourceInformationV2.Search {
 
         public static string MapIndex(OpenSearchClient openSearchClient) {
             var returnValue = "Mapping: ";
-            // var indexPrograms = openSearchClient.Indices.Create(UrlTypes.Programs.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Program>().Properties<Program>(p => p.Keyword(k => k.Name(f => f.Credentials.Select(f => f.FormatType))).Keyword(k => k.Name(f => f.Credentials.Select(f => f.CredentialType))).Keyword(k => k.Name(f => f.Credentials.Select(f => f.ProgramId))).Keyword(k => k.Name(f => f.Credentials.Select(f => f.DepartmentList))))));
-
             var indexEvents = openSearchClient.Indices.Create(UrlTypes.Events.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Event>()));
             returnValue += $"Events {(indexEvents.IsValid ? "created" : "failed")} - {indexEvents.DebugInformation}; ";
             var indexFaqs = openSearchClient.Indices.Create(UrlTypes.Faqs.ConvertToUrlString(), c => c.Map(m => m.AutoMap<FaqItem>()));
@@ -34,6 +32,10 @@ namespace ResourceInformationV2.Search {
             returnValue += $"Notes {(indexNotes.IsValid ? "created" : "failed")} - {indexNotes.DebugInformation}; ";
             var indexPeople = openSearchClient.Indices.Create(UrlTypes.People.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Person>()));
             returnValue += $"FAQs {(indexPeople.IsValid ? "created" : "failed")} - {indexPeople.DebugInformation}; ";
+
+            // Need to rebuild publication index. DELETE AFTER DEPLOY
+            openSearchClient.Indices.Delete(UrlTypes.Publications.ConvertToUrlString());
+
             var indexPublications = openSearchClient.Indices.Create(UrlTypes.Publications.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Publication>()));
             returnValue += $"Publications {(indexPublications.IsValid ? "created" : "failed")} - {indexPublications.DebugInformation}; ";
             var indexResources = openSearchClient.Indices.Create(UrlTypes.Resources.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Resource>()));

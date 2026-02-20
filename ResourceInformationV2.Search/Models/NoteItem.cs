@@ -2,7 +2,7 @@
 
     public class NoteItem : BaseObject {
         public string DetailText { get; set; } = "";
-        public override string EditLink => _editLink + "note/" + Id;
+        public override string EditLink => EditLinkRoot + "note/" + Id;
         public override string NameType => "Note";
 
         internal override string[] Headings => ["Id", "Title", "Description", "Detail Text", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];

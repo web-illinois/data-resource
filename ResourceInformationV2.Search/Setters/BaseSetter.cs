@@ -23,6 +23,7 @@ namespace ResourceInformationV2.Search.Setters {
             AddedTag2 = [];
             AddedTag3 = [];
             AddedTag4 = [];
+            AddedTopic = [];
         }
 
         public async Task<string> DeleteItem(string id) {

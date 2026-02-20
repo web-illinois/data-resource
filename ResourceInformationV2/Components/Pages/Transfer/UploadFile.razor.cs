@@ -56,7 +56,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
         protected override async Task OnInitializedAsync() {
             ValidateTags = true;
             Layout.SetSidebar(SidebarEnum.Transfer, "Transfer Items");
-            string sourceCode = await Layout.CheckSource();
+            var sourceCode = await Layout.CheckSource();
             Options = [.. (await SourceHelper.DoesSourceUseItemCheckAllAndConcatenate(sourceCode))];
             SelectedOption = Options.First();
         }
@@ -69,24 +69,24 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
         private async Task Upload() {
             if (!string.IsNullOrWhiteSpace(_reader)) {
                 await Layout.AddMessage("In process of being uploaded -- please do not leave this page");
-                string? sourceCode = await Layout.CheckSource();
-                (List<Tag> TagSources, int SourceId) t = await FilterHelper.GetFilters(sourceCode, TagType.Tag1);
-                int sourceId = t.SourceId;
-                List<Tag> tag1 = t.TagSources;
-                List<Tag> tag2 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag2)).TagSources;
-                List<Tag> tag3 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag3)).TagSources;
-                List<Tag> tag4 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag4)).TagSources;
-                List<Tag> audience = (await FilterHelper.GetFilters(sourceCode, TagType.Audience)).TagSources;
-                List<Tag> topic = (await FilterHelper.GetFilters(sourceCode, TagType.Topic)).TagSources;
-                List<Tag> department = (await FilterHelper.GetFilters(sourceCode, TagType.Department)).TagSources;
-                string displayString = DeleteAllFirst ? "Existing records deleted. " : "";
-                List<string> newTag1 = new List<string>();
-                List<string> newTag2 = new List<string>();
-                List<string> newTag3 = new List<string>();
-                List<string> newTag4 = new List<string>();
-                List<string> newAudience = new List<string>();
-                List<string> newTopic = new List<string>();
-                List<string> newDepartment = new List<string>();
+                var sourceCode = await Layout.CheckSource();
+                var t = await FilterHelper.GetFilters(sourceCode, TagType.Tag1);
+                var sourceId = t.SourceId;
+                var tag1 = t.TagSources;
+                var tag2 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag2)).TagSources;
+                var tag3 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag3)).TagSources;
+                var tag4 = (await FilterHelper.GetFilters(sourceCode, TagType.Tag4)).TagSources;
+                var audience = (await FilterHelper.GetFilters(sourceCode, TagType.Audience)).TagSources;
+                var topic = (await FilterHelper.GetFilters(sourceCode, TagType.Topic)).TagSources;
+                var department = (await FilterHelper.GetFilters(sourceCode, TagType.Department)).TagSources;
+                var displayString = DeleteAllFirst ? "Existing records deleted. " : "";
+                List<string> newTag1 = [];
+                List<string> newTag2 = [];
+                List<string> newTag3 = [];
+                List<string> newTag4 = [];
+                List<string> newAudience = [];
+                List<string> newTopic = [];
+                List<string> newDepartment = [];
 
                 _ = Enum.TryParse(SelectedOption, out UrlTypes urlType);
 
@@ -95,6 +95,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteResources(sourceCode);
                         }
+                        ResourceSetter.ClearAddedTags();
                         displayString += await ResourceSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = ResourceSetter.AddedTag;
                         newTag2 = ResourceSetter.AddedTag2;
@@ -109,6 +110,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteEvents(sourceCode);
                         }
+                        EventSetter.ClearAddedTags();
                         displayString += await EventSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = EventSetter.AddedTag;
                         newTag2 = EventSetter.AddedTag2;
@@ -123,6 +125,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteFaqs(sourceCode);
                         }
+                        FaqSetter.ClearAddedTags();
                         displayString += await FaqSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = FaqSetter.AddedTag;
                         newTag2 = FaqSetter.AddedTag2;
@@ -137,6 +140,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeleteNotes(sourceCode);
                         }
+                        NoteSetter.ClearAddedTags();
                         displayString += await NoteSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = NoteSetter.AddedTag;
                         newTag2 = NoteSetter.AddedTag2;
@@ -151,6 +155,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeletePublications(sourceCode);
                         }
+                        PublicationSetter.ClearAddedTags();
                         displayString += await PublicationSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = PublicationSetter.AddedTag;
                         newTag2 = PublicationSetter.AddedTag2;
@@ -165,6 +170,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                         if (DeleteAllFirst) {
                             _ = await BulkEditor.DeletePeople(sourceCode);
                         }
+                        PersonSetter.ClearAddedTags();
                         displayString += await PersonSetter.UploadFile(sourceCode ?? "", _reader, ValidateTags, tag1.Select(t => t.Title), tag2.Select(t => t.Title), tag3.Select(t => t.Title), tag4.Select(t => t.Title), audience.Select(t => t.Title), topic.Select(t => t.Title), department.Select(t => t.Title));
                         newTag1 = PersonSetter.AddedTag;
                         newTag2 = PersonSetter.AddedTag2;

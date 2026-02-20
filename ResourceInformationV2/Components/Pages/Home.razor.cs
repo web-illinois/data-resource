@@ -58,7 +58,7 @@ namespace ResourceInformationV2.Components.Pages {
                 SelectedSourceTitle = Sources[SelectedSource];
             }
             await ChangeBoxes();
-            base.OnInitialized();
+            await base.OnInitializedAsync();
         }
 
         private async Task ChangeBoxes() {

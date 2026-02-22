@@ -71,7 +71,7 @@ public class People {
     [Function("PersonLoad")]
     [OpenApiOperation(operationId: "PersonLoad", tags: "People", Description = "Load a person by API. This will be put in draft mode unless instructed by the Administration application.")]
     [OpenApiParameter(name: "ilw-key", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "The API Key.")]
-    [OpenApiParameter(name: "person", In = ParameterLocation.Query, Required = false, Type = typeof(Person), Description = "A json implementation of a person. An ID will be generated automatically if it isn't created, and it will error out if the ID doesn't start with the source plus a '-' value.")]
+    [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Person), Required = true, Description = "A json implementation of a person. An ID will be generated automatically if it isn't created, and it will error out if the ID doesn't start with the source plus a '-' value.")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The ID of the person that was loaded.")]
     public async Task<HttpResponseData> Load([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
         _logger.LogInformation("Called PersonLoad.");

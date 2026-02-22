@@ -74,20 +74,29 @@ public class People {
     [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Person), Required = true, Description = "A json implementation of a person. An ID will be generated automatically if it isn't created, and it will error out if the ID doesn't start with the source plus a '-' value.")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The ID of the person that was loaded.")]
     public async Task<HttpResponseData> Load([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
-        _logger.LogInformation("Called PersonLoad.");
-        var requestHelper = RequestHelperFactory.Create();
-        requestHelper.Initialize(req);
-        var key = requestHelper.GetCodeFromHeader(req);
-        var item = await req.ReadFromJsonAsync<Person>() ?? new Person();
-        var results = await _apiHelper.CheckApi(item.Source, key);
-        if (!results.allowApi) {
-            throw new Exception($"API Key in header ilw-key is needed, was sent '{key}'");
+        try {
+            _logger.LogInformation("Called PersonLoad.");
+            var requestHelper = RequestHelperFactory.Create();
+            requestHelper.Initialize(req);
+            var key = requestHelper.GetCodeFromHeader(req);
+            var item = await req.ReadFromJsonAsync<Person>() ?? new Person();
+            var results = await _apiHelper.CheckApi(item.Source, key);
+            if (!results.allowApi) {
+                throw new Exception($"API Key in header ilw-key is needed, was sent '{key}'");
+            }
+            item.Prepare();
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(results.forceDraft
+                ? await _personSetter.SetItemWithDraft(item)
+                : await _personSetter.SetItem(item));
+            await _logHelper.Log(CategoryType.Person, FieldType.None, "API", item.Source, item, "API Load",
+                EmailType.OnSubmission);
+            return response;
+        } catch (Exception ex) {
+            var response = req.CreateResponse(HttpStatusCode.InternalServerError);
+            await response.WriteAsJsonAsync(ex.Message);
+            return response;
         }
-        item.Prepare();
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(results.forceDraft ? await _personSetter.SetItemWithDraft(item) : await _personSetter.SetItem(item));
-        await _logHelper.Log(CategoryType.Person, FieldType.None, "API", item.Source, item, "API Load", EmailType.OnSubmission);
-        return response;
     }
 
     [Function("PersonSearch")]

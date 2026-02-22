@@ -12,6 +12,7 @@ using ResourceInformationV2.Search.JsonThinModels;
 using ResourceInformationV2.Search.Models;
 using ResourceInformationV2.Search.Setters;
 using System.Net;
+using FieldType = ResourceInformationV2.Data.DataModels.FieldType;
 using LogHelper = ResourceInformationV2.Data.DataHelpers.LogHelper;
 
 namespace ResourceInformationV2.Function;
@@ -126,20 +127,30 @@ public class Resources(ILogger<Resources> logger, ResourceGetter resourceGetter,
     [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Resource), Required = true, Description = "A json implementation of a resource. An ID will be generated automatically if it isn't created, and it will error out if the ID doesn't start with the source plus a '-' value.")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The ID of the resource that was loaded.")]
     public async Task<HttpResponseData> Load([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
-        _logger.LogInformation("Called ResourceLoad.");
-        var requestHelper = RequestHelperFactory.Create();
-        requestHelper.Initialize(req);
-        var key = requestHelper.GetCodeFromHeader(req);
-        var item = await req.ReadFromJsonAsync<Resource>() ?? new Resource();
-        var results = await _apiHelper.CheckApi(item.Source, key);
-        if (!results.allowApi) {
-            throw new Exception($"API Key in header ilw-key is needed, was sent '{key}'");
+        try {
+            _logger.LogInformation("Called ResourceLoad.");
+            var requestHelper = RequestHelperFactory.Create();
+            requestHelper.Initialize(req);
+            var key = requestHelper.GetCodeFromHeader(req);
+            var item = await req.ReadFromJsonAsync<Resource>() ?? new Resource();
+            var results = await _apiHelper.CheckApi(item.Source, key);
+            if (!results.allowApi) {
+                throw new Exception($"API Key in header ilw-key is needed, was sent '{key}'");
+            }
+
+            item.Prepare();
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(results.forceDraft
+                ? await _resourceSetter.SetItemWithDraft(item)
+                : await _resourceSetter.SetItem(item));
+            await _logHelper.Log(CategoryType.Resource, FieldType.None, "API", item.Source, item, "API Load",
+                EmailType.OnSubmission);
+            return response;
+        } catch (Exception ex) {
+            var response = req.CreateResponse(HttpStatusCode.InternalServerError);
+            await response.WriteAsJsonAsync(ex.Message);
+            return response;
         }
-        item.Prepare();
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(results.forceDraft ? await _resourceSetter.SetItemWithDraft(item) : await _resourceSetter.SetItem(item));
-        await _logHelper.Log(CategoryType.Resource, FieldType.None, "API", item.Source, item, "API Load", EmailType.OnSubmission);
-        return response;
     }
 
 

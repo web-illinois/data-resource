@@ -123,7 +123,7 @@ public class Resources(ILogger<Resources> logger, ResourceGetter resourceGetter,
     [Function("ResourceLoad")]
     [OpenApiOperation(operationId: "ResourceLoad", tags: "Resources", Description = "Load a resource by API. This will be put in draft mode unless overridden by the Administration application.")]
     [OpenApiParameter(name: "ilw-key", In = ParameterLocation.Header, Required = true, Type = typeof(string), Description = "The API Key.")]
-    [OpenApiParameter(name: "resource", In = ParameterLocation.Query, Required = false, Type = typeof(Resource), Description = "A json implementation of a resource. An ID will be generated automatically if it isn't created, and it will error out if the ID doesn't start with the source plus a '-' value.")]
+    [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(Resource), Required = true, Description = "A json implementation of a resource. An ID will be generated automatically if it isn't created, and it will error out if the ID doesn't start with the source plus a '-' value.")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The ID of the resource that was loaded.")]
     public async Task<HttpResponseData> Load([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
         _logger.LogInformation("Called ResourceLoad.");

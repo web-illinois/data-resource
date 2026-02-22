@@ -20,7 +20,10 @@ namespace ResourceInformationV2.Function.Helper {
             return bool.TryParse(s, out var i) ? i : defaultValue;
         }
 
-        public string GetCodeFromHeader(HttpRequestData req) => req.Headers.FirstOrDefault(h => h.Key == "ilw-key").Value.FirstOrDefault() ?? string.Empty;
+        public string GetCodeFromHeader(HttpRequestData req) {
+            var s = GetRequest(req, "ilw-key", false);
+            return !string.IsNullOrWhiteSpace(s) ? s : req.Headers.FirstOrDefault(h => h.Key == "ilw-key").Value.FirstOrDefault() ?? string.Empty;
+        }
 
         public int GetInteger(HttpRequestData req, string name, int defaultValue = 0) {
             var s = GetRequest(req, name, false);

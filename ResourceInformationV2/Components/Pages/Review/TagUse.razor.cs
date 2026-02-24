@@ -56,7 +56,6 @@ namespace ResourceInformationV2.Components.Pages.Review {
             await base.OnInitializedAsync();
             Layout.SetSidebar(SidebarEnum.Review, "Review Items");
             var sourceCode = await Layout.CheckSource();
-            var tagList = await FilterHelper.GetAllFilters(sourceCode);
             var tagTitles = await FilterTranslator.GetTagTitles(sourceCode);
             Tags = [.. Convert(await EventGetter.GetTagCount(sourceCode), "Events", tagTitles),
                 .. Convert(await FaqGetter.GetTagCount(sourceCode), "FAQs", tagTitles),
@@ -67,14 +66,13 @@ namespace ResourceInformationV2.Components.Pages.Review {
         }
 
         private List<TagList> Convert((bool, List<TagList>) lists, string mainTitle, Dictionary<string, string> tagTitles) {
-            if (lists.Item1) {
-                foreach (var list in lists.Item2) {
-                    list.Title = mainTitle + " " + tagTitles[list.Title];
-                }
-                return lists.Item2;
-            } else {
-                return new List<TagList> { new TagList { Title = "error" } };
+            if (!lists.Item1) {
+                return [new TagList { Title = "error" }];
             }
+            foreach (var list in lists.Item2) {
+                list.Title = mainTitle + " " + tagTitles[list.Title];
+            }
+            return lists.Item2;
         }
     }
 }

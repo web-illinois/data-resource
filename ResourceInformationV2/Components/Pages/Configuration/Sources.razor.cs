@@ -30,9 +30,6 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
 
         protected async Task CreateSource() {
             await Layout.AddMessage(await SourceHelper.CreateSource(NewSourceCode, NewSource, await UserHelper.GetUser(AuthenticationStateProvider)));
-            var email = await UserHelper.GetUser(AuthenticationStateProvider);
-            var baseUrl = await SourceHelper.GetBaseUrlFromSource(NewSourceCode);
-            CacheHolder.SetCacheSource(email, NewSourceCode, baseUrl);
         }
 
         protected override async Task OnInitializedAsync() {
@@ -41,7 +38,5 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
             Layout.SetSidebar(sidebar, "Configuration");
             SourceEntries = await SourceHelper.GetSourcesAndOwners();
         }
-
-        protected async Task RequestAccess(string key) => await Layout.AddMessage(await SourceHelper.RequestAccess(key, await UserHelper.GetUser(AuthenticationStateProvider)));
     }
 }

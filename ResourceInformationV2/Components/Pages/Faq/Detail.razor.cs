@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using ResourceInformationV2.Components.Controls;
+﻿using Blazored.TextEditor;
+using Microsoft.AspNetCore.Components;
 using ResourceInformationV2.Components.Layout;
 using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Data.DataModels;
@@ -10,7 +10,7 @@ using ResourceInformationV2.Search.Setters;
 namespace ResourceInformationV2.Components.Pages.Faq {
 
     public partial class Detail {
-        private RichTextEditor _rteDescription = default!;
+        private BlazoredTextEditor _rteDescription;
         public Search.Models.FaqItem Item { get; set; } = default!;
 
         [CascadingParameter]
@@ -33,7 +33,7 @@ namespace ResourceInformationV2.Components.Pages.Faq {
         public async Task Save() {
             Layout.RemoveDirty();
             if (_rteDescription != null) {
-                Item.DetailAnswer = await _rteDescription.GetValue();
+                Item.DetailAnswer = await _rteDescription.GetHTML();
             }
 
             _ = await FaqSetter.SetItem(Item);
@@ -42,13 +42,12 @@ namespace ResourceInformationV2.Components.Pages.Faq {
         }
 
         protected override async Task OnInitializedAsync() {
-            var sourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }
             Item = await FaqGetter.GetItem(id);
-            await _rteDescription.Load(Item.DetailAnswer);
+            await _rteDescription.LoadHTMLContent(Item.DetailAnswer);
             Layout.SetSidebar(SidebarEnum.FaqItem, Item.Title);
             await base.OnInitializedAsync();
         }

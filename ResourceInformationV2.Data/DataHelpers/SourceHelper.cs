@@ -8,6 +8,9 @@ namespace ResourceInformationV2.Data.DataHelpers {
         private readonly ResourceRepository _resourceRepository = resourceRepository;
 
         public async Task<string> CreateSource(string newSourceCode, string newTitle, string email) {
+            if (string.IsNullOrWhiteSpace(newTitle) || string.IsNullOrWhiteSpace(newSourceCode)) {
+                return "Source name and code cannot be empty.";
+            }
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == newSourceCode.ToLowerInvariant() || s.Title == newTitle));
             if (source != null) {
                 return "Source code or name is in use";
@@ -24,10 +27,13 @@ namespace ResourceInformationV2.Data.DataHelpers {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
             if (source == null) {
                 return "Source Code not found";
-            } else if (source.IsTest) {
-                return "Source Code in test";
-            } else if (source.CreatedByEmail != email) {
-                return "Source must be deleted by creator " + source.CreatedByEmail;
+            }
+            if (source.IsTest) {
+                return "Source Code is the test instance and cannot be deleted";
+            }
+            var owner = await _resourceRepository.ReadAsync(c => c.SecurityEntries.FirstOrDefault(s => s.SourceId == source.Id && s.IsOwner));
+            if (owner != null && owner.Email != email) {
+                return "Source may only be deleted by the owner " + owner.Email;
             }
             _ = await _resourceRepository.DeleteBySourceAsync(source);
             return $"Removed source {sourceCode}";
@@ -56,6 +62,8 @@ namespace ResourceInformationV2.Data.DataHelpers {
 
                 case CategoryType.Publication:
                     return source.UsePublications;
+                case CategoryType.None:
+                    break;
             }
             return false;
         }
@@ -84,8 +92,6 @@ namespace ResourceInformationV2.Data.DataHelpers {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode.ToLowerInvariant()));
             return source?.BaseUrl ?? "";
         }
-
-        public async Task<Source?> GetSourceByCode(string sourceCode) => await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
 
         public async Task<string> GetSourceFilterName(string sourceCode, TagType tagType) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
@@ -120,29 +126,6 @@ namespace ResourceInformationV2.Data.DataHelpers {
         public async Task<Dictionary<string, string>> GetSources(string netId) => await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(se => se.Source).Where(se => se.IsActive && !se.IsRequested && se.Email == netId && se.Source != null).OrderBy(se => se.Source.Title).ToDictionary(se => se.Source?.Code ?? "", se2 => se2.Source?.Title ?? ""));
 
         public async Task<IEnumerable<Tuple<string, string>>> GetSourcesAndOwners() => await _resourceRepository.ReadAsync(c => c.Sources.Where(s => s.IsActive).OrderBy(s => s.Title).Select(s => new Tuple<string, string>(s.CreatedByEmail, $"{s.Title} ({s.Code})")));
-
-        public async Task<string> RequestAccess(string sourceCode, string email) {
-            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
-            if (source == null) {
-                return "Source Code not found";
-            }
-
-            var existingItem = await _resourceRepository.ReadAsync(c => c.SecurityEntries.FirstOrDefault(s => s.SourceId == source.Id && s.Email == email));
-            if (existingItem != null) {
-                if (existingItem.IsActive) {
-                    return "You already have access";
-                } else if (existingItem.IsRequested) {
-                    return "You entry is pending";
-                } else {
-                    return "You entry has been rejected -- please contact the owner for more information";
-                }
-            }
-
-            var value = await _resourceRepository.CreateAsync(new SecurityEntry(email, source.Id, true));
-            return $"Requested access to code {sourceCode}";
-        }
-
-        public async Task<int> SaveSource(Source source) => await _resourceRepository.UpdateAsync(source);
 
         public async Task<int> SetSourceFilterName(string sourceCode, TagType tagType, string title) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));

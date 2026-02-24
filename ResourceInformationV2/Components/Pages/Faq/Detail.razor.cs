@@ -46,10 +46,16 @@ namespace ResourceInformationV2.Components.Pages.Faq {
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }
-            Item = await FaqGetter.GetItem(id);
-            await _rteDescription.LoadHTMLContent(Item.DetailAnswer);
-            Layout.SetSidebar(SidebarEnum.FaqItem, Item.Title);
             await base.OnInitializedAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender) {
+            if (firstRender) {
+                var id = await Layout.GetCachedId();
+                Item = await FaqGetter.GetItem(id);
+                await _rteDescription.LoadHTMLContent(Item.DetailAnswer);
+                Layout.SetSidebar(SidebarEnum.FaqItem, Item.Title);
+            }
         }
     }
 }

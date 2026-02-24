@@ -46,10 +46,17 @@ namespace ResourceInformationV2.Components.Pages.Note {
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }
-            Item = await NoteGetter.GetItem(id);
-            await _rteDescription.LoadHTMLContent(Item.DetailText);
-            Layout.SetSidebar(SidebarEnum.NotesItem, Item.Title);
             await base.OnInitializedAsync();
         }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender) {
+            if (firstRender) {
+                var id = await Layout.GetCachedId();
+                Item = await NoteGetter.GetItem(id);
+                await _rteDescription.LoadHTMLContent(Item.DetailText);
+                Layout.SetSidebar(SidebarEnum.NotesItem, Item.Title);
+            }
+        }
+
     }
 }

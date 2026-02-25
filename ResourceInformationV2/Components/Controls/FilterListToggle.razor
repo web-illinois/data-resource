@@ -35,7 +35,7 @@
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
         }
-        @if (Tags2.Count() > 0 && Tag1Title != "")
+        @if (Tags2.Count() > 0 && Tag2Title != "")
         {
             <h2>@Tag2Title (tag 2)</h2>
             @foreach (var tag in Tags2.OrderBy(t => t.Order).ThenBy(t => t.Title))
@@ -43,7 +43,7 @@
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
         }
-        @if (Tags3.Count() > 0 && Tag1Title != "")
+        @if (Tags3.Count() > 0 && Tag3Title != "")
         {
             <h2>@Tag3Title (tag 3)</h2>
             @foreach (var tag in Tags3.OrderBy(t => t.Order).ThenBy(t => t.Title))
@@ -51,7 +51,7 @@
                 <FilterToggle Filter="@tag"></FilterToggle>
             }
         }
-        @if (Tags4.Count() > 0 && Tag1Title != "")
+        @if (Tags4.Count() > 0 && Tag4Title != "")
         {
             <h2>@Tag4Title (tag 4)</h2>
             @foreach (var tag in Tags4.OrderBy(t => t.Order).ThenBy(t => t.Title))

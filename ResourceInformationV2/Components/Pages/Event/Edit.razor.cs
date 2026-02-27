@@ -37,7 +37,8 @@ namespace ResourceInformationV2.Components.Pages.Event {
         }
 
         protected async Task GetItems() {
-            ItemList = await EventGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
+            var department = await Layout.ConfirmDepartmentName(false);
+            ItemList = await EventGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem, department);
             StateHasChanged();
         }
 

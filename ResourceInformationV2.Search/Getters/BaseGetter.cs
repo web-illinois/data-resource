@@ -38,13 +38,14 @@ namespace ResourceInformationV2.Search.Getters {
             return response.IsValid ? [.. response.Documents.Select(r => r.GetGenericItem()).OrderBy(g => g.Title)] : [];
         }
 
-        public async Task<List<GenericItem>> GetAllItemsBySource(string source, string search) {
+        public async Task<List<GenericItem>> GetAllItemsBySource(string source, string search, string department) {
             var response = await _openSearchClient.SearchAsync<T>(s => s.Index(IndexName)
                     .Size(10000)
                     .Query(q => q
                     .Bool(b => b
-                    .Filter(f => f.Term(m => m.Field(fld => fld.Source).Value(source)))
-                    .Must(m => string.IsNullOrWhiteSpace(search) ? m.MatchAll() : m.Match(m => m.Field(fld => fld.Title).Query(search).Operator(Operator.And))))));
+                    .Filter(f => f.Term(m => m.Field(fld => fld.Source).Value(source)),
+                        f => string.IsNullOrWhiteSpace(department) ? f.MatchAll() : f.Terms(m => m.Field(fld => fld.DepartmentList).Terms(new { department })))
+                    .Must(f => string.IsNullOrWhiteSpace(search) ? f.MatchAll() : f.Match(m => m.Field(fld => fld.Title).Query(search).Operator(Operator.And))))));
             LogDebug(response);
             return response.IsValid ? [.. response.Documents.Select(r => r.GetGenericItem()).OrderBy(g => g.Title)] : [];
         }

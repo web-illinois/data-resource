@@ -44,14 +44,15 @@ namespace ResourceInformationV2.Components.Pages.Person {
         protected override async Task OnInitializedAsync() {
             SourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-
+            var department = await Layout.ConfirmDepartmentName(false);
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await PersonGetter.GetItem(id);
                 Layout.SetSidebar(SidebarEnum.PeopleItem, Item.Title);
             } else {
-                Item = new Search.Models.Person() {
+                Item = new Search.Models.Person {
                     Source = SourceCode,
-                    IsActive = false
+                    IsActive = false,
+                    DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.PeopleItem, "New " + Item.NameType, true);
             }

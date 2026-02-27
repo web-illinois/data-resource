@@ -34,7 +34,20 @@ namespace ResourceInformationV2.Components.Layout {
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
 
+        [Inject]
+        protected SecurityHelper SecurityHelper { get; set; } = default!;
+
         public async Task AddMessage(string s) => _ = await JsRuntime.InvokeAsync<bool>("alertOnScreen", s);
+
+        public async Task<string> ConfirmDepartmentName(bool redirectIfDepartmentName) {
+            var email = await AuthenticationStateProvider.GetUser();
+            var source = CacheHolder.GetCacheSource(await AuthenticationStateProvider.GetUser());
+            var departmentName = await SecurityHelper.GetDepartmentName(source ?? "", email);
+            if (!string.IsNullOrWhiteSpace(departmentName) && redirectIfDepartmentName) {
+                NavigationManager.NavigateTo("/?limitedAccess=true");
+            }
+            return departmentName;
+        }
 
         public async Task<string> CheckSource(bool redirectIfNoSource = true) {
             var source = CacheHolder.GetCacheSource(await AuthenticationStateProvider.GetUser());

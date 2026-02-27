@@ -108,6 +108,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
             await OrderTagGroup(await Layout.CheckSource());
+            _ = await Layout.ConfirmDepartmentName(true);
             FilterTags = [];
             Layout.SetSidebar(SidebarEnum.Configuration, "Configuration");
         }

@@ -11,13 +11,13 @@
 @if (Item != null) {
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">Start Date</label>
+            <label for="title">Start Date / Time</label>
             <input id="title" type="datetime-local" @bind="Item.StartDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">End Date</label>
+            <label for="title">End Date / Time</label>
             <input id="title" type="datetime-local" @bind="Item.EndDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>

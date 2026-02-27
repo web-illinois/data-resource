@@ -33,8 +33,8 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         }
 
         protected async Task DeleteSource() {
-            var message = await BulkEditor.DeleteAllItems(_sourceCode);
-            message += await SourceHelper.DeleteSource(_sourceCode, await UserHelper.GetUser(AuthenticationStateProvider));
+            _ = await BulkEditor.DeleteAllItems(_sourceCode);
+            _ = await SourceHelper.DeleteSource(_sourceCode, await UserHelper.GetUser(AuthenticationStateProvider));
             var email = await UserHelper.GetUser(AuthenticationStateProvider);
             CacheHolder.ClearCache(email);
             NavigationManager.NavigateTo("/");
@@ -42,6 +42,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
 
         protected override async Task OnInitializedAsync() {
             _sourceCode = await Layout.CheckSource();
+            _ = await Layout.ConfirmDepartmentName(true);
             Layout.SetSidebar(SidebarEnum.Configuration, "Configuration");
             base.OnInitialized();
         }

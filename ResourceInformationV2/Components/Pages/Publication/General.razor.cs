@@ -40,14 +40,15 @@ namespace ResourceInformationV2.Components.Pages.Publication {
         protected override async Task OnInitializedAsync() {
             SourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-
+            var department = await Layout.ConfirmDepartmentName(false);
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await PublicationGetter.GetItem(id);
                 Layout.SetSidebar(SidebarEnum.PublicationItem, Item.Title);
             } else {
-                Item = new Search.Models.Publication() {
+                Item = new Search.Models.Publication {
                     Source = SourceCode,
-                    IsActive = false
+                    IsActive = false,
+                    DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.PublicationItem, "New " + Item.NameType, true);
             }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using ResourceInformationV2.Components.Layout;
 using ResourceInformationV2.Data.Cache;
 using ResourceInformationV2.Data.DataHelpers;
+using ResourceInformationV2.Data.DataModels;
 using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Helpers;
 
@@ -13,12 +14,14 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
 
         public string ApiGuid { get; set; } = "";
 
+        public List<string> Departments { get; set; } = [];
         public DateTime LastDateApiChanged { get; set; }
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
 
-        public List<string> NetIds { get; set; } = [];
+        public string NewDepartment { get; set; } = "";
+        public List<SecurityEntry> NetIds { get; set; } = [];
         public string NewNetId { get; set; } = "";
         public bool UseApi { get; set; } = false;
 
@@ -32,6 +35,9 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         protected CacheHolder CacheHolder { get; set; } = default!;
 
         [Inject]
+        protected FilterHelper FilterHelper { get; set; } = default!;
+
+        [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
@@ -40,9 +46,12 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         public async Task Add() {
             if (!string.IsNullOrWhiteSpace(NewNetId)) {
                 var source = await Layout.CheckSource();
-                var newId = await SecurityHelper.AddName(source, NewNetId);
+                var newId = await SecurityHelper.AddName(source, NewNetId, NewDepartment);
                 if (!string.IsNullOrWhiteSpace(newId)) {
-                    NetIds.Add(newId);
+                    NetIds.Add(new SecurityEntry {
+                        Email = newId,
+                        DepartmentTag = NewDepartment
+                    });
                 }
                 NewNetId = "";
             }
@@ -70,7 +79,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         public async Task Remove(string netId) {
             var source = await Layout.CheckSource();
             if (await SecurityHelper.RemoveName(source, netId)) {
-                NetIds.Remove(netId);
+                NetIds.Remove(NetIds.FirstOrDefault(n => n.Email == netId));
             }
             var email = await UserHelper.GetUser(AuthenticationStateProvider);
             if (netId == email) {
@@ -83,9 +92,11 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
             var source = await Layout.CheckSource();
+            _ = await Layout.ConfirmDepartmentName(true);
             NetIds = await SecurityHelper.GetNames(source);
             (UseApi, LastDateApiChanged, ApiDraft) = await ApiHelper.GetApi(source);
             Layout.SetSidebar(SidebarEnum.Configuration, "Configuration");
+            Departments = [.. (await FilterHelper.GetFilters(source, TagType.Department)).TagSources.Select(ts => ts.Title)];
         }
     }
 }

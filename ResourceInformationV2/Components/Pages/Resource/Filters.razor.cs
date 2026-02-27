@@ -25,9 +25,13 @@ namespace ResourceInformationV2.Components.Pages.Resource {
         [Inject]
         protected ResourceSetter ResourceSetter { get; set; } = default!;
 
+        protected bool DepartmentDisabled { get; set; }
+
         public async Task Save() {
             Item.AudienceList = _filterListToggle.AudienceTags?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
-            Item.DepartmentList = _filterListToggle.DepartmentTags?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
+            if (!DepartmentDisabled) {
+                Item.DepartmentList = _filterListToggle.DepartmentTags?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
+            }
             Item.TopicList = _filterListToggle.TopicTags?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
             Item.TagList = _filterListToggle.Tags1?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
             Item.Tag2List = _filterListToggle.Tags2?.Where(t => t.EnabledBySource).Select(t => t.Title).ToList() ?? [];
@@ -40,13 +44,12 @@ namespace ResourceInformationV2.Components.Pages.Resource {
         }
 
         protected override async Task OnInitializedAsync() {
-            string sourceCode = await Layout.CheckSource();
-            string id = await Layout.GetCachedId();
-            if (string.IsNullOrWhiteSpace(id)) {
-                NavigationManager.NavigateTo("/");
-            }
+            _ = await Layout.CheckSource();
+            var id = await Layout.GetCachedId();
             Item = await ResourceGetter.GetItem(id);
             Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
+            DepartmentDisabled = !string.IsNullOrWhiteSpace(await Layout.ConfirmDepartmentName(false));
+            await base.OnInitializedAsync();
         }
     }
 }

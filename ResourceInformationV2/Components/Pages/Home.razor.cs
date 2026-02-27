@@ -17,6 +17,9 @@ namespace ResourceInformationV2.Components.Pages {
         [SupplyParameterFromQuery]
         public bool RedirectIfNoSource { get; set; } = false;
 
+        [SupplyParameterFromQuery]
+        public bool LimitedAccess { get; set; } = false;
+
         public string SelectedSource { get; set; } = "";
         public string SelectedSourceTitle { get; set; } = "";
         public bool UseEvents { get; set; }

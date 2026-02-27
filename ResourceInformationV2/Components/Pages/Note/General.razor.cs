@@ -40,14 +40,15 @@ namespace ResourceInformationV2.Components.Pages.Note {
         protected override async Task OnInitializedAsync() {
             SourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-
+            var department = await Layout.ConfirmDepartmentName(false);
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await NoteGetter.GetItem(id);
                 Layout.SetSidebar(SidebarEnum.NotesItem, Item.Title);
             } else {
                 Item = new Search.Models.NoteItem() {
                     Source = SourceCode,
-                    IsActive = false
+                    IsActive = false,
+                    DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.NotesItem, "New " + Item.NameType, true);
             }

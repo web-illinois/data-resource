@@ -40,14 +40,15 @@ namespace ResourceInformationV2.Components.Pages.Faq {
         protected override async Task OnInitializedAsync() {
             SourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-
+            var department = await Layout.ConfirmDepartmentName(false);
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await FaqGetter.GetItem(id);
                 Layout.SetSidebar(SidebarEnum.FaqItem, Item.Title);
             } else {
-                Item = new Search.Models.FaqItem() {
+                Item = new Search.Models.FaqItem {
                     Source = SourceCode,
-                    IsActive = false
+                    IsActive = false,
+                    DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.FaqItem, "New " + Item.NameType, true);
             }

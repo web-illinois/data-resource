@@ -40,14 +40,15 @@ namespace ResourceInformationV2.Components.Pages.Resource {
         protected override async Task OnInitializedAsync() {
             SourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-
+            var department = await Layout.ConfirmDepartmentName(false);
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await ResourceGetter.GetItem(id);
                 Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
             } else {
-                Item = new Search.Models.Resource() {
+                Item = new Search.Models.Resource {
                     Source = SourceCode,
-                    IsActive = false
+                    IsActive = false,
+                    DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.ResourceItem, "New " + Item.NameType, true);
             }

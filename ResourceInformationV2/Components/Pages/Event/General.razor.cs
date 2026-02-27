@@ -40,14 +40,15 @@ namespace ResourceInformationV2.Components.Pages.Event {
         protected override async Task OnInitializedAsync() {
             SourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-
+            var department = await Layout.ConfirmDepartmentName(false);
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await EventGetter.GetItem(id);
                 Layout.SetSidebar(SidebarEnum.EventItem, Item.Title);
             } else {
-                Item = new Search.Models.Event() {
+                Item = new Search.Models.Event {
                     Source = SourceCode,
-                    IsActive = false
+                    IsActive = false,
+                    DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.EventItem, "New " + Item.NameType, true);
             }

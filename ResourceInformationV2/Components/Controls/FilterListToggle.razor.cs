@@ -15,6 +15,8 @@ namespace ResourceInformationV2.Components.Controls {
 
         [Parameter]
         public List<string> DepartmentEnabledTags { get; set; } = [];
+        [Parameter]
+        public bool DepartmentDisabled { get; set; }
 
         public IEnumerable<Tag>? DepartmentTags => FilterTags?.Where(f => f.Key == TagType.Department).SelectMany(x => x);
         public string DepartmentTitle { get; set; } = "";
@@ -64,9 +66,9 @@ namespace ResourceInformationV2.Components.Controls {
 
         protected override async Task OnInitializedAsync() {
             DepartmentEnabledTags ??= [];
-            string sourceCode = await Layout.CheckSource();
+            var sourceCode = await Layout.CheckSource();
             FilterTags = await FilterHelper.GetAllFilters(sourceCode);
-            foreach (Tag? tag in FilterTags.SelectMany(x => x)) {
+            foreach (var tag in FilterTags.SelectMany(x => x)) {
                 if ((AudienceEnabledTags.Contains(tag.Title) && tag.TagType == TagType.Audience) ||
                     (DepartmentEnabledTags.Contains(tag.Title) && tag.TagType == TagType.Department) ||
                     (TopicEnabledTags.Contains(tag.Title) && tag.TagType == TagType.Topic) ||

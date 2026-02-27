@@ -31,6 +31,8 @@ namespace ResourceInformationV2.Data.DataModels {
         public virtual Source? Source { get; set; }
         public int? SourceId { get; set; }
 
+        public string Display => (string.IsNullOrWhiteSpace(DepartmentTag) ? Email : $"{Email} ({DepartmentTag} only)") + (IsOwner ? " - Owner" : "");
+
         public static string TransformName(string netid) => (netid.EndsWith("@illinois.edu") ? netid : netid + "@illinois.edu").ToLowerInvariant();
     }
 }

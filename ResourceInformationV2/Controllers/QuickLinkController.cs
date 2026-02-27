@@ -86,7 +86,7 @@ namespace ResourceInformationV2.Controllers {
             }
 
             var department = await securityHelper.GetDepartmentName(sourceName, netId);
-            if (string.IsNullOrWhiteSpace(department) || !item.DepartmentList.Contains(department)) {
+            if (!string.IsNullOrWhiteSpace(department) && !item.DepartmentList.Contains(department)) {
                 return Content($"Error: Net ID {netId} is restricted to department {department}");
             }
             var baseUrl = await sourceHelper.GetBaseUrlFromSource(sourceName);

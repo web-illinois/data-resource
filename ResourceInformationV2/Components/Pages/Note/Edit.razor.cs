@@ -37,7 +37,8 @@ namespace ResourceInformationV2.Components.Pages.Note {
         }
 
         protected async Task GetItems() {
-            ItemList = await NoteGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
+            var department = await Layout.ConfirmDepartmentName(false);
+            ItemList = await NoteGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem, department);
             StateHasChanged();
         }
 

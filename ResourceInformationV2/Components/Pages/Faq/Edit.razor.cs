@@ -37,7 +37,8 @@ namespace ResourceInformationV2.Components.Pages.Faq {
         }
 
         protected async Task GetItems() {
-            ItemList = await FaqGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem);
+            var department = await Layout.ConfirmDepartmentName(false);
+            ItemList = await FaqGetter.GetAllItemsBySource(_sourceCode, _searchGenericItem == null ? "" : _searchGenericItem.SearchItem, department);
             StateHasChanged();
         }
 

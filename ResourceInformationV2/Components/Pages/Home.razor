@@ -8,6 +8,9 @@
     {
         <p class="alert-no-source">Alert: You must choose a source before continuing.</p>
     }
+    @if (LimitedAccess) {
+        <p class="alert-no-source">Alert: You have limited access to this source.</p>
+    }
     <p>This tool is used to edit resources, publications, notes, FAQs, and people external to the University. This information can be accessed via an API to search based on text and category.</p>
 </ilw-content>
 @if (string.IsNullOrWhiteSpace(SelectedSource) && Sources != null)

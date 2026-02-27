@@ -5,12 +5,11 @@
 
 <ilw-content>
     <h1>Security</h1>
-
     @foreach (var netid in NetIds)
     {
         <div class="security-box">
-            <p>@netid</p>
-            <button class="ilw-button" @onclick="e => Remove(netid)">Remove</button>
+            <p>@netid.Display</p>
+            <button class="ilw-button" @onclick="e => Remove(netid.Email)">Remove</button>
         </div>
     }
 
@@ -18,6 +17,17 @@
         <label for="newnetid">New Net ID</label>
         <input id="newnetid" type="text" @bind="NewNetId" class="ils-input-long" />
         <p>Add a Net ID to add to the list. The <em>@@illinois.edu</em> is optional.</p>
+    </div>
+    
+    <div class="ils-input-entry">
+        <label for="department">Restrict to a department</label>
+        <select id="department" class="ils-input-long" @bind="NewDepartment">
+            <option value="">None (access to all departments)</option>
+            @foreach (var item in Departments)
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
     </div>
     <p><button class="ilw-button" @onclick="Add">Add Net ID</button></p>
     <h2>API Updates</h2>

@@ -27,8 +27,6 @@ namespace ResourceInformationV2.Components.Controls {
 
         public string SelectedItemId { get; set; } = "";
 
-        public string SelectedItemTitle => GenericItems.FirstOrDefault(gi => gi.Id == SelectedItemId)?.Title ?? "";
-
         public void Add() {
             AddClicked.InvokeAsync();
         }

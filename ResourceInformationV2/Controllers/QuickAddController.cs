@@ -16,7 +16,7 @@ namespace ResourceInformationV2.Controllers {
 
         [Route("note/{source}")]
         [HttpGet]
-        public async Task<IActionResult> Note(string source) => await Set(source, "/note/general", CategoryType.None);
+        public async Task<IActionResult> Note(string source) => await Set(source, "/note/general", CategoryType.Note);
 
         [Route("person/{source}")]
         [HttpGet]

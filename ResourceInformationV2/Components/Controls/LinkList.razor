@@ -9,11 +9,17 @@
         {
             <div class="link-box">
                 <p>@link.Title: <a href="@link.LinkHref" target="_blank">@link.LinkHref</a></p>
+                <div>
                 <div class="button-group">
+                    <button class="ilw-button small ilw-theme-orange-solid" @onclick="() => Top(link)"><ilw-icon alt="top" size="24px" icon="back" class="rotate"></ilw-icon></button>
                     <button class="ilw-button small" @onclick="() => Up(link)"><ilw-icon alt="up" size="24px" icon="back" class="rotate"></ilw-icon></button>
                     <button class="ilw-button small" @onclick="() => Down(link)"><ilw-icon alt="down" size="24px" icon="next" class="rotate"></ilw-icon></button>
+                    <button class="ilw-button small ilw-theme-orange-solid" @onclick="() => Bottom(link)"><ilw-icon alt="bottom" size="24px" icon="next" class="rotate"></ilw-icon></button>
+                </div>
+                <div class="button-group">
                     <button class="ilw-button small" @onclick="() => Remove(link)">Remove</button>
                     <button class="ilw-button small" @onclick="() => Edit(link)">Edit</button>
+                </div>
                 </div>
             </div>
         }

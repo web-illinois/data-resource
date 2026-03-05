@@ -25,11 +25,9 @@ namespace ResourceInformationV2.Components.Controls {
                 Links = [];
             }
             if (string.IsNullOrWhiteSpace(NewLinkTitle) || string.IsNullOrWhiteSpace(NewLinkUrl)) {
-                if (Layout != null)
-                    Layout.AddMessage("Save failed -- Please enter a title and URL for the link.");
+                Layout.AddMessage("Save failed -- Please enter a title and URL for the link.");
             } else if (OldTitle != NewLinkTitle && Links.Any(l => l.Title == NewLinkTitle)) {
-                if (Layout != null)
-                    Layout.AddMessage("Save failed -- The title cannot be duplicated in a list of links");
+                Layout.AddMessage("Save failed -- The title cannot be duplicated in a list of links");
             } else if (string.IsNullOrWhiteSpace(OldTitle)) {
                 Links.Add(new Link { LinkHref = NewLinkUrl, Title = NewLinkTitle, Order = Links.Count + 1 });
             } else if (Links.Any(l => l.Title == OldTitle)) {
@@ -40,15 +38,25 @@ namespace ResourceInformationV2.Components.Controls {
             NewLinkTitle = "";
             NewLinkUrl = "";
             AddLinkButtonTitle = "Add Link";
-            if (Layout != null)
-                Layout.SetDirty();
+            Layout.SetDirty();
+        }
+
+        public void Bottom(Link i) {
+            Links = Links.MoveItemToBottom(i);
+            StateHasChanged();
+            Layout.SetDirty();
+        }
+
+        public void Top(Link i) {
+            Links = Links.MoveItemToTop(i);
+            StateHasChanged();
+            Layout.SetDirty();
         }
 
         public void Down(Link i) {
-            Links = ListExtentions.MoveItemDown(Links, i);
+            Links = Links.MoveItemDown(i);
             StateHasChanged();
-            if (Layout != null)
-                Layout.SetDirty();
+            Layout.SetDirty();
         }
 
         public void Edit(Link i) {
@@ -56,8 +64,7 @@ namespace ResourceInformationV2.Components.Controls {
             NewLinkUrl = i.LinkHref;
             OldTitle = i.Title;
             AddLinkButtonTitle = "Edit Link";
-            if (Layout != null)
-                Layout.SetDirty();
+            Layout.SetDirty();
         }
 
         public List<Link> GetSavedLinks() {
@@ -71,15 +78,13 @@ namespace ResourceInformationV2.Components.Controls {
         public void Remove(Link i) {
             Links.Remove(i);
             StateHasChanged();
-            if (Layout != null)
-                Layout.SetDirty();
+            Layout.SetDirty();
         }
 
         public void Up(Link i) {
-            Links = ListExtentions.MoveItemUp(Links, i);
+            Links = Links.MoveItemUp(i);
             StateHasChanged();
-            if (Layout != null)
-                Layout.SetDirty();
+            Layout.SetDirty();
         }
     }
 }

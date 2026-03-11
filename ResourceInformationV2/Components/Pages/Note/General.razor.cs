@@ -47,7 +47,7 @@ namespace ResourceInformationV2.Components.Pages.Note {
             } else {
                 Item = new Search.Models.NoteItem() {
                     Source = SourceCode,
-                    IsActive = false,
+                    IsActive = true,
                     DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.NotesItem, "New " + Item.NameType, true);

@@ -40,6 +40,22 @@ public class Events {
         return response;
     }
 
+    [Function("EventData")]
+    [OpenApiOperation(operationId: "EventData", tags: "Events", Description = "Get data about the events.")]
+    [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The **source** parameter given to you, can use 'test' to test.")]
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/json", bodyType: typeof(string), Description = "A list of all speakers, sponsors, and locations")]
+    public async Task<HttpResponseData> GetEventData([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
+        _logger.LogInformation("Called EventData.");
+        var requestHelper = RequestHelperFactory.Create();
+        requestHelper.Initialize(req);
+        var source = requestHelper.GetRequest(req, "source");
+        requestHelper.Validate();
+        var returnItem = await _eventGetter.GetEventData(source);
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        await response.WriteAsJsonAsync(new { speakers = returnItem.Item1, sponsors = returnItem.Item2, locations = returnItem.Item3 });
+        return response;
+    }
+
     [Function("Event")]
     [OpenApiOperation(operationId: "Event", tags: "Events", Description = "Get a specific event.")]
     [OpenApiParameter(name: "id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "The id of the item (the id includes the source).")]
@@ -67,9 +83,13 @@ public class Events {
     [OpenApiParameter(name: "topic", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of topics. You can separate the topics by the characters '[-]'.")]
     [OpenApiParameter(name: "audience", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of audiences. You can separate the audiences by the characters '[-]'.")]
     [OpenApiParameter(name: "department", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of departments. You can separate the departments by the characters '[-]'.")]
-    [OpenApiParameter(name: "q", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A full text search string -- it will search the title and description for the search querystring.")]
+    [OpenApiParameter(name: "speaker", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of speakers. You can separate the speakers by the characters '[-]'.")]
+    [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The source for the tags.")]
+    [OpenApiParameter(name: "location", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The location for the event.")]
+    [OpenApiParameter(name: "date", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The start date for the event.")]
     [OpenApiParameter(name: "take", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "How many items do you want? Defaults to 1000.")]
     [OpenApiParameter(name: "skip", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "A skip value to help with pagination. Defaults to 0.")]
+    [OpenApiParameter(name: "sort", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "Sort value - either title or date")]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(SearchObject<Event>), Description = "The list of events")]
     public async Task<HttpResponseData> Search([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req) {
         _logger.LogInformation("Called EventSearch.");
@@ -84,13 +104,16 @@ public class Events {
         var audience = requestHelper.GetArray(req, "audience");
         var department = requestHelper.GetArray(req, "department");
         var query = requestHelper.GetRequest(req, "q", false);
+        var speakers = requestHelper.GetArray(req, "speaker");
+        var location = requestHelper.GetRequest(req, "location", false);
+        var date = requestHelper.GetRequest(req, "date", false);
         var take = requestHelper.GetInteger(req, "take", 1000);
         var skip = requestHelper.GetInteger(req, "skip");
         var sort = requestHelper.GetRequest(req, "sort", false).ToLowerInvariant();
 
         requestHelper.Validate();
         var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(await _eventGetter.Search(source, query, tags, tags2, tags3, tags4, topics, audience, department, take, skip, sort));
+        await response.WriteAsJsonAsync(await _eventGetter.SearchEvents(source, query, tags, tags2, tags3, tags4, topics, audience, department, speakers, location, date, take, skip, sort));
         return response;
     }
 }

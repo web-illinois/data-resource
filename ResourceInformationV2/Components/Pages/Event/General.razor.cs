@@ -47,7 +47,7 @@ namespace ResourceInformationV2.Components.Pages.Event {
             } else {
                 Item = new Search.Models.Event {
                     Source = SourceCode,
-                    IsActive = false,
+                    IsActive = true,
                     DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.EventItem, "New " + Item.NameType, true);

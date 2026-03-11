@@ -9,17 +9,17 @@
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
-            Title = lineArray[1];
-            Description = lineArray[2];
-            DetailText = lineArray[3];
+            Title = PrepareForTextUpload(lineArray[1]);
+            Description = PrepareForTextUpload(lineArray[2]);
+            DetailText = PrepareForTextUpload(lineArray[3]);
             Fragment = lineArray[4];
             Url = lineArray[5];
             Image = lineArray[6];
             ImageAltText = lineArray[7];
             ImageSource = lineArray[8];
             VideoUrl = lineArray[9];
-            Notes = lineArray[10];
-            _ = DateTime.TryParse(lineArray[11], out DateTime createdDate);
+            Notes = PrepareForTextUpload(lineArray[10]);
+            _ = DateTime.TryParse(lineArray[11], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
             _ = bool.TryParse(lineArray[12], out var isActive);
             IsActive = isActive;
@@ -34,7 +34,7 @@
             _ = int.TryParse(lineArray[21], out var order);
             Order = order;
             ReviewEmail = lineArray[22];
-            _ = DateTime.TryParse(lineArray[23], out DateTime lastUpdatedDate);
+            _ = DateTime.TryParse(lineArray[23], out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -42,15 +42,15 @@
         internal override string[] SaveToStringPrivate() => [
             Id,
             Title,
-            Description,
-            DetailText,
+            PrepareForTextDownload(Description),
+            PrepareForTextDownload(DetailText),
             Fragment,
             Url,
             Image,
             ImageAltText,
             ImageSource,
             VideoUrl,
-            Notes,
+            PrepareForTextDownload(Notes),
             CreatedOn.ToString("g"),
             IsActive.ToString(),
             string.Join(";", AudienceList),

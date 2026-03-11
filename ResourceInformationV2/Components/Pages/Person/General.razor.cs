@@ -51,7 +51,7 @@ namespace ResourceInformationV2.Components.Pages.Person {
             } else {
                 Item = new Search.Models.Person {
                     Source = SourceCode,
-                    IsActive = false,
+                    IsActive = true,
                     DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.PeopleItem, "New " + Item.NameType, true);

@@ -12,6 +12,13 @@
 {
     <ilw-content>
         <div class="ils-input-entry">
+            <label for="authors">Authors</label>
+            <input id="authors" type="text" @bind="AuthorList" class="ils-input-long" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        <div class="ils-input-entry">
             <label for="booktitle">Book Title</label>
             <input id="booktitle" type="text" @bind="Item.BookTitle" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>

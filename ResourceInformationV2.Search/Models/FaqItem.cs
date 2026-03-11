@@ -13,17 +13,17 @@
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
-            Question = lineArray[1];
-            SummaryAnswer = lineArray[2];
-            DetailAnswer = lineArray[3];
+            Question = PrepareForTextUpload(lineArray[1]);
+            SummaryAnswer = PrepareForTextUpload(lineArray[2]);
+            DetailAnswer = PrepareForTextUpload(lineArray[3]);
             Fragment = lineArray[4];
             Url = lineArray[5];
             Image = lineArray[6];
             ImageAltText = lineArray[7];
             ImageSource = lineArray[8];
             VideoUrl = lineArray[9];
-            Notes = lineArray[10];
-            _ = DateTime.TryParse(lineArray[11], out DateTime createdDate);
+            Notes = PrepareForTextUpload(lineArray[10]);
+            _ = DateTime.TryParse(lineArray[11], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
             _ = bool.TryParse(lineArray[12], out var isActive);
             IsActive = isActive;
@@ -38,7 +38,7 @@
             _ = int.TryParse(lineArray[21], out var order);
             Order = order;
             ReviewEmail = lineArray[22];
-            _ = DateTime.TryParse(lineArray[23], out DateTime lastUpdatedDate);
+            _ = DateTime.TryParse(lineArray[23], out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -46,15 +46,15 @@
         internal override string[] SaveToStringPrivate() => [
             Id,
             Question,
-            SummaryAnswer,
-            DetailAnswer,
+            PrepareForTextDownload(SummaryAnswer),
+            PrepareForTextDownload(DetailAnswer),
             Fragment,
             Url,
             Image,
             ImageAltText,
             ImageSource,
             VideoUrl,
-            Notes,
+            PrepareForTextDownload(Notes),
             CreatedOn.ToString("g"),
             IsActive.ToString(),
             string.Join(";", AudienceList),

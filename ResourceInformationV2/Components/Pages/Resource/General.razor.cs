@@ -47,7 +47,7 @@ namespace ResourceInformationV2.Components.Pages.Resource {
             } else {
                 Item = new Search.Models.Resource {
                     Source = SourceCode,
-                    IsActive = false,
+                    IsActive = true,
                     DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.ResourceItem, "New " + Item.NameType, true);

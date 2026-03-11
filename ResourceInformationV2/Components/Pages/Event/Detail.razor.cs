@@ -28,22 +28,25 @@ namespace ResourceInformationV2.Components.Pages.Event {
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
 
+        public string SpeakerList { get; set; } = "";
+
         public async Task Save() {
             Layout.RemoveDirty();
-
+            Item.Speakers = SpeakerList.Split(";").Select(s => s.Trim()).ToList();
             _ = await EventSetter.SetItem(Item);
             await Layout.Log(CategoryType.Event, FieldType.Specific, Item);
             await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 
         protected override async Task OnInitializedAsync() {
-            var sourceCode = await Layout.CheckSource();
+            _ = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }
             Item = await EventGetter.GetItem(id);
             Layout.SetSidebar(SidebarEnum.EventItem, Item.Title);
+            SpeakerList = string.Join("; ", Item.Speakers);
             await base.OnInitializedAsync();
         }
     }

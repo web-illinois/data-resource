@@ -45,7 +45,7 @@ namespace ResourceInformationV2.Components.Pages.Event {
         protected override async Task OnInitializedAsync() {
             Layout.SetSidebar(SidebarEnum.AddEditInformation, "Events");
             _sourceCode = await Layout.CheckSource();
-            _useItem = await SourceHelper.DoesSourceUseItem(_sourceCode, CategoryType.Faq);
+            _useItem = await SourceHelper.DoesSourceUseItem(_sourceCode, CategoryType.Event);
             await GetItems();
             await base.OnInitializedAsync();
         }

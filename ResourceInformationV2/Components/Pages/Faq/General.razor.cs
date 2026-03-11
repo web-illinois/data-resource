@@ -47,7 +47,7 @@ namespace ResourceInformationV2.Components.Pages.Faq {
             } else {
                 Item = new Search.Models.FaqItem {
                     Source = SourceCode,
-                    IsActive = false,
+                    IsActive = true,
                     DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.FaqItem, "New " + Item.NameType, true);

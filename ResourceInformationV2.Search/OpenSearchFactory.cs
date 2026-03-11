@@ -24,6 +24,11 @@ namespace ResourceInformationV2.Search {
 
         public static string MapIndex(OpenSearchClient openSearchClient) {
             var returnValue = "Mapping: ";
+
+            var deleteEventIndex = openSearchClient.Indices.Delete(UrlTypes.Events.ConvertToUrlString());
+            returnValue += $"Deleting Events {(deleteEventIndex.IsValid ? "succeeded" : "failed")} - {deleteEventIndex.DebugInformation}; ";
+
+
             var indexEvents = openSearchClient.Indices.Create(UrlTypes.Events.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Event>()));
             returnValue += $"Events {(indexEvents.IsValid ? "created" : "failed")} - {indexEvents.DebugInformation}; ";
             var indexFaqs = openSearchClient.Indices.Create(UrlTypes.Faqs.ConvertToUrlString(), c => c.Map(m => m.AutoMap<FaqItem>()));
@@ -31,7 +36,7 @@ namespace ResourceInformationV2.Search {
             var indexNotes = openSearchClient.Indices.Create(UrlTypes.Notes.ConvertToUrlString(), c => c.Map(m => m.AutoMap<NoteItem>()));
             returnValue += $"Notes {(indexNotes.IsValid ? "created" : "failed")} - {indexNotes.DebugInformation}; ";
             var indexPeople = openSearchClient.Indices.Create(UrlTypes.People.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Person>()));
-            returnValue += $"FAQs {(indexPeople.IsValid ? "created" : "failed")} - {indexPeople.DebugInformation}; ";
+            returnValue += $"People {(indexPeople.IsValid ? "created" : "failed")} - {indexPeople.DebugInformation}; ";
             var indexPublications = openSearchClient.Indices.Create(UrlTypes.Publications.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Publication>()));
             returnValue += $"Publications {(indexPublications.IsValid ? "created" : "failed")} - {indexPublications.DebugInformation}; ";
             var indexResources = openSearchClient.Indices.Create(UrlTypes.Resources.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Resource>()));

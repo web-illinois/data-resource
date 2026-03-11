@@ -8,16 +8,16 @@
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
-            Title = lineArray[1];
-            Description = lineArray[2];
+            Title = PrepareForTextUpload(lineArray[1]);
+            Description = PrepareForTextUpload(lineArray[2]);
             Fragment = lineArray[3];
             Url = lineArray[4];
             Image = lineArray[5];
             ImageAltText = lineArray[6];
             ImageSource = lineArray[7];
             VideoUrl = lineArray[8];
-            Notes = lineArray[9];
-            _ = DateTime.TryParse(lineArray[10], out DateTime createdDate);
+            Notes = PrepareForTextUpload(lineArray[9]);
+            _ = DateTime.TryParse(lineArray[10], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
             _ = bool.TryParse(lineArray[11], out var isActive);
             IsActive = isActive;
@@ -32,7 +32,7 @@
             _ = int.TryParse(lineArray[20], out var order);
             Order = order;
             ReviewEmail = lineArray[21];
-            _ = DateTime.TryParse(lineArray[22], out DateTime lastUpdatedDate);
+            _ = DateTime.TryParse(lineArray[22], out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -40,14 +40,14 @@
         internal override string[] SaveToStringPrivate() => [
             Id,
             Title,
-            Description,
+            PrepareForTextDownload(Description),
             Fragment,
             Url,
             Image,
             ImageAltText,
             ImageSource,
             VideoUrl,
-            Notes,
+            PrepareForTextDownload(Notes),
             CreatedOn.ToString("g"),
             IsActive.ToString(),
             string.Join(";", AudienceList),

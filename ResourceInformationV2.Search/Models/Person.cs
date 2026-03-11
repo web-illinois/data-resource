@@ -14,19 +14,19 @@
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
-            FirstName = lineArray[1];
-            LastName = lineArray[2];
-            JobTitle = lineArray[3];
-            JobLocation = lineArray[4];
-            Description = lineArray[5];
+            FirstName = PrepareForTextUpload(lineArray[1]);
+            LastName = PrepareForTextUpload(lineArray[2]);
+            JobTitle = PrepareForTextUpload(lineArray[3]);
+            JobLocation = PrepareForTextUpload(lineArray[4]);
+            Description = PrepareForTextUpload(lineArray[5]);
             Fragment = lineArray[6];
             Url = lineArray[7];
             Image = lineArray[8];
             ImageAltText = lineArray[9];
             ImageSource = lineArray[10];
             VideoUrl = lineArray[11];
-            Notes = lineArray[12];
-            _ = DateTime.TryParse(lineArray[13], out DateTime createdDate);
+            Notes = PrepareForTextUpload(lineArray[12]);
+            _ = DateTime.TryParse(lineArray[13], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
             _ = bool.TryParse(lineArray[14], out var isActive);
             IsActive = isActive;
@@ -41,7 +41,7 @@
             _ = int.TryParse(lineArray[23], out var order);
             Order = order;
             ReviewEmail = lineArray[24];
-            _ = DateTime.TryParse(lineArray[25], out DateTime lastUpdatedDate);
+            _ = DateTime.TryParse(lineArray[25], out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -52,14 +52,14 @@
             LastName,
             JobTitle,
             JobLocation,
-            Description,
+            PrepareForTextDownload(Description),
             Fragment,
             Url,
             Image,
             ImageAltText,
             ImageSource,
             VideoUrl,
-            Notes,
+            PrepareForTextDownload(Notes),
             CreatedOn.ToString("g"),
             IsActive.ToString(),
             string.Join(";", AudienceList),

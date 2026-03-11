@@ -170,4 +170,9 @@ public abstract class BaseObject {
     internal abstract bool LoadFromStringPrivate(string[] lineArray);
 
     internal abstract string[] SaveToStringPrivate();
+
+    internal static string PrepareForTextDownload(string s) => string.IsNullOrWhiteSpace(s) ? "" : s.Replace('\n', ' ').Replace('\r', ' ');
+
+    internal static string PrepareForTextUpload(string s) => string.IsNullOrWhiteSpace(s) ? "" : s.Trim('"', ' ').Replace('’', '\'').Replace('“', '"').Replace('”', '"');
+
 }

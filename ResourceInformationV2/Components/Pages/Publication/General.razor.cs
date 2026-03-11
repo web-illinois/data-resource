@@ -47,7 +47,7 @@ namespace ResourceInformationV2.Components.Pages.Publication {
             } else {
                 Item = new Search.Models.Publication {
                     Source = SourceCode,
-                    IsActive = false,
+                    IsActive = true,
                     DepartmentList = string.IsNullOrWhiteSpace(department) ? [] : [department]
                 };
                 Layout.SetSidebar(SidebarEnum.PublicationItem, "New " + Item.NameType, true);

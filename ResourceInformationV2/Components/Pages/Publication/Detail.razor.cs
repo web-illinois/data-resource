@@ -28,20 +28,24 @@ namespace ResourceInformationV2.Components.Pages.Publication {
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
 
+        public string AuthorList { get; set; } = "";
+
         public async Task Save() {
             Layout.RemoveDirty();
+            Item.Authors = AuthorList.Split(";").Select(s => s.Trim()).ToList();
             _ = await PublicationSetter.SetItem(Item);
             await Layout.Log(CategoryType.Publication, FieldType.Specific, Item);
             await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 
         protected override async Task OnInitializedAsync() {
-            var sourceCode = await Layout.CheckSource();
+            _ = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
             if (string.IsNullOrWhiteSpace(id)) {
                 NavigationManager.NavigateTo("/");
             }
             Item = await PublicationGetter.GetItem(id);
+            AuthorList = string.Join("; ", Item.Authors);
             Layout.SetSidebar(SidebarEnum.PublicationItem, Item.Title);
         }
     }

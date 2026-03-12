@@ -24,11 +24,6 @@ namespace ResourceInformationV2.Search {
 
         public static string MapIndex(OpenSearchClient openSearchClient) {
             var returnValue = "Mapping: ";
-
-            var deleteEventIndex = openSearchClient.Indices.Delete(UrlTypes.Events.ConvertToUrlString());
-            returnValue += $"Deleting Events {(deleteEventIndex.IsValid ? "succeeded" : "failed")} - {deleteEventIndex.DebugInformation}; ";
-
-
             var indexEvents = openSearchClient.Indices.Create(UrlTypes.Events.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Event>()));
             returnValue += $"Events {(indexEvents.IsValid ? "created" : "failed")} - {indexEvents.DebugInformation}; ";
             var indexFaqs = openSearchClient.Indices.Create(UrlTypes.Faqs.ConvertToUrlString(), c => c.Map(m => m.AutoMap<FaqItem>()));

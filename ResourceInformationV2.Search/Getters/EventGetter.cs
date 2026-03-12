@@ -25,7 +25,7 @@ namespace ResourceInformationV2.Search.Getters {
                         f => speakers.Any() ? f.Terms(m => m.Field(fld => fld.Speakers).Terms(speakers)) : f.MatchAll(),
                         f => location != "" ? f.Term(m => m.Field(fld => fld.Location).Value(location)) : f.MatchAll(),
                         f => date != "" ? f.Term(m => m.Field(fld => fld.StartDate).Value(date)) : f.MatchAll())
-                    .Must(m => !string.IsNullOrWhiteSpace(search) ? m.MultiMatch(m => m.Fields(fld => fld.Field("title^10").Field("description^5").Field("notes")).Query(search)) : m.MatchAll())))
+                    .Must(m => !string.IsNullOrWhiteSpace(search) ? m.MultiMatch(m => m.Fields(fld => fld.Field("title^10").Field("speakers^5").Field("description^5").Field("notes")).Query(search)) : m.MatchAll())))
                     .Sort(srt => sort == "date" ? srt.Ascending(f => f.StartDate) : srt.Ascending(f => f.TitleSortKeyword))
                     .Suggest(a => a.Phrase("didyoumean", p => p.Text(search).Field(fld => fld.Title))));
             LogDebug(response);

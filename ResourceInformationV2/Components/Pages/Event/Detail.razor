@@ -11,38 +11,38 @@
 @if (Item != null) {
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">Start Date / Time</label>
-            <input id="title" type="datetime-local" @bind="Item.StartDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <label for="startdate">Start Date / Time</label>
+            <input id="startdate" type="datetime-local" @bind="Item.StartDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">End Date / Time</label>
-            <input id="title" type="datetime-local" @bind="Item.EndDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <label for="enddate">End Date / Time</label>
+            <input id="enddate" type="datetime-local" @bind="Item.EndDate" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">Is this an all-day event?</label>
-            <input id="title" type="checkbox" @bind="Item.IsAllDay" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <label for="allday">Is this an all-day event?</label>
+            <input id="allday" type="checkbox" @bind="Item.IsAllDay" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">Location</label>
-            <input id="title" type="text" @bind="Item.Location" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <label for="location">Location</label>
+            <input id="location" type="text" @bind="Item.Location" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">Speakers</label>
-            <input id="title" type="text" @bind="SpeakerList" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <label for="speakers">Speakers</label>
+            <input id="speakers" type="text" @bind="SpeakerList" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="title">Sponsor</label>
-            <input id="title" type="text" @bind="Item.Sponsor" class="ils-input-long" @bind:after="Layout.SetDirty" />
+            <label for="sponsor">Sponsor</label>
+            <input id="sponsor" type="text" @bind="Item.Sponsor" class="ils-input-long" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
 

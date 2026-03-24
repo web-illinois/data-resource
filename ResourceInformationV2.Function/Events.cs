@@ -87,6 +87,7 @@ public class Events {
     [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The source for the tags.")]
     [OpenApiParameter(name: "location", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The location for the event.")]
     [OpenApiParameter(name: "date", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The start date for the event.")]
+    [OpenApiParameter(name: "q", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A full text search string -- it will search the title and description for the search querystring.")]
     [OpenApiParameter(name: "take", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "How many items do you want? Defaults to 1000.")]
     [OpenApiParameter(name: "skip", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "A skip value to help with pagination. Defaults to 0.")]
     [OpenApiParameter(name: "sort", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "Sort value - either title or date")]

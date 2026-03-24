@@ -8,11 +8,17 @@ namespace ResourceInformationV2.Search.Models {
         public bool IsAllDay { get; set; } = false;
         [Keyword] public string Location { get; set; } = "";
         public override string NameType => "Event";
+        [Keyword] public string SpeakerList { get; set; } = "";
         [Keyword] public IEnumerable<string> Speakers { get; set; } = [];
         [Keyword] public string Sponsor { get; set; } = "";
         public DateTime StartDate { get; set; } = DateTime.Now;
 
         internal override string[] Headings => ["Id", "Title", "Description", "Start Date", "End Date", "Is All Day", "Location", "Speaker", "Sponsor", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
+
+        public override void Prepare() {
+            base.Prepare();
+            SpeakerList = string.Join(" ", Speakers);
+        }
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];

@@ -25,6 +25,7 @@ namespace ResourceInformationV2.Components.Controls {
         public string InstructionsSpecific { get; set; } = "";
         public string InstructionsTechnical { get; set; } = "";
         public bool IsUsed { get; set; }
+        public bool UseFragment { get; set; }
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
@@ -37,7 +38,7 @@ namespace ResourceInformationV2.Components.Controls {
         public async Task SaveChanges() {
             Layout.RemoveDirty();
             var sourceCode = await Layout.CheckSource();
-            var id = await SourceHelper.SetSourceItem(sourceCode, CategoryType, IsUsed);
+            var id = await SourceHelper.SetSourceItem(sourceCode, CategoryType, IsUsed, UseFragment);
             _ = await InstructionHelper.SaveInstructions(InstructionsGeneral, id, CategoryType, FieldType.General);
             _ = await InstructionHelper.SaveInstructions(InstructionsFilters, id, CategoryType, FieldType.Filters);
             _ = await InstructionHelper.SaveInstructions(InstructionsImage, id, CategoryType, FieldType.ImageAndVideo);
@@ -54,13 +55,18 @@ namespace ResourceInformationV2.Components.Controls {
             IsUsed = b;
             Layout.SetDirty();
         }
+        public void SaveUsedFragment(bool b) {
+            UseFragment = b;
+            Layout.SetDirty();
+        }
 
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
             var sourceCode = await Layout.CheckSource();
             Layout.SetSidebar(SidebarEnum.Instructions, "Options and Instructions");
-            var (sourceInstructions, isUsed) = await InstructionHelper.GetInstructions(sourceCode, CategoryType);
+            var (sourceInstructions, isUsed, useFragment) = await InstructionHelper.GetInstructions(sourceCode, CategoryType);
             IsUsed = isUsed;
+            UseFragment = useFragment;
             foreach (var instruction in sourceInstructions) {
                 switch (instruction.FieldType) {
                     case FieldType.General:

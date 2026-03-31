@@ -30,7 +30,16 @@
             <input id="link" type="text" class="ils-input-long" @bind="Item.Url" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
+    @if (UseFragment) {
+        <ilw-content>
+            <div class="ils-input-entry">
+                <label for="fragment">URL Fragment</label>
+                <input id="fragment" type="text" @bind="Item.Fragment" class="ils-input-long" @bind:after="Layout.SetDirty" />
+                <p>Note that the URL fragment is used to make searching for this item easier and to meet SEO standards. This needs to be unique and consist of lower-case letters, numbers, dashes, and the '/' character. Do not use this if you cannot meet these requirements and rely on the ID to be a unique identifier.</p>
+            </div>
+        </ilw-content>
+    }
 
-    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+    <button class="ilw-button ilw-theme-orange-solid" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
 }
 

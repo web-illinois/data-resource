@@ -2,16 +2,13 @@
 using ResourceInformationV2.Search.JsonThinModels;
 using ResourceInformationV2.Search.Models;
 
-namespace ResourceInformationV2.Search.Getters
-{
+namespace ResourceInformationV2.Search.Getters {
 
-    public class PublicationGetter(OpenSearchClient? openSearchClient) : BaseGetter<Publication>(openSearchClient)
-    {
+    public class PublicationGetter(OpenSearchClient? openSearchClient) : BaseGetter<Publication>(openSearchClient) {
         internal override string IndexName { get => UrlTypes.Publications.ConvertToUrlString(); }
 
-        public async Task<SearchObject<Publication>> SearchPublications(string source, string search, IEnumerable<string> tags, IEnumerable<string> tags2, IEnumerable<string> tags3, IEnumerable<string> tags4, IEnumerable<string> topics, IEnumerable<string> audience, IEnumerable<string> departments, IEnumerable<string> authors, string status, int take, int skip, string sort)
-        {
-            ISearchResponse<Publication> response = await _openSearchClient.SearchAsync<Publication>(s => s.Index(IndexName)
+        public async Task<SearchObject<Publication>> SearchPublications(string source, string search, IEnumerable<string> tags, IEnumerable<string> tags2, IEnumerable<string> tags3, IEnumerable<string> tags4, IEnumerable<string> topics, IEnumerable<string> audience, IEnumerable<string> departments, IEnumerable<string> authors, string status, int take, int skip, string sort) {
+            var response = await _openSearchClient.SearchAsync<Publication>(s => s.Index(IndexName)
                     .Skip(skip)
                     .Size(take)
                     .Query(q => q
@@ -28,13 +25,12 @@ namespace ResourceInformationV2.Search.Getters
                         f => authors.Any() ? f.Terms(m => m.Field(fld => fld.Authors).Terms(authors)) : f.MatchAll(),
                         f => status != "" ? f.Term(m => m.Field(fld => fld.Status).Value(status)) : f.MatchAll())
                     .Must(m => !string.IsNullOrWhiteSpace(search) ? m.MultiMatch(m => m.Fields(fld => fld.Field("title^10").Field("description^5").Field("notes")).Query(search)) : m.MatchAll())))
-                    .Sort(srt => sort == "date" ? srt.Descending(f => f.PublishedDateNumeric) : srt.Ascending(f => f.TitleSortKeyword))
+                    .Sort(srt => sort == "date" ? srt.Descending(f => f.PublishedDateNumeric) : srt.Ascending(f => f.Order).Ascending(f => f.TitleSortKeyword))
                     .Suggest(a => a.Phrase("didyoumean", p => p.Text(search).Field(fld => fld.Title))));
             LogDebug(response);
 
             List<Publication> documents = response.IsValid ? [.. response.Documents] : [];
-            return new SearchObject<Publication>()
-            {
+            return new SearchObject<Publication>() {
                 Error = !response.IsValid ? response.ServerError.Error.ToString() : "",
                 DidYouMean = response.Suggest["didyoumean"].FirstOrDefault()?.Options?.FirstOrDefault()?.Text ?? "",
                 Total = (int)response.Total,

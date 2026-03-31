@@ -15,7 +15,7 @@ namespace ResourceInformationV2.Components.Pages.Person {
         public SidebarLayout Layout { get; set; } = default!;
 
         public string SourceCode { get; set; } = "";
-
+        public bool UseFragment { get; private set; }
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
 
@@ -45,6 +45,7 @@ namespace ResourceInformationV2.Components.Pages.Person {
             SourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
             var department = await Layout.ConfirmDepartmentName(false);
+            UseFragment = await SourceHelper.DoesSourceUseFragment(SourceCode, CategoryType.Person);
             if (!string.IsNullOrWhiteSpace(id)) {
                 Item = await PersonGetter.GetItem(id);
                 Layout.SetSidebar(SidebarEnum.PeopleItem, Item.Title);

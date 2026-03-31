@@ -9,6 +9,7 @@ using ResourceInformationV2.Search.Setters;
 namespace ResourceInformationV2.Components.Pages.Resource {
 
     public partial class Technical {
+        private bool _originalStatus;
         public Search.Models.Resource Item { get; set; } = default!;
 
         [CascadingParameter]
@@ -30,20 +31,36 @@ namespace ResourceInformationV2.Components.Pages.Resource {
             Layout.RemoveDirty();
             _ = await ResourceSetter.DeleteItem(Item.Id);
             await Layout.Log(CategoryType.Resource, FieldType.Technical, Item, "Deletion");
-            NavigationManager.NavigateTo("/resources/edit");
+            NavigationManager.NavigateTo("/resource/edit");
         }
 
         public async Task Save() {
             Layout.RemoveDirty();
-            _ = await ResourceSetter.SetItem(Item);
-            await Layout.Log(CategoryType.Resource, FieldType.Technical, Item);
-            await Layout.AddMessage(Item.NameType + " saved successfully.");
+            if (Item.IsNewerDraft) {
+                _ = await ResourceSetter.PublishDraftItem(Item);
+                await Layout.Log(CategoryType.Resource, FieldType.Technical, Item, "Publish Draft Item", EmailType.OnPublication);
+                NavigationManager.NavigateTo("/resource/edit");
+            } else {
+                if (_originalStatus && !Item.IsActive) {
+                    Item.CreatedOn = DateTime.Now;
+                    await Layout.Log(CategoryType.Resource, FieldType.Technical, Item, "Moved To Draft", EmailType.OnDraft);
+                } else if (!_originalStatus && Item.IsActive) {
+                    Item.CreatedOn = DateTime.Now;
+                    await Layout.Log(CategoryType.Resource, FieldType.Technical, Item, "Published", EmailType.OnPublication);
+                } else {
+                    await Layout.Log(CategoryType.Resource, FieldType.Technical, Item);
+                }
+                _ = await ResourceSetter.SetItem(Item);
+                _originalStatus = Item.IsActive;
+                await Layout.AddMessage(Item.NameType + " saved successfully.");
+            }
         }
 
         protected override async Task OnInitializedAsync() {
             var sourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
             Item = await ResourceGetter.GetItem(id);
+            _originalStatus = Item.IsActive;
             Layout.SetSidebar(SidebarEnum.ResourceItem, Item.Title);
             await base.OnInitializedAsync();
         }

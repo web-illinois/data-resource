@@ -7,36 +7,43 @@ namespace ResourceInformationV2.Data.DataHelpers {
     public class InstructionHelper(ResourceRepository resourceRepository) {
         private readonly ResourceRepository _resourceRepository = resourceRepository;
 
-        public async Task<(List<Instruction>, bool)> GetInstructions(string code, CategoryType categoryType) {
+        public async Task<(List<Instruction>, bool, bool)> GetInstructions(string code, CategoryType categoryType) {
             var instructions = (await _resourceRepository.ReadAsync(c => c.Instructions.Include(i => i.Source).Where(i => i.CategoryType == categoryType && i.Source.Code == code))).ToList();
             var source = instructions == null || instructions.Count == 0 ? await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == code)) : instructions[0].Source;
-            bool isUsed = false;
+            var isUsed = false;
+            var useFragment = false;
             switch (categoryType) {
                 case CategoryType.Event:
                     isUsed = source?.UseEvents ?? false;
+                    useFragment = source?.UseEventsFragment ?? false;
                     break;
 
                 case CategoryType.Faq:
                     isUsed = source?.UseFaqs ?? false;
+                    useFragment = source?.UseFaqsFragment ?? false;
                     break;
 
                 case CategoryType.Note:
                     isUsed = source?.UseNotes ?? false;
+                    useFragment = source?.UseNotesFragment ?? false;
                     break;
 
                 case CategoryType.Person:
                     isUsed = source?.UsePeople ?? false;
+                    useFragment = source?.UsePeopleFragment ?? false;
                     break;
 
                 case CategoryType.Publication:
                     isUsed = source?.UsePublications ?? false;
+                    useFragment = source?.UsePublicationsFragment ?? false;
                     break;
 
                 case CategoryType.Resource:
                     isUsed = source?.UseResources ?? false;
+                    useFragment = source?.UseResourcesFragment ?? false;
                     break;
             }
-            return (instructions ?? [], isUsed);
+            return (instructions ?? [], isUsed, useFragment);
         }
 
         public async Task<string> GetInstructionText(string sourceCode, CategoryType categoryType, FieldType fieldType) => await _resourceRepository

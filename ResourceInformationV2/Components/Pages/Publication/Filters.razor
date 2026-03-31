@@ -9,6 +9,6 @@
     @if (Item != null)
     {
         <FilterListToggle @ref="_filterListToggle" AudienceEnabledTags="@Item.AudienceList.ToList()" TopicEnabledTags="@Item.TopicList.ToList()" DepartmentEnabledTags="@Item.DepartmentList?.ToList()" Tag1EnabledTags="@Item.TagList.ToList()" Tag2EnabledTags="@Item.Tag2List.ToList()" Tag3EnabledTags="@Item.Tag3List.ToList()" Tag4EnabledTags="@Item.Tag4List.ToList()" DepartmentDisabled="@DepartmentDisabled"></FilterListToggle>
-        <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+        <button class="ilw-button ilw-theme-orange-solid" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
     }
 </ilw-content>

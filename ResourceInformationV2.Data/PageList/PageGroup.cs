@@ -95,7 +95,7 @@
                                  new ("Email Options", "/configuration/email"),
                                  new ("Templates", "/configuration/templates"),
                                  new ("Review Options", "/configuration/review"),
-                                 new ("Request Deletion", "/configuration/requestdeletion"),
+                                 new ("Delete Source", "/configuration/deletion"),
                                  new ("Testing Access", "/configuration/testing") } },
             { SidebarEnum.ConfigurationNoSource, new() { new ("Sources", "/configuration/sources"),
                                  new ("Testing Access", "/configuration/testing") } },

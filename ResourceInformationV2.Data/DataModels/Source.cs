@@ -32,10 +32,16 @@ namespace ResourceInformationV2.Data.DataModels {
         public string ReviewEmail { get; set; } = "";
         public string Title { get; set; } = "";
         public bool UseEvents { get; set; }
+        public bool UseEventsFragment { get; set; }
         public bool UseFaqs { get; set; }
+        public bool UseFaqsFragment { get; set; }
         public bool UseNotes { get; set; }
+        public bool UseNotesFragment { get; set; }
         public bool UsePeople { get; set; }
+        public bool UsePeopleFragment { get; set; }
         public bool UsePublications { get; set; }
+        public bool UsePublicationsFragment { get; set; }
         public bool UseResources { get; set; }
+        public bool UseResourcesFragment { get; set; }
     }
 }

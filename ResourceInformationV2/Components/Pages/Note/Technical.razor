@@ -9,12 +9,18 @@
 </ilw-content>
 @if (Item != null)
 {
-    <StatusOnSite @bind-Value="Item.IsActive"></StatusOnSite>
+    <StatusOnSite @bind-Value="Item.IsActive" IsNewerDraft="Item.IsNewerDraft"></StatusOnSite>
     <ilw-content>
         <div class="ils-input-entry">
-            <label for="fragment">URL Fragment</label>
-            <input id="fragment" type="text" @bind="Item.Fragment" class="ils-input-long" @bind:after="Layout.SetDirty" />
-            <p>Note that the URL fragment is used to make searching for this item easier and to meet SEO standards. This needs to be unique and consist of lower-case letters, numbers, dashes, and the '/' character. Do not use this if you cannot meet these requirements and rely on the ID to be a unique identifier.</p>
+            <label for="order">Order</label>
+            <select id="order" @bind="Item.Order" @bind:after="Layout.SetDirty">
+                <option value="-2">Top of list</option>
+                <option value="-1">Higher section of list</option>
+                <option value="0">Middle / Default</option>
+                <option value="1">Lower section of list</option>
+                <option value="2">Bottom of list</option>
+            </select>
+            <p>Change the order of this item in relation to the other items.</p>
         </div>
     </ilw-content>
     <ilw-content>
@@ -31,11 +37,31 @@
             <p>This will not show up in the search results, although the information listed will show up if people search for it.</p>
         </div>
     </ilw-content>
-    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="private">Private Notes</label>
+            <textarea id="private" @bind="Item.PrivateNotes" @bind:after="Layout.SetDirty" />
+            <p>This will not show up in the search results.</p>
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="review">Use Manual Check</label>
+            <input id="review" type="checkbox" @bind="Item.UseManualCheck" @bind:after="Layout.SetDirty" />
+            <p>If you are using the link check process, should this be manually checked? This is if the server does not return a proper response.</p>
+        </div>
+    </ilw-content>
+    <button class="ilw-button ilw-theme-orange-solid" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
     <div class="information-to-copy">
         <ilw-content class="header"><h2>Information to Copy</h2></ilw-content>
         <IdList Title="Id" Id="@Item.Id"></IdList>
         <IdList Title="Edit Link" Id="@Item.EditLink"></IdList>
     </div>
+    <ilw-content>
+        <div>
+            <p>Created on @Item.CreatedOn.ToString("g")</p>
+            <p>Last Modified on @Item.LastUpdated.ToString("g")</p>
+        </div>
+    </ilw-content>
     <DeleteNotice DeleteClicked="Delete" ItemTitle="@Item.Title" ItemText="This will delete this resource"></DeleteNotice>
 }

@@ -57,6 +57,20 @@
             <textarea id="technical" @bind="InstructionsTechnical" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
+
+    <ilw-content>
+        <fieldset class="heading fields-used-yes-no">
+            <legend>Would you like to implement a URL Fragment (used for getting a specific item by a URL within a site, use if you want an SEO-friendly URL for specific items)?</legend>
+            <div class="ils-input-entry-compact">
+                <label for="fragment-yes">Yes</label>
+                <input type="radio" name="fragment" id="fragment-yes" value="yes" checked="@UseFragment" @onchange="e => SaveUsedFragment(true)" />
+            </div>
+            <div class="ils-input-entry-compact">
+                <label for="fragment-no">No</label>
+                <input type="radio" name="fragment" id="fragment-no" value="no" checked="@(!UseFragment)" @onchange="e => SaveUsedFragment(false)" />
+            </div>
+        </fieldset>
+    </ilw-content>
 }
 
-<button class="ilw-button ilw-theme-orange-2" @onclick="SaveChanges" @onblur="Layout.RemoveMessage">Save</button>
+<button class="ilw-button ilw-theme-orange-solid" @onclick="SaveChanges" @onblur="Layout.RemoveMessage">Save</button>

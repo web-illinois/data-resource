@@ -11,7 +11,6 @@ namespace ResourceInformationV2.Components.Pages.Person {
     public partial class Technical {
         private bool _originalStatus;
         public Search.Models.Person Item { get; set; } = default!;
-
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
 

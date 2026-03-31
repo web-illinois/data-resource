@@ -53,7 +53,7 @@
             <input id="active" type="checkbox" @bind="SourceEmail.IsActive" @bind:after="Layout.SetDirty">
         </div>
 
-        <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+        <button class="ilw-button ilw-theme-orange-solid" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
         <button class="ilw-button" @onclick="Delete" @onblur="Layout.RemoveMessage">Remove Email</button>
     }
 

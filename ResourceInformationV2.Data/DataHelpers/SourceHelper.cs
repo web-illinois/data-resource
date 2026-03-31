@@ -68,6 +68,35 @@ namespace ResourceInformationV2.Data.DataHelpers {
             return false;
         }
 
+        public async Task<bool> DoesSourceUseFragment(string sourceCode, CategoryType categoryType) {
+            var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
+            if (source == null) {
+                return false;
+            }
+            switch (categoryType) {
+                case CategoryType.Event:
+                    return source.UseEventsFragment;
+
+                case CategoryType.Faq:
+                    return source.UseFaqsFragment;
+
+                case CategoryType.Note:
+                    return source.UseNotesFragment;
+
+                case CategoryType.Resource:
+                    return source.UseResourcesFragment;
+
+                case CategoryType.Person:
+                    return source.UsePeopleFragment;
+
+                case CategoryType.Publication:
+                    return source.UsePublicationsFragment;
+                case CategoryType.None:
+                    break;
+            }
+            return false;
+        }
+
         public async Task<(bool eventItem, bool faqItem, bool noteItem, bool resourceItem, bool personItem, bool publicationItem)> DoesSourceUseItemCheckAll(string sourceCode) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             return source == null ? (false, false, false, false, false, false) :
@@ -175,7 +204,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
             return source.Id;
         }
 
-        public async Task<int> SetSourceItem(string sourceCode, CategoryType categoryType, bool isUsed) {
+        public async Task<int> SetSourceItem(string sourceCode, CategoryType categoryType, bool isUsed, bool useFragment) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
             if (source == null) {
                 return 0;
@@ -183,26 +212,32 @@ namespace ResourceInformationV2.Data.DataHelpers {
             switch (categoryType) {
                 case CategoryType.Event:
                     source.UseEvents = isUsed;
+                    source.UseEventsFragment = useFragment;
                     break;
 
                 case CategoryType.Faq:
                     source.UseFaqs = isUsed;
+                    source.UseFaqsFragment = useFragment;
                     break;
 
                 case CategoryType.Note:
                     source.UseNotes = isUsed;
+                    source.UseNotesFragment = useFragment;
                     break;
 
                 case CategoryType.Resource:
                     source.UseResources = isUsed;
+                    source.UseResourcesFragment = useFragment;
                     break;
 
                 case CategoryType.Person:
                     source.UsePeople = isUsed;
+                    source.UsePeopleFragment = useFragment;
                     break;
 
                 case CategoryType.Publication:
                     source.UsePublications = isUsed;
+                    source.UsePublicationsFragment = useFragment;
                     break;
             }
             _ = await _resourceRepository.UpdateAsync(source);

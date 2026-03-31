@@ -122,7 +122,7 @@ namespace ResourceInformationV2.Search.Getters {
                         f => audience.Any() ? f.Terms(m => m.Field(fld => fld.AudienceList).Terms(audience)) : f.MatchAll(),
                         f => departments.Any() ? f.Terms(m => m.Field(fld => fld.DepartmentList).Terms(departments)) : f.MatchAll())
                     .Must(m => !string.IsNullOrWhiteSpace(search) ? m.MultiMatch(m => m.Fields(fld => fld.Field("title^10").Field("description^5").Field("notes")).Query(search)) : m.MatchAll())))
-                    .Sort(srt => sort == "date" ? srt.Descending(f => f.CreatedOn) : srt.Ascending(f => f.TitleSortKeyword))
+                    .Sort(srt => sort == "date" ? srt.Descending(f => f.CreatedOn) : srt.Ascending(f => f.Order).Ascending(f => f.TitleSortKeyword))
                     .Suggest(a => a.Phrase("didyoumean", p => p.Text(search).Field(fld => fld.Title))));
             LogDebug(response);
 

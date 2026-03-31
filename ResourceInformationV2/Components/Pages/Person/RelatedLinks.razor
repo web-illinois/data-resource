@@ -11,5 +11,5 @@
 @if (Item != null)
 {
     <LinkList @ref="_linkList" Links="@Item.LinkList?.ToList()"></LinkList>
-    <button class="ilw-button ilw-theme-orange-2" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
+    <button class="ilw-button ilw-theme-orange-solid" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>
 }

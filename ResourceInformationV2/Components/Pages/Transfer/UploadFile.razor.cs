@@ -7,6 +7,7 @@ using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Helpers;
 using ResourceInformationV2.Search.Models;
 using ResourceInformationV2.Search.Setters;
+using System.Text;
 
 namespace ResourceInformationV2.Components.Pages.Transfer {
 
@@ -62,7 +63,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
         }
 
         private async Task LoadFile(InputFileChangeEventArgs e) {
-            _reader = await new StreamReader(e.File.OpenReadStream(_maxFileSize)).ReadToEndAsync();
+            _reader = await new StreamReader(e.File.OpenReadStream(_maxFileSize), Encoding.UTF8, detectEncodingFromByteOrderMarks: true).ReadToEndAsync();
             await Layout.AddMessage("File loaded for " + SelectedOption + " and ready to be uploaded");
         }
 

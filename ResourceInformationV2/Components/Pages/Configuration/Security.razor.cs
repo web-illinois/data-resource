@@ -14,6 +14,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
 
         public string ApiGuid { get; set; } = "";
 
+        public int CurrentOwnerId { get; set; }
         public List<string> Departments { get; set; } = [];
         public DateTime LastDateApiChanged { get; set; }
 
@@ -76,10 +77,21 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
             UseApi = false;
         }
 
+        public async Task ChangeOwner() {
+            var source = await Layout.CheckSource();
+            if (await SecurityHelper.ChangeOwner(source, CurrentOwnerId)) {
+                if (NetIds.Any(a => a.IsOwner) && NetIds.Any(a => a.Id == CurrentOwnerId)) {
+                    NetIds.First(a => a.IsOwner).IsOwner = false;
+                    NetIds.First(a => a.Id == CurrentOwnerId).IsOwner = true;
+                }
+                await Layout.AddMessage("The Owner has been changed");
+            }
+        }
+
         public async Task Remove(string netId) {
             var source = await Layout.CheckSource();
             if (await SecurityHelper.RemoveName(source, netId)) {
-                NetIds.Remove(NetIds.FirstOrDefault(n => n.Email == netId));
+                NetIds.Remove(NetIds.FirstOrDefault(n => n.Email == netId) ?? new SecurityEntry());
             }
             var email = await UserHelper.GetUser(AuthenticationStateProvider);
             if (netId == email) {
@@ -96,6 +108,7 @@ namespace ResourceInformationV2.Components.Pages.Configuration {
             NetIds = await SecurityHelper.GetNames(source);
             (UseApi, LastDateApiChanged, ApiDraft) = await ApiHelper.GetApi(source);
             Layout.SetSidebar(SidebarEnum.Configuration, "Configuration");
+            CurrentOwnerId = NetIds.FirstOrDefault(n => n.IsOwner)?.Id ?? 0;
             Departments = [.. (await FilterHelper.GetFilters(source, TagType.Department)).TagSources.Select(ts => ts.Title)];
         }
     }

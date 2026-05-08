@@ -1,11 +1,11 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using ResourceInformationV2.Components.Layout;
 using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Models;
+using System.Text;
 
 namespace ResourceInformationV2.Components.Pages.Transfer {
 
@@ -88,7 +88,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                 default:
                     break;
             }
-            var fileStream = new MemoryStream(Encoding.ASCII.GetBytes(text));
+            var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(text));
             using var streamRef = new DotNetStreamReference(fileStream);
             await JsRuntime.InvokeVoidAsync("downloadFileFromStream", $"{source}_{DateTime.Now.ToString("yyyy_MM_dd")}_{SelectedOption.ToLowerInvariant()}.txt", streamRef);
             await Layout.AddMessage("Text file downloaded successfully.");

@@ -9,7 +9,7 @@
     {
         <div class="security-box">
             <p>@netid.Display</p>
-            <button class="ilw-button" @onclick="e => Remove(netid.Email)">Remove</button>
+            <button class="ilw-button" disabled="@netid.IsOwner" @onclick="e => Remove(netid.Email)">Remove</button>
         </div>
     }
 
@@ -19,16 +19,17 @@
         <p>Add a Net ID to add to the list. The <em>@@illinois.edu</em> is optional.</p>
     </div>
     
-    <div class="ils-input-entry">
-        <label for="department">Restrict to a department</label>
-        <select id="department" class="ils-input-long" @bind="NewDepartment">
-            <option value="">None (access to all departments)</option>
-            @foreach (var item in Departments)
-            {
-                <option value="@item">@item</option>
-            }
-        </select>
-    </div>
+    @if (Departments.Count > 0) {
+        <div class="ils-input-entry">
+            <label for="department">Restrict to a department</label>
+            <select id="department" class="ils-input-long" @bind="NewDepartment">
+                <option value="">None (access to all departments)</option>
+                @foreach (var item in Departments) {
+                    <option value="@item">@item</option>
+                }
+            </select>
+        </div>
+    }
     <p><button class="ilw-button" @onclick="Add">Add Net ID</button></p>
     <h2>API Updates</h2>
     <p>This generates an API key that will allow you to programatically add, update, and delete items within your source.</p>
@@ -54,4 +55,18 @@
         <p>If you had a valid API key before creating this new API key, it will be usable as well. If you wish to deactivate the old API key (because it has been compromised), then you should invalidate the API key and then create a new key.</p>
         <p><code>API Key: <strong>@ApiGuid</strong></code></p>
     }
+
+    <h2>Change Owner</h2>
+    <p>Each Resource Source must have an owner. You can change the owner below:</p>
+    <div class="ils-input-entry">
+        <label for="newowner">Owner</label>
+        <select id="newowner" class="ils-input-long" @bind="CurrentOwnerId">
+            @foreach (var netid in NetIds) {
+                <option value="@netid.Id">@netid.Email</option>
+            }
+        </select>
+    </div>
+    <p><button class="ilw-button" @onclick="ChangeOwner">Change Owner</button></p>
+
+
 </ilw-content>

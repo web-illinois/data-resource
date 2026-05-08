@@ -59,8 +59,8 @@
     <h2>Change Owner</h2>
     <p>Each Resource Source must have an owner. You can change the owner below:</p>
     <div class="ils-input-entry">
-        <label for="department">Owner</label>
-        <select id="department" class="ils-input-long" @bind="CurrentOwnerId">
+        <label for="newowner">Owner</label>
+        <select id="newowner" class="ils-input-long" @bind="CurrentOwnerId">
             @foreach (var netid in NetIds) {
                 <option value="@netid.Id">@netid.Email</option>
             }

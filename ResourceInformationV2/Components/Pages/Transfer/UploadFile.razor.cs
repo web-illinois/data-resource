@@ -63,7 +63,8 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
         }
 
         private async Task LoadFile(InputFileChangeEventArgs e) {
-            _reader = await new StreamReader(e.File.OpenReadStream(_maxFileSize), Encoding.UTF8, detectEncodingFromByteOrderMarks: true).ReadToEndAsync();
+            using var streamReader = new StreamReader(e.File.OpenReadStream(_maxFileSize), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+            _reader = await streamReader.ReadToEndAsync();
             await Layout.AddMessage("File loaded for " + SelectedOption + " and ready to be uploaded");
         }
 

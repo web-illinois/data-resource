@@ -88,7 +88,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                 default:
                     break;
             }
-            var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+            using var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(text));
             using var streamRef = new DotNetStreamReference(fileStream);
             await JsRuntime.InvokeVoidAsync("downloadFileFromStream", $"{source}_{DateTime.Now.ToString("yyyy_MM_dd")}_{SelectedOption.ToLowerInvariant()}.txt", streamRef);
             await Layout.AddMessage("Text file downloaded successfully.");

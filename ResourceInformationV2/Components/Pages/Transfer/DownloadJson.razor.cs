@@ -42,7 +42,7 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
 
             _ = Enum.TryParse(SelectedOption, out UrlTypes urlType);
             var text = await JsonHelper.GetJsonFull(source, urlType);
-            var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+            using var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(text));
             using var streamRef = new DotNetStreamReference(fileStream);
             await JsRuntime.InvokeVoidAsync("downloadFileFromStream", $"{source}_{DateTime.Now.ToString("yyyy_MM_dd")}_{SelectedOption.ToLowerInvariant()}.json", streamRef);
             await Layout.AddMessage("JSON file downloaded successfully.");

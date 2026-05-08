@@ -17,7 +17,7 @@
             { SidebarEnum.AddEditInformation, new() { new ("Home", "/"),
                                  new ("Add/Edit Information", "/add") } },
             { SidebarEnum.PeopleItem, new() { new ("Home", "/"),
-                                 new ("Edit People", "/person/edit/") } },
+                                 new ("Edit People", "/person/edit") } },
             { SidebarEnum.PublicationItem, new() { new ("Home", "/"),
                                  new ("Edit Publications", "/publication/edit") } },
             { SidebarEnum.ResourceItem, new() { new ("Home", "/"),

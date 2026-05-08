@@ -17,23 +17,17 @@
             { SidebarEnum.AddEditInformation, new() { new ("Home", "/"),
                                  new ("Add/Edit Information", "/add") } },
             { SidebarEnum.PeopleItem, new() { new ("Home", "/"),
-                                 new ("Edit", "/edit"),
-                                 new ("People", "/person/general") } },
+                                 new ("Edit People", "/person/edit") } },
             { SidebarEnum.PublicationItem, new() { new ("Home", "/"),
-                                 new ("Edit", "/edit"),
-                                 new ("Publications", "/publication/general") } },
+                                 new ("Edit Publications", "/publication/edit") } },
             { SidebarEnum.ResourceItem, new() { new ("Home", "/"),
-                        new ("Edit", "/edit"),
-                        new ("Resources", "/resource/general") } },
+                        new ("Edit Resources", "/resource/edit") } },
             { SidebarEnum.FaqItem, new() { new ("Home", "/"),
-                        new ("Edit", "/edit"),
-                        new ("FAQs", "/faq/general") } },
+                        new ("Edit FAQs", "/faq/edit") } },
             { SidebarEnum.NotesItem, new() { new ("Home", "/"),
-                        new ("Edit", "/edit"),
-                        new ("Notes", "/note/general") } },
+                        new ("Edit Notes", "/note/edit") } },
             { SidebarEnum.EventItem, new() { new ("Home", "/"),
-                        new ("Edit", "/edit"),
-                        new ("Notes", "/event/general") } }
+                        new ("Edit Events", "/event/edit") } }
         };
 
         private static readonly Dictionary<SidebarEnum, List<PageLink>> _sidebars = new() {

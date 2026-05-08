@@ -29,6 +29,20 @@ public class SecurityHelper(ResourceRepository resourceRepository) {
         return entry?.DepartmentTag ?? "";
     }
 
+    public async Task<bool> ChangeOwner(string sourceName, int newId) {
+        var oldOwner = await resourceRepository.ReadAsync(c => c.SecurityEntries.Include(c => c.Source).FirstOrDefault(se => se.Source != null && se.Source.Code == sourceName.Replace("!", "") && se.IsOwner));
+        if (oldOwner == null) {
+            return false;
+        }
+        oldOwner.IsOwner = false;
+        var newOwner = await resourceRepository.ReadAsync(c => c.SecurityEntries.FirstOrDefault(se => se.Id == newId));
+        if (newOwner == null) {
+            return false;
+        }
+        newOwner.IsOwner = true;
+        return await resourceRepository.UpdateAsync(oldOwner) > 0 && await resourceRepository.UpdateAsync(newOwner) > 0;
+    }
+
     public async Task<bool> ConfirmNetIdCanAccessSource(string sourceName, string netId) {
         return await resourceRepository.ReadAsync(c => c.SecurityEntries.Include(c => c.Source).Any(se => se.Source != null && se.Source.Code == sourceName.Replace("!", "") && se.Email == netId));
     }

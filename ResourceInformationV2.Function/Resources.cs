@@ -143,8 +143,7 @@ public class Resources(ILogger<Resources> logger, ResourceGetter resourceGetter,
             await response.WriteAsJsonAsync(results.forceDraft
                 ? await _resourceSetter.SetItemWithDraft(item)
                 : await _resourceSetter.SetItem(item));
-            await _logHelper.Log(CategoryType.Resource, FieldType.None, "API", item.Source, item, "API Load",
-                EmailType.OnSubmission);
+            await _logHelper.Log(CategoryType.Resource, FieldType.None, "API", item.Source, item, "API Load", EmailType.OnSubmission);
             return response;
         } catch (Exception ex) {
             var response = req.CreateResponse(HttpStatusCode.InternalServerError);

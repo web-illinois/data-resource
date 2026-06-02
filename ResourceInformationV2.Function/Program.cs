@@ -45,11 +45,15 @@ var host = new HostBuilder()
         _ = services.AddScoped<ResourceGetter>();
         _ = services.AddScoped<ResourceSetter>();
         _ = services.AddScoped<PublicationGetter>();
+        _ = services.AddScoped<PublicationSetter>();
         _ = services.AddScoped<NoteGetter>();
+        _ = services.AddScoped<NoteSetter>();
         _ = services.AddScoped<FaqGetter>();
+        _ = services.AddScoped<FaqSetter>();
         _ = services.AddScoped<PersonGetter>();
         _ = services.AddScoped<PersonSetter>();
         _ = services.AddScoped<EventGetter>();
+        _ = services.AddScoped<EventSetter>();
         _ = services.AddScoped<LinkCheckHelper>();
     })
     .Build();

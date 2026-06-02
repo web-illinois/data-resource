@@ -89,8 +89,7 @@ public class People {
             await response.WriteAsJsonAsync(results.forceDraft
                 ? await _personSetter.SetItemWithDraft(item)
                 : await _personSetter.SetItem(item));
-            await _logHelper.Log(CategoryType.Person, FieldType.None, "API", item.Source, item, "API Load",
-                EmailType.OnSubmission);
+            await _logHelper.Log(CategoryType.Person, FieldType.None, "API", item.Source, item, "API Load", EmailType.OnSubmission);
             return response;
         } catch (Exception ex) {
             var response = req.CreateResponse(HttpStatusCode.InternalServerError);

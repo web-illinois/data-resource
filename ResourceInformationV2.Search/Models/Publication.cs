@@ -17,7 +17,7 @@ namespace ResourceInformationV2.Search.Models {
         [Keyword] public string Status { get; set; } = "";
         [Keyword] public string Volume { get; set; } = "";
 
-        internal override string[] Headings => ["Id", "Title", "Description", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Authors", "Book Title", "Issue", "Journal Name", "Page Numbers", "Publication Type", "PublishedDate", "Status", "Volume", "DOI", "Related Links", "Order", "Review Email", "Last Updated Date"];
+        internal override string[] Headings => ["Id", "Title", "Description", "Fragment", "Link Url", "Link Text", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Authors", "Book Title", "Issue", "Journal Name", "Page Numbers", "Publication Type", "PublishedDate", "Status", "Volume", "DOI", "Related Links", "Order", "Review Email", "Last Updated Date"];
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
@@ -25,37 +25,38 @@ namespace ResourceInformationV2.Search.Models {
             Description = PrepareForTextUpload(lineArray[2]);
             Fragment = lineArray[3];
             Url = lineArray[4];
-            Image = lineArray[5];
-            ImageAltText = lineArray[6];
-            ImageSource = lineArray[7];
-            VideoUrl = lineArray[8];
-            Notes = PrepareForTextUpload(lineArray[9]);
-            _ = DateTime.TryParse(PrepareForTextUpload(lineArray[10]), out var createdDate);
+            UrlText = lineArray[5];
+            Image = lineArray[6];
+            ImageAltText = lineArray[7];
+            ImageSource = lineArray[8];
+            VideoUrl = lineArray[9];
+            Notes = PrepareForTextUpload(lineArray[10]);
+            _ = DateTime.TryParse(PrepareForTextUpload(lineArray[11]), out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
-            _ = bool.TryParse(lineArray[11], out var isActive);
+            _ = bool.TryParse(lineArray[12], out var isActive);
             IsActive = isActive;
-            AudienceList = GetTagsFromString(lineArray[12]);
-            DepartmentList = GetTagsFromString(lineArray[13]);
-            TopicList = GetTagsFromString(lineArray[14]);
-            TagList = GetTagsFromString(lineArray[15]);
-            Tag2List = GetTagsFromString(lineArray[16]);
-            Tag3List = GetTagsFromString(lineArray[17]);
-            Tag4List = GetTagsFromString(lineArray[18]);
-            Authors = GetTagsFromString(lineArray[19]);
-            BookTitle = PrepareForTextUpload(lineArray[20]);
-            Issue = PrepareForTextUpload(lineArray[21]);
-            JournalName = PrepareForTextUpload(lineArray[22]);
-            PageNumbers = PrepareForTextUpload(lineArray[23]);
-            PublicationType = PrepareForTextUpload(lineArray[24]);
-            PublishedDate = PrepareForTextUpload(lineArray[25]);
-            Status = PrepareForTextUpload(lineArray[26]);
-            Volume = PrepareForTextUpload(lineArray[27]);
-            Doi = PrepareForTextUpload(lineArray[28]);
-            LinkList = GetLinksFromString(lineArray[29]);
-            _ = int.TryParse(lineArray[30], out var order);
+            AudienceList = GetTagsFromString(lineArray[13]);
+            DepartmentList = GetTagsFromString(lineArray[14]);
+            TopicList = GetTagsFromString(lineArray[15]);
+            TagList = GetTagsFromString(lineArray[16]);
+            Tag2List = GetTagsFromString(lineArray[17]);
+            Tag3List = GetTagsFromString(lineArray[18]);
+            Tag4List = GetTagsFromString(lineArray[19]);
+            Authors = GetTagsFromString(lineArray[20]);
+            BookTitle = PrepareForTextUpload(lineArray[21]);
+            Issue = PrepareForTextUpload(lineArray[22]);
+            JournalName = PrepareForTextUpload(lineArray[23]);
+            PageNumbers = PrepareForTextUpload(lineArray[24]);
+            PublicationType = PrepareForTextUpload(lineArray[25]);
+            PublishedDate = PrepareForTextUpload(lineArray[26]);
+            Status = PrepareForTextUpload(lineArray[27]);
+            Volume = PrepareForTextUpload(lineArray[28]);
+            Doi = PrepareForTextUpload(lineArray[29]);
+            LinkList = GetLinksFromString(lineArray[30]);
+            _ = int.TryParse(lineArray[31], out var order);
             Order = order;
-            ReviewEmail = lineArray[31];
-            _ = DateTime.TryParse(PrepareForTextUpload(lineArray[32]), out var lastUpdatedDate);
+            ReviewEmail = lineArray[32];
+            _ = DateTime.TryParse(PrepareForTextUpload(lineArray[33]), out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -66,6 +67,7 @@ namespace ResourceInformationV2.Search.Models {
             PrepareForTextDownload(Description),
             Fragment,
             Url,
+            UrlText,
             Image,
             ImageAltText,
             ImageSource,

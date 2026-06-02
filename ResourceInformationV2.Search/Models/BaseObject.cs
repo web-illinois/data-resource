@@ -68,6 +68,8 @@ public abstract class BaseObject {
 
     [Keyword] public string Url { get; set; } = "";
 
+    [Keyword] public string UrlText { get; set; } = "";
+
     [Keyword] public string VideoUrl { get; set; } = "";
 
     public bool UseManualCheck { get; set; }

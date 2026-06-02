@@ -13,7 +13,7 @@ namespace ResourceInformationV2.Search.Models {
         [Keyword] public string Sponsor { get; set; } = "";
         public DateTime StartDate { get; set; } = DateTime.Now;
 
-        internal override string[] Headings => ["Id", "Title", "Description", "Start Date", "End Date", "Is All Day", "Location", "Speaker", "Sponsor", "Fragment", "Url", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
+        internal override string[] Headings => ["Id", "Title", "Description", "Start Date", "End Date", "Is All Day", "Location", "Speaker", "Sponsor", "Fragment", "Link Url", "Link Text", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
 
         public override void Prepare() {
             base.Prepare();
@@ -35,27 +35,28 @@ namespace ResourceInformationV2.Search.Models {
             Sponsor = PrepareForTextUpload(lineArray[8]);
             Fragment = lineArray[9];
             Url = lineArray[10];
-            Image = lineArray[11];
-            ImageAltText = lineArray[12];
-            ImageSource = lineArray[13];
-            VideoUrl = lineArray[14];
-            Notes = PrepareForTextUpload(lineArray[15]);
-            _ = DateTime.TryParse(lineArray[16], out var createdDate);
+            UrlText = lineArray[11];
+            Image = lineArray[12];
+            ImageAltText = lineArray[13];
+            ImageSource = lineArray[14];
+            VideoUrl = lineArray[15];
+            Notes = PrepareForTextUpload(lineArray[16]);
+            _ = DateTime.TryParse(lineArray[17], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
-            _ = bool.TryParse(lineArray[17], out var isActive);
+            _ = bool.TryParse(lineArray[18], out var isActive);
             IsActive = isActive;
-            AudienceList = GetTagsFromString(lineArray[18]);
-            DepartmentList = GetTagsFromString(lineArray[19]);
-            TopicList = GetTagsFromString(lineArray[20]);
-            TagList = GetTagsFromString(lineArray[21]);
-            Tag2List = GetTagsFromString(lineArray[22]);
-            Tag3List = GetTagsFromString(lineArray[23]);
-            Tag4List = GetTagsFromString(lineArray[24]);
-            LinkList = GetLinksFromString(lineArray[25]);
-            _ = int.TryParse(lineArray[26], out var order);
+            AudienceList = GetTagsFromString(lineArray[19]);
+            DepartmentList = GetTagsFromString(lineArray[20]);
+            TopicList = GetTagsFromString(lineArray[21]);
+            TagList = GetTagsFromString(lineArray[22]);
+            Tag2List = GetTagsFromString(lineArray[23]);
+            Tag3List = GetTagsFromString(lineArray[24]);
+            Tag4List = GetTagsFromString(lineArray[25]);
+            LinkList = GetLinksFromString(lineArray[26]);
+            _ = int.TryParse(lineArray[27], out var order);
             Order = order;
-            ReviewEmail = lineArray[27];
-            _ = DateTime.TryParse(lineArray[28], out var lastUpdatedDate);
+            ReviewEmail = lineArray[28];
+            _ = DateTime.TryParse(lineArray[29], out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -72,6 +73,7 @@ namespace ResourceInformationV2.Search.Models {
             Sponsor,
             Fragment,
             Url,
+            UrlText,
             Image,
             ImageAltText,
             ImageSource,

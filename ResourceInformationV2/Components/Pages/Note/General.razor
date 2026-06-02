@@ -22,7 +22,12 @@
             <input id="link" type="text" class="ils-input-long" @bind="Item.Url" @bind:after="Layout.SetDirty" />
         </div>
     </ilw-content>
-
+    <ilw-content>
+        <div class="ils-input-entry">
+            <label for="linktext">Link Text</label>
+            <input id="linktext" type="text" class="ils-input-long" @bind="Item.UrlText" @bind:after="Layout.SetDirty" />
+        </div>
+    </ilw-content>
     <ilw-content>
         <div class="ils-input-entry">
             <label for="description">Description</label>

@@ -59,8 +59,8 @@ namespace ResourceInformationV2.Components.Pages.Faq {
         protected override async Task OnInitializedAsync() {
             var sourceCode = await Layout.CheckSource();
             var id = await Layout.GetCachedId();
-            _originalStatus = Item.IsActive;
             Item = await FaqGetter.GetItem(id);
+            _originalStatus = Item.IsActive;
             Layout.SetSidebar(SidebarEnum.FaqItem, Item.Title);
             await base.OnInitializedAsync();
         }

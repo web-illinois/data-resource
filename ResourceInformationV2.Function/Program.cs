@@ -1,4 +1,3 @@
-using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +22,9 @@ var host = new HostBuilder()
         }
     })
     .ConfigureServices((hostContext, services) => {
-        services.AddApplicationInsightsTelemetryWorkerService();
-        services.ConfigureFunctionsApplicationInsights();
-        _ = services.AddApplicationInsightsTelemetryWorkerService();
         _ = services.Configure<JsonSerializerOptions>(options => {
             options.PropertyNamingPolicy = new JsonNamingPolicyLowerCase();
         });
-        _ = services.ConfigureFunctionsApplicationInsights();
         _ = services.AddDbContextFactory<ResourceContext>(options => options.UseSqlServer(hostContext.Configuration["Values:AppConnection"]).EnableSensitiveDataLogging(true));
         _ = services.AddScoped<ResourceRepository>();
         _ = services.AddScoped<BulkEditor>();

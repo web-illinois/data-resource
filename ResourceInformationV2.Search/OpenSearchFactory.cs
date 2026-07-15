@@ -8,6 +8,7 @@ using ResourceInformationV2.Search.Models;
 namespace ResourceInformationV2.Search {
 
     public static class OpenSearchFactory {
+        private const string TempIndex = "pcr2_tempindex";
 
         public static OpenSearchClient CreateClient(string? baseUrl, string? accessKey, string? secretKey, bool debug) {
             var client = new OpenSearchClient(GenerateConnection(baseUrl, accessKey, secretKey, debug));
@@ -24,18 +25,13 @@ namespace ResourceInformationV2.Search {
 
         public static string MapIndex(OpenSearchClient openSearchClient) {
             var returnValue = "Mapping: ";
-            var indexEvents = openSearchClient.Indices.Create(UrlTypes.Events.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Event>()));
-            returnValue += $"Events {(indexEvents.IsValid ? "created" : "failed")} - {indexEvents.DebugInformation}; ";
-            var indexFaqs = openSearchClient.Indices.Create(UrlTypes.Faqs.ConvertToUrlString(), c => c.Map(m => m.AutoMap<FaqItem>()));
-            returnValue += $"FAQs {(indexFaqs.IsValid ? "created" : "failed")} - {indexFaqs.DebugInformation}; ";
-            var indexNotes = openSearchClient.Indices.Create(UrlTypes.Notes.ConvertToUrlString(), c => c.Map(m => m.AutoMap<NoteItem>()));
-            returnValue += $"Notes {(indexNotes.IsValid ? "created" : "failed")} - {indexNotes.DebugInformation}; ";
-            var indexPeople = openSearchClient.Indices.Create(UrlTypes.People.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Person>()));
-            returnValue += $"People {(indexPeople.IsValid ? "created" : "failed")} - {indexPeople.DebugInformation}; ";
-            var indexPublications = openSearchClient.Indices.Create(UrlTypes.Publications.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Publication>()));
-            returnValue += $"Publications {(indexPublications.IsValid ? "created" : "failed")} - {indexPublications.DebugInformation}; ";
-            var indexResources = openSearchClient.Indices.Create(UrlTypes.Resources.ConvertToUrlString(), c => c.Map(m => m.AutoMap<Resource>()));
-            returnValue += $"Resources {(indexResources.IsValid ? "created" : "failed")} - {indexResources.DebugInformation}; ";
+            // NOTE: change the 'forceIndexCreation' to true if you are changing the index -- this will greatly increase the load time.
+            returnValue += ReloadIndex(openSearchClient, UrlTypes.Events, true);
+            returnValue += ReloadIndex(openSearchClient, UrlTypes.Faqs, false);
+            returnValue += ReloadIndex(openSearchClient, UrlTypes.Notes, false);
+            returnValue += ReloadIndex(openSearchClient, UrlTypes.People, false);
+            returnValue += ReloadIndex(openSearchClient, UrlTypes.Publications, false);
+            returnValue += ReloadIndex(openSearchClient, UrlTypes.Resources, false);
             return returnValue;
         }
 
@@ -48,5 +44,50 @@ namespace ResourceInformationV2.Search {
             }
             return config;
         }
+
+        private static string ReloadIndex(OpenSearchClient openSearchClient, UrlTypes url, bool forceIndexCreation) {
+            if (!forceIndexCreation) {
+                return CreateIndex(openSearchClient, url, false);
+            }
+            var indexName = url.ConvertToUrlString();
+            var returnValue = $"Reloading {indexName}: ";
+            returnValue += CreateIndex(openSearchClient, url, true);
+            var reindexResponse = openSearchClient.ReindexOnServer(r => r
+                .Source(s => s.Index(indexName))
+                .Destination(d => d.Index(TempIndex))
+                .WaitForCompletion(true)
+            );
+            if (!reindexResponse.IsValid) {
+                throw new Exception(reindexResponse.DebugInformation);
+            }
+            var deleteResponse = openSearchClient.Indices.Delete(indexName);
+            returnValue += $"Delete {(deleteResponse.IsValid ? "succeeded" : "failed")} - {deleteResponse.DebugInformation}; ";
+            returnValue += CreateIndex(openSearchClient, url, false);
+            var movebackResponse = openSearchClient.ReindexOnServer(r => r
+                .Source(s => s.Index(TempIndex))
+                .Destination(d => d.Index(indexName))
+                .WaitForCompletion(true)
+            );
+            if (!movebackResponse.IsValid) {
+                throw new Exception(movebackResponse.DebugInformation);
+            }
+            var deleteTempResponse = openSearchClient.Indices.Delete(TempIndex);
+            returnValue += $"Delete Temp {(deleteTempResponse.IsValid ? "succeeded" : "failed")} - {deleteTempResponse.DebugInformation}; ";
+            return returnValue;
+        }
+
+        private static string CreateIndex(OpenSearchClient openSearchClient, UrlTypes url, bool temp) {
+            var indexName = temp ? TempIndex : UrlTypes.Events.ConvertToUrlString();
+            return url switch {
+                UrlTypes.Events => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<Event>())).ConvertResponse(url),
+                UrlTypes.Faqs => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<FaqItem>())).ConvertResponse(url),
+                UrlTypes.Notes => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<NoteItem>())).ConvertResponse(url),
+                UrlTypes.People => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<Person>())).ConvertResponse(url),
+                UrlTypes.Publications => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<Publication>())).ConvertResponse(url),
+                UrlTypes.Resources => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<Resource>())).ConvertResponse(url),
+                _ => string.Empty,
+            };
+        }
+        private static string ConvertResponse(this CreateIndexResponse response, UrlTypes url) => $"Create {url} {(response.IsValid ? "succeeded" : "failed")} - {response.DebugInformation}; ";
     }
 }

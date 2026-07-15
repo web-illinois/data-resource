@@ -124,7 +124,6 @@ public class Events {
     [OpenApiParameter(name: "audience", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of audiences. You can separate the audiences by the characters '[-]'.")]
     [OpenApiParameter(name: "department", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of departments. You can separate the departments by the characters '[-]'.")]
     [OpenApiParameter(name: "speaker", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A list of speakers. You can separate the speakers by the characters '[-]'.")]
-    [OpenApiParameter(name: "source", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The source for the tags.")]
     [OpenApiParameter(name: "location", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The location for the event.")]
     [OpenApiParameter(name: "date", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "The start date for the event.")]
     [OpenApiParameter(name: "q", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "A full text search string -- it will search the title and description for the search querystring.")]

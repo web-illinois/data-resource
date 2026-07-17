@@ -99,7 +99,7 @@ app.Lifetime.ApplicationStarted.Register(() => {
     try {
         context.Database.Migrate();
     } catch (Exception e) {
-        context.StartupLogs.Add(new ResourceInformationV2.Data.DataModels.StartupLog {
+        context.StartupLogs.Add(new StartupLog {
             Data = $"Database migration error at {DateTime.UtcNow} UTC. {e.Message}",
             LastUpdated = DateTime.UtcNow
         });
@@ -107,23 +107,6 @@ app.Lifetime.ApplicationStarted.Register(() => {
     }
 
     // Ensure the search index is created
-    try {
-        var openSearchClient = serviceScope.ServiceProvider.GetRequiredService<OpenSearchClient>();
-        var results = OpenSearchFactory.MapIndex(openSearchClient);
-        Console.WriteLine(results);
-        context.StartupLogs.Add(new ResourceInformationV2.Data.DataModels.StartupLog {
-            Data = $"Search index migration. {results}",
-            LastUpdated = DateTime.UtcNow
-        });
-        context.SaveChanges();
-    } catch (Exception e) {
-        context.StartupLogs.Add(new ResourceInformationV2.Data.DataModels.StartupLog {
-            Data = $"Search index migration error at {DateTime.UtcNow} UTC. {e.Message}",
-            LastUpdated = DateTime.UtcNow
-        });
-        context.SaveChanges();
-    }
-
     try {
         var openSearchClient = serviceScope.ServiceProvider.GetRequiredService<OpenSearchClient>();
         var results = OpenSearchFactory.MapIndex(openSearchClient);
@@ -151,8 +134,6 @@ app.Lifetime.ApplicationStarted.Register(() => {
         });
         context.SaveChanges();
     }
-
-    // _ = 
 });
 
 app.Run();

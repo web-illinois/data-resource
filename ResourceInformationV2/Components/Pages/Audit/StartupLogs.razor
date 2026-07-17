@@ -1,0 +1,13 @@
+﻿@page "/audit/startuplog"
+
+<PageTitle>Audit - Startup</PageTitle>
+
+<ilw-content>
+    <h1>Startup</h1>
+
+    @if (LogItems != null) {
+        @foreach (var log in LogItems) {
+            <p>@log.LastUpdated.ToString("G") - @log.Data</p>
+        }
+    }
+</ilw-content>

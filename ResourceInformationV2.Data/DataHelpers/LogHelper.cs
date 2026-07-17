@@ -10,12 +10,14 @@ namespace ResourceInformationV2.Data.DataHelpers {
         private readonly ResourceRepository _resourceRepository = resourceRepository;
         private readonly SourceEmailHelper _sourceEmailHelper = sourceEmailHelper;
 
+        public async Task<IEnumerable<StartupLog>> GetStartupLog() => await _resourceRepository.ReadAsync(c => c.StartupLogs.OrderByDescending(s => s.LastUpdated).Take(3));
+
         public async Task<bool> Log(CategoryType categoryType, FieldType fieldType, string netId, string sourceName, BaseObject data, string subject = "", EmailType emailOption = EmailType.None) {
             var sourceId = (await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceName)))?.Id ?? 0;
             if (sourceId == 0) {
                 return false;
             }
-            string emailString = "";
+            var emailString = "";
             if (emailOption != EmailType.None) {
                 var emailConfiguration = await _sourceEmailHelper.GetSourceEmail(sourceName, emailOption);
                 if (emailConfiguration.IsActive) {

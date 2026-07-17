@@ -7,6 +7,7 @@ using ResourceInformationV2.Components;
 using ResourceInformationV2.Data.Cache;
 using ResourceInformationV2.Data.DataContext;
 using ResourceInformationV2.Data.DataHelpers;
+using ResourceInformationV2.Data.DataModels;
 using ResourceInformationV2.Data.Email;
 using ResourceInformationV2.Data.Uploads;
 using ResourceInformationV2.Search;
@@ -95,10 +96,63 @@ app.Lifetime.ApplicationStarted.Register(() => {
     using var serviceScope = factory.CreateScope();
     // Ensure the database is created
     var context = serviceScope.ServiceProvider.GetRequiredService<ResourceContext>();
-    context.Database.Migrate();
+    try {
+        context.Database.Migrate();
+    } catch (Exception e) {
+        context.StartupLogs.Add(new ResourceInformationV2.Data.DataModels.StartupLog {
+            Data = $"Database migration error at {DateTime.UtcNow} UTC. {e.Message}",
+            LastUpdated = DateTime.UtcNow
+        });
+        context.SaveChanges();
+    }
+
     // Ensure the search index is created
-    var openSearchClient = serviceScope.ServiceProvider.GetRequiredService<OpenSearchClient>();
-    Console.WriteLine(OpenSearchFactory.MapIndex(openSearchClient));
+    try {
+        var openSearchClient = serviceScope.ServiceProvider.GetRequiredService<OpenSearchClient>();
+        var results = OpenSearchFactory.MapIndex(openSearchClient);
+        Console.WriteLine(results);
+        context.StartupLogs.Add(new ResourceInformationV2.Data.DataModels.StartupLog {
+            Data = $"Search index migration. {results}",
+            LastUpdated = DateTime.UtcNow
+        });
+        context.SaveChanges();
+    } catch (Exception e) {
+        context.StartupLogs.Add(new ResourceInformationV2.Data.DataModels.StartupLog {
+            Data = $"Search index migration error at {DateTime.UtcNow} UTC. {e.Message}",
+            LastUpdated = DateTime.UtcNow
+        });
+        context.SaveChanges();
+    }
+
+    try {
+        var openSearchClient = serviceScope.ServiceProvider.GetRequiredService<OpenSearchClient>();
+        var results = OpenSearchFactory.MapIndex(openSearchClient);
+        Console.WriteLine(results);
+        context.StartupLogs.Add(new StartupLog {
+            Data = $"Search index migration. {results}",
+            LastUpdated = DateTime.UtcNow
+        });
+        context.SaveChanges();
+    } catch (Exception e) {
+        context.StartupLogs.Add(new StartupLog {
+            Data = $"Search index migration error at {DateTime.UtcNow} UTC. {e.Message}",
+            LastUpdated = DateTime.UtcNow
+        });
+        context.SaveChanges();
+    }
+
+    try {
+        var resourceRepository = serviceScope.ServiceProvider.GetRequiredService<ResourceRepository>();
+        _ = resourceRepository.DeleteEmptySourceAsync();
+    } catch (Exception e) {
+        context.StartupLogs.Add(new StartupLog {
+            Data = $"Search index migration error at {DateTime.UtcNow} UTC. {e.Message}",
+            LastUpdated = DateTime.UtcNow
+        });
+        context.SaveChanges();
+    }
+
+    // _ = 
 });
 
 app.Run();

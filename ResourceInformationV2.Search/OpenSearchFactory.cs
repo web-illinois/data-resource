@@ -26,7 +26,7 @@ namespace ResourceInformationV2.Search {
         public static string MapIndex(OpenSearchClient openSearchClient) {
             var returnValue = "Mapping: ";
             // NOTE: change the 'forceIndexCreation' to true if you are changing the index -- this will greatly increase the load time.
-            returnValue += ReloadIndex(openSearchClient, UrlTypes.Events, true);
+            returnValue += ReloadIndex(openSearchClient, UrlTypes.Events, false);
             returnValue += ReloadIndex(openSearchClient, UrlTypes.Faqs, false);
             returnValue += ReloadIndex(openSearchClient, UrlTypes.Notes, false);
             returnValue += ReloadIndex(openSearchClient, UrlTypes.People, false);

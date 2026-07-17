@@ -19,6 +19,7 @@ namespace ResourceInformationV2.Data.DataContext {
         public DbSet<SecurityEntry> SecurityEntries { get; set; }
         public DbSet<SourceEmail> SourceEmails { get; set; }
         public DbSet<Source> Sources { get; set; }
+        public DbSet<StartupLog> StartupLogs { get; set; }
         public DbSet<Tag> Tags { get; set; }
 
         public override void Dispose() {

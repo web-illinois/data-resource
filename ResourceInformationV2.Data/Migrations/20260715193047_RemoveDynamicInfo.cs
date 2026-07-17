@@ -1,30 +1,25 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ResourceInformationV2.Data.Migrations
-{
+namespace ResourceInformationV2.Data.Migrations {
     /// <inheritdoc />
-    public partial class RemoveDynamicInfo : Migration
-    {
+    public partial class RemoveDynamicInfo : Migration {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DeleteData(
-                table: "SecurityEntries",
-                keyColumn: "Id",
-                keyValue: -1);
+        protected override void Up(MigrationBuilder migrationBuilder) {
+            //            migrationBuilder.DeleteData(
+            //        table: "SecurityEntries",
+            //        keyColumn: "Id",
+            //        keyValue: -1);
 
-            migrationBuilder.DeleteData(
-                table: "Sources",
-                keyColumn: "Id",
-                keyValue: -1);
+            //            migrationBuilder.DeleteData(
+            //        table: "Sources",
+            //        keyColumn: "Id",
+            //        keyValue: -1);
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.InsertData(
                 table: "Sources",
                 columns: new[] { "Id", "ApiSecretCurrent", "ApiSecretLastChanged", "ApiSecretPrevious", "BaseUrl", "Code", "CreatedByEmail", "DateLastUrlCheck", "DeactivateOnReview", "DeletedByEmail", "FilterAudienceTitle", "FilterDepartmentTitle", "FilterOrder", "FilterTag1Title", "FilterTag2Title", "FilterTag3Title", "FilterTag4Title", "FilterTopicTitle", "ForceApiToDraft", "IsActive", "IsTest", "LastUpdated", "NumberOfDaysForReview", "ReviewEmail", "Title", "UseEvents", "UseEventsFragment", "UseFaqs", "UseFaqsFragment", "UseNotes", "UseNotesFragment", "UsePeople", "UsePeopleFragment", "UsePublications", "UsePublicationsFragment", "UseResources", "UseResourcesFragment" },

@@ -154,7 +154,7 @@ namespace ResourceInformationV2.Data.DataHelpers {
 
         public async Task<Dictionary<string, string>> GetSources(string netId) => await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(se => se.Source).Where(se => se.IsActive && !se.IsRequested && se.Email == netId && se.Source != null).OrderBy(se => se.Source.Title).ToDictionary(se => se.Source?.Code ?? "", se2 => se2.Source?.Title ?? ""));
 
-        public async Task<IEnumerable<Tuple<string, string>>> GetSourcesAndOwners() => await _resourceRepository.ReadAsync(c => c.Sources.Where(s => s.IsActive).OrderBy(s => s.Title).Select(s => new Tuple<string, string>(s.CreatedByEmail, $"{s.Title} ({s.Code})")));
+        public async Task<IEnumerable<Tuple<string, string>>> GetSourcesAndOwners() => await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(se => se.Source).Where(se => se.IsOwner && se.Source != null && se.Source.IsActive).OrderBy(s => s.Source.Title).Select(s => new Tuple<string, string>(s.Email, $"{s.Source.Title} ({s.Source.Code})")));
 
         public async Task<int> SetSourceFilterName(string sourceCode, TagType tagType, string title) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));

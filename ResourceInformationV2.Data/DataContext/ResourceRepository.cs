@@ -49,6 +49,22 @@ namespace ResourceInformationV2.Data.DataContext {
             return await context.SaveChangesAsync();
         }
 
+        public async Task<int> DeleteEmptySourceAsync() {
+            var source = await ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == ""));
+            if (source != null) {
+                using var context = _factory.CreateDbContext();
+                context.RemoveRange(context.Logs.Where(i => i.SourceId == source.Id));
+                context.RemoveRange(context.LinkChecks.Where(i => i.SourceId == source.Id));
+                context.RemoveRange(context.Instructions.Where(i => i.SourceId == source.Id));
+                context.RemoveRange(context.Tags.Where(i => i.SourceId == source.Id));
+                context.RemoveRange(context.SecurityEntries.Where(i => i.SourceId == source.Id));
+                context.Remove(source);
+                return await context.SaveChangesAsync();
+            }
+            return 0;
+        }
+
+
         public async Task<int> DeleteLinkCheckBySourceAsync(int sourceId) {
             using var context = _factory.CreateDbContext();
             context.RemoveRange(context.LinkChecks.Where(i => i.SourceId == sourceId));

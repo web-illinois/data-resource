@@ -54,6 +54,7 @@ namespace ResourceInformationV2.Components.Pages.Note {
                 var id = await Layout.GetCachedId();
                 Item = await NoteGetter.GetItem(id);
                 await _rteDescription.LoadHTMLContent(Item.DetailText);
+
                 Layout.SetSidebar(SidebarEnum.NotesItem, Item.Title);
             }
         }

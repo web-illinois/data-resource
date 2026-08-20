@@ -152,7 +152,16 @@ namespace ResourceInformationV2.Data.DataHelpers {
             return "";
         }
 
-        public async Task<Dictionary<string, string>> GetSources(string netId) => await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(se => se.Source).Where(se => se.IsActive && !se.IsRequested && se.Email == netId && se.Source != null).OrderBy(se => se.Source.Title).ToDictionary(se => se.Source?.Code ?? "", se2 => se2.Source?.Title ?? ""));
+        public async Task<Dictionary<string, string>> GetSources(string netId) {
+            var results = await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(se => se.Source).Where(se => se.IsActive && !se.IsRequested && se.Email == netId && se.Source != null).OrderBy(se => se.Source.Title));
+            var returnValue = new Dictionary<string, string>();
+            foreach (var result in results) {
+                if (result.Source != null && !returnValue.ContainsKey(result.Source.Code)) {
+                    returnValue.Add(result.Source.Code, result.Source.Title);
+                }
+            }
+            return returnValue;
+        }
 
         public async Task<IEnumerable<Tuple<string, string>>> GetSourcesAndOwners() => await _resourceRepository.ReadAsync(c => c.SecurityEntries.Include(se => se.Source).Where(se => se.IsOwner && se.Source != null && se.Source.IsActive).OrderBy(s => s.Source.Title).Select(s => new Tuple<string, string>(s.Email, $"{s.Source.Title} ({s.Source.Code})")));
 

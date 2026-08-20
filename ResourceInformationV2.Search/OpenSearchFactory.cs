@@ -77,7 +77,7 @@ namespace ResourceInformationV2.Search {
         }
 
         private static string CreateIndex(OpenSearchClient openSearchClient, UrlTypes url, bool temp) {
-            var indexName = temp ? TempIndex : UrlTypes.Events.ConvertToUrlString();
+            var indexName = temp ? TempIndex : url.ConvertToUrlString();
             return url switch {
                 UrlTypes.Events => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<Event>())).ConvertResponse(url),
                 UrlTypes.Faqs => openSearchClient.Indices.Create(indexName, c => c.Map(m => m.AutoMap<FaqItem>())).ConvertResponse(url),

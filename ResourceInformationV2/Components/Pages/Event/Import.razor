@@ -1,0 +1,16 @@
+﻿@page "/event/import"
+@layout SidebarLayout
+
+<PageTitle>Event - Import Screen</PageTitle>
+
+<ilw-content>
+    <h1>Import Screen</h1>
+</ilw-content>
+
+
+<p>To get an ICS file through Outlook, go to Settings --> Calendar, then choose <em>Shared Calendars</em>. Choose the calendar, choose Share All Details, and then click the Publish button.</p>
+<p>You will have an .ICS file published.</p>
+
+<button class="ilw-button" @onclick="ImportEvents">Import Events</button>
+
+<p>@Output</p>

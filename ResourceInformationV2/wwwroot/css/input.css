@@ -1,0 +1,130 @@
+﻿main ilw-content input, main ilw-content select {
+    width: stretch;
+}
+
+main ilw-content .ils-input-entry {
+    margin: 20px 0;
+}
+
+ilw-content .ils-toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+main ilw-content .ils-toggle-slider input[type="checkbox"] {
+    z-index: 10;
+    position: relative;
+    color: transparent;
+    width: 60px;
+    height: 34px;
+    background: transparent;
+    border: transparent;
+    opacity: 0;
+    cursor: pointer;
+}
+
+main ilw-content .ils-toggle-slider > span .ils-container {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--il-storm-lighter-1);
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+    main ilw-content .ils-toggle-slider > span .ils-container:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: #FFF;
+        transition: 0.4s;
+        border-radius: 50%;
+    }
+
+main ilw-content .ils-toggle-slider input:checked + span .ils-container {
+    background-color: var(--il-altgeld);
+}
+
+    main ilw-content .ils-toggle-slider input:checked + span .ils-container:before {
+        transform: translateX(26px);
+    }
+
+main ilw-content .ils-toggle-slider input:focus + span span {
+    outline: 3px solid var(--il-blue);
+}
+
+main ilw-content .ils-toggle-slider > span .ils-text-on {
+    display: none;
+    position: absolute;
+    left: 70px;
+    right: 0;
+    bottom: 0;
+    color: var(--il-blue);
+    font: normal 400 1.25rem / 1.5rem var(--il-font-sans);
+    margin: 0;
+    width: 50px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+}
+
+main ilw-content .ils-toggle-slider > span .ils-text-off {
+    display: flex;
+    position: absolute;
+    left: 70px;
+    right: 0;
+    bottom: 0;
+    color: var(--il-blue);
+    font: normal 400 1.25rem / 1.5rem var(--il-font-sans);
+    margin: 0;
+    width: 50px;
+    height: 36px;
+    justify-content: center;
+    align-items: center;
+}
+
+main ilw-content .ils-toggle-slider > input:checked + span .ils-text-on {
+    display: flex;
+}
+
+main ilw-content .ils-toggle-slider > input:checked + span .ils-text-off {
+    display: none;
+}
+
+main ilw-content .ils-input-entry-compact, main ilw-content .ils-input-entry-checkbox {
+    display: grid;
+    align-items: center;
+    margin: auto;
+    grid-template-columns: 225px auto;
+    margin: 20px 0;
+    column-gap: 10px;
+    row-gap: 5px;
+}
+
+    main ilw-content .ils-input-entry-compact label, main ilw-content .ils-input-entry-checkbox label {
+        text-align: right;
+        padding: 0;
+    }
+
+    main ilw-content .ils-input-entry p, main ilw-content .ils-input-entry-compact p {
+        color: var(--il-storm);
+        font: 1rem / 1.125rem var(--il-font-sans);
+        padding-top: 3px;
+        margin: 0;
+        grid-column: 1 / span 2;
+        width: fit-content;
+    }
+
+@media screen and (prefers-reduced-motion: reduce) {
+    main .ils-toggle-slider span, main .ils-toggle-slider span:before {
+        transition: none;
+    }
+}

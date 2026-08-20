@@ -9,7 +9,6 @@ using ResourceInformationV2.Data.DataContext;
 using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Data.DataModels;
 using ResourceInformationV2.Data.Email;
-using ResourceInformationV2.Data.EventTranslator;
 using ResourceInformationV2.Data.Uploads;
 using ResourceInformationV2.Search;
 using ResourceInformationV2.Search.Getters;
@@ -56,7 +55,6 @@ builder.Services.AddScoped<SecurityHelper>();
 builder.Services.AddScoped<SourceEmailHelper>();
 builder.Services.AddScoped<ApiHelper>();
 builder.Services.AddScoped<LogHelper>();
-builder.Services.AddScoped<IcsHolder>();
 
 builder.Services.AddScoped<ResourceGetter>();
 builder.Services.AddScoped<ResourceSetter>();

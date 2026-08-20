@@ -12,7 +12,6 @@ namespace ResourceInformationV2.Data.DataContext {
         public ResourceContext(DbContextOptions<ResourceContext> options) : base(options) {
             Debug.WriteLine("Context created.");
         }
-
         public DbSet<Instruction> Instructions { get; set; }
         public DbSet<LinkCheck> LinkChecks { get; set; }
         public DbSet<Log> Logs { get; set; }

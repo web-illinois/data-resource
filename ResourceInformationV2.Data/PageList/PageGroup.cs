@@ -46,6 +46,7 @@
                                  new ("Related Links", "/publication/relatedlinks"),
                                  new ("Technical Information", "/publication/technical") } },
             { SidebarEnum.PeopleItem, new() { new ("General Information", "/person/general"),
+                                 new ("Rich Text", "/person/detail"),
                                  new ("Image and Video", "/person/image"),
                                  new ("Filters", "/person/filters"),
                                  new ("Related Links", "/person/relatedlinks"),

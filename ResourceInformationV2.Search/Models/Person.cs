@@ -1,6 +1,7 @@
 ﻿namespace ResourceInformationV2.Search.Models {
 
     public class Person : BaseObject {
+        public string DetailText { get; set; } = "";
         public override string EditLink => EditLinkRoot + "person/" + Id;
         public string FirstName { get; set; } = "";
         public string JobLocation { get; set; } = "";
@@ -10,7 +11,7 @@
         public override string NameType => "Person";
         public override string Title => LastName + ", " + FirstName;
 
-        internal override string[] Headings => ["Id", "First Name", "Last Name", "Job Title", "Job Location", "Biography", "Fragment", "Link Url", "Link Text", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
+        internal override string[] Headings => ["Id", "First Name", "Last Name", "Job Title", "Job Location", "Biography", "Fragment", "Link Url", "Link Text", "Image", "Image Alt Text", "Image Source", "Video Url", "Notes", "Detail Text", "Created Date", "Is Active", "Audience List", "Department List", "Topic List", "Tag 1 List", "Tag 2 List", "Tag 3 List", "Tag 4 List", "Related Links", "Order", "Review Email", "Last Updated Date"];
 
         internal override bool LoadFromStringPrivate(string[] lineArray) {
             Id = lineArray[0];
@@ -27,22 +28,23 @@
             ImageSource = lineArray[11];
             VideoUrl = lineArray[12];
             Notes = PrepareForTextUpload(lineArray[13]);
-            _ = DateTime.TryParse(lineArray[14], out var createdDate);
+            DetailText = lineArray[14];
+            _ = DateTime.TryParse(lineArray[15], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
-            _ = bool.TryParse(lineArray[15], out var isActive);
+            _ = bool.TryParse(lineArray[16], out var isActive);
             IsActive = isActive;
-            AudienceList = GetTagsFromString(lineArray[16]);
-            DepartmentList = GetTagsFromString(lineArray[17]);
-            TopicList = GetTagsFromString(lineArray[18]);
-            TagList = GetTagsFromString(lineArray[19]);
-            Tag2List = GetTagsFromString(lineArray[20]);
-            Tag3List = GetTagsFromString(lineArray[21]);
-            Tag4List = GetTagsFromString(lineArray[22]);
-            LinkList = GetLinksFromString(lineArray[23]);
-            _ = int.TryParse(lineArray[24], out var order);
+            AudienceList = GetTagsFromString(lineArray[17]);
+            DepartmentList = GetTagsFromString(lineArray[18]);
+            TopicList = GetTagsFromString(lineArray[19]);
+            TagList = GetTagsFromString(lineArray[20]);
+            Tag2List = GetTagsFromString(lineArray[21]);
+            Tag3List = GetTagsFromString(lineArray[22]);
+            Tag4List = GetTagsFromString(lineArray[23]);
+            LinkList = GetLinksFromString(lineArray[24]);
+            _ = int.TryParse(lineArray[25], out var order);
             Order = order;
-            ReviewEmail = lineArray[25];
-            _ = DateTime.TryParse(lineArray[26], out var lastUpdatedDate);
+            ReviewEmail = lineArray[26];
+            _ = DateTime.TryParse(lineArray[27], out var lastUpdatedDate);
             LastUpdated = lastUpdatedDate == default ? DateTime.Now : lastUpdatedDate;
             return true;
         }
@@ -62,6 +64,7 @@
             ImageSource,
             VideoUrl,
             PrepareForTextDownload(Notes),
+            DetailText,
             CreatedOn.ToString("g"),
             IsActive.ToString(),
             string.Join(";", AudienceList),

@@ -1,0 +1,42 @@
+﻿@page "/person/detail"
+@layout SidebarLayout
+
+<PageTitle>Person - Detail Information</PageTitle>
+
+<ilw-content>
+    <h1>Detail Information</h1>
+</ilw-content>
+
+<Instruction CategoryType="CategoryType.Person" FieldType="FieldType.Specific"></Instruction>
+
+<div>
+<BlazoredTextEditor @ref="@_rteDescription" Placeholder="Enter rich text...">
+    <ToolbarContent>
+        <span class="ql-formats">
+            <button class="ql-bold" aria-label="Apply Bold"></button>
+            <button class="ql-italic" aria-label="Apply Italics"></button>
+            <button class="ql-underline" aria-label="Apply Underline"></button>
+            <button class="ql-strike" aria-label="Apply Strikethrough"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-link" aria-label="Apply Link"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-list" value="bullet" aria-label="Apply Unordered List"></button>
+            <button class="ql-list" value="ordered" aria-label="Apply Ordered List"></button>
+            <button class="ql-indent" value="-1"></button>
+            <button class="ql-indent" value="+1"></button>
+        </span>
+        <span class="ql-formats">
+            <button class="ql-header" aria-label="Apply Heading 2" value="2" style="display: flex; place-items: center; font-weight: bolder">
+                H2
+            </button>
+            <button class="ql-header" aria-label="Apply Heading 3" value="3" style="display: flex; place-items: center; font-weight: bolder">
+                H3
+            </button>
+        </span>
+    </ToolbarContent>
+</BlazoredTextEditor>
+</div>
+
+<button class="ilw-button ilw-theme-orange-solid" @onclick="Save" @onblur="Layout.RemoveMessage">Save</button>

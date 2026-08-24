@@ -7,11 +7,10 @@ using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Setters;
 
-namespace ResourceInformationV2.Components.Pages.Note {
-
+namespace ResourceInformationV2.Components.Pages.Person {
     public partial class Detail {
         private BlazoredTextEditor _rteDescription;
-        public Search.Models.NoteItem Item { get; set; } = default!;
+        public Search.Models.Person Item { get; set; } = default!;
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
@@ -22,10 +21,10 @@ namespace ResourceInformationV2.Components.Pages.Note {
         protected NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        protected NoteGetter NoteGetter { get; set; } = default!;
+        protected PersonGetter PersonGetter { get; set; } = default!;
 
         [Inject]
-        protected NoteSetter NoteSetter { get; set; } = default!;
+        protected PersonSetter PersonSetter { get; set; } = default!;
 
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
@@ -36,8 +35,8 @@ namespace ResourceInformationV2.Components.Pages.Note {
                 Item.DetailText = await _rteDescription.GetHTML();
             }
 
-            _ = await NoteSetter.SetItem(Item);
-            await Layout.Log(CategoryType.Note, FieldType.Specific, Item);
+            _ = await PersonSetter.SetItem(Item);
+            await Layout.Log(CategoryType.Person, FieldType.Specific, Item);
             await Layout.AddMessage(Item.NameType + " saved successfully.");
         }
 
@@ -52,10 +51,9 @@ namespace ResourceInformationV2.Components.Pages.Note {
         protected override async Task OnAfterRenderAsync(bool firstRender) {
             if (firstRender) {
                 var id = await Layout.GetCachedId();
-                Item = await NoteGetter.GetItem(id);
+                Item = await PersonGetter.GetItem(id);
                 await _rteDescription.LoadHTMLContent(Item.DetailText);
-
-                Layout.SetSidebar(SidebarEnum.NotesItem, Item.Title);
+                Layout.SetSidebar(SidebarEnum.PeopleItem, Item.Title);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿main ilw-content input, main ilw-content select {
     width: stretch;
+    max-width: 800px;
 }
 
 main ilw-content .ils-input-entry {

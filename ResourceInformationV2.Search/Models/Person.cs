@@ -28,7 +28,7 @@
             ImageSource = lineArray[11];
             VideoUrl = lineArray[12];
             Notes = PrepareForTextUpload(lineArray[13]);
-            DetailText = lineArray[14];
+            DetailText = PrepareForTextUpload(lineArray[14]);
             _ = DateTime.TryParse(lineArray[15], out var createdDate);
             CreatedOn = createdDate == default ? DateTime.Now : createdDate;
             _ = bool.TryParse(lineArray[16], out var isActive);
@@ -64,7 +64,7 @@
             ImageSource,
             VideoUrl,
             PrepareForTextDownload(Notes),
-            DetailText,
+            PrepareForTextDownload(DetailText),
             CreatedOn.ToString("g"),
             IsActive.ToString(),
             string.Join(";", AudienceList),

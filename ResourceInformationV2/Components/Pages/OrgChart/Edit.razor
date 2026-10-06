@@ -53,7 +53,7 @@
                 <button class="ilw-button" @onclick="GoUpLevel">Up to @ParentText</button>
             </div>
         }
-        <h2>Children of Current Level</h2>
+        <h3>Children of "@VisibleOrgchartItem.Title"</h3>
         @foreach (var child in VisibleOrgchartItems)
         {
             <p>@child.Title, @child.Subtitle</p>

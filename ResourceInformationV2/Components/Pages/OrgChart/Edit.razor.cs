@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using ResourceInformationV2.Components.Layout;
 using ResourceInformationV2.Data.DataHelpers;
 using ResourceInformationV2.Data.DataModels;
@@ -22,6 +23,9 @@ namespace ResourceInformationV2.Components.Pages.OrgChart {
 
         [CascadingParameter]
         public SidebarLayout Layout { get; set; } = default!;
+
+        [Inject]
+        protected IJSRuntime JsRuntime { get; set; } = default!;
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
@@ -56,11 +60,14 @@ namespace ResourceInformationV2.Components.Pages.OrgChart {
             RefreshVisibleItems();
         }
 
-        protected void DeleteChild(Orgchart child) {
+        protected async Task DeleteChild(Orgchart child) {
             if (VisibleOrgchartItem.Children is null) {
                 return;
             }
-            _ = VisibleOrgchartItem.Children.Remove(child);
+            var alert = child.Children is not null && child.Children.Count > 0 ? "This will delete this item and all children" : "This will delete this item";
+            if (!(await JsRuntime.InvokeAsync<bool>("confirm", $"{alert}. Are you sure?"))) {
+                _ = VisibleOrgchartItem.Children.Remove(child);
+            }
             RefreshVisibleItems();
         }
 
@@ -79,6 +86,7 @@ namespace ResourceInformationV2.Components.Pages.OrgChart {
         protected async Task Save() {
             SetParents(CurrentOrgchart, null);
             var saved = await OrgChartHelper.SaveOrgChartJson(_sourceCode, CurrentOrgchart.ToString());
+            Layout.IsDirty = false;
             await Layout.AddMessage(saved ? "Org chart saved." : "Unable to save org chart.");
         }
 

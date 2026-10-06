@@ -62,6 +62,10 @@ namespace ResourceInformationV2.Data.DataHelpers {
 
                 case CategoryType.Publication:
                     return source.UsePublications;
+
+                case CategoryType.OrgChart:
+                    return source.UseOrgChart;
+
                 case CategoryType.None:
                     break;
             }
@@ -91,16 +95,20 @@ namespace ResourceInformationV2.Data.DataHelpers {
 
                 case CategoryType.Publication:
                     return source.UsePublicationsFragment;
+
+                case CategoryType.OrgChart:
+                    return false;
+
                 case CategoryType.None:
                     break;
             }
             return false;
         }
 
-        public async Task<(bool eventItem, bool faqItem, bool noteItem, bool resourceItem, bool personItem, bool publicationItem)> DoesSourceUseItemCheckAll(string sourceCode) {
+        public async Task<(bool eventItem, bool faqItem, bool noteItem, bool resourceItem, bool personItem, bool publicationItem, bool orgChartItem)> DoesSourceUseItemCheckAll(string sourceCode) {
             var source = await _resourceRepository.ReadAsync(c => c.Sources.FirstOrDefault(s => s.Code == sourceCode));
-            return source == null ? (false, false, false, false, false, false) :
-                (source.UseEvents, source.UseFaqs, source.UseNotes, source.UseResources, source.UsePeople, source.UsePublications);
+            return source == null ? (false, false, false, false, false, false, false) :
+                (source.UseEvents, source.UseFaqs, source.UseNotes, source.UseResources, source.UsePeople, source.UsePublications, source.UseOrgChart);
         }
 
         public async Task<IEnumerable<string>> DoesSourceUseItemCheckAllAndConcatenate(string sourceCode) {
@@ -113,7 +121,8 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 source.UseNotes ? "Notes" : "",
                 source.UseResources ? "Resources" : "",
                 source.UsePeople ? "People" : "",
-                source.UsePublications ? "Publications" : ""
+                source.UsePublications ? "Publications" : "",
+                source.UseOrgChart ? "OrgChart" : ""
             }.Where(s => !string.IsNullOrEmpty(s));
         }
 
@@ -247,6 +256,10 @@ namespace ResourceInformationV2.Data.DataHelpers {
                 case CategoryType.Publication:
                     source.UsePublications = isUsed;
                     source.UsePublicationsFragment = useFragment;
+                    break;
+
+                case CategoryType.OrgChart:
+                    source.UseOrgChart = isUsed;
                     break;
             }
             _ = await _resourceRepository.UpdateAsync(source);

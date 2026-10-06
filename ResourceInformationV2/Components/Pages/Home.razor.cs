@@ -25,6 +25,7 @@ namespace ResourceInformationV2.Components.Pages {
         public bool UseEvents { get; set; }
         public bool UseFaqs { get; set; }
         public bool UseNotes { get; set; }
+        public bool UseOrgchart { get; set; }
         public bool UsePeople { get; set; }
         public bool UsePublications { get; set; }
         public bool UseResources { get; set; }
@@ -72,6 +73,7 @@ namespace ResourceInformationV2.Components.Pages {
                 UsePublications = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.Publication);
                 UseResources = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.Resource);
                 UseEvents = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.Event);
+                UseOrgchart = await SourceHelper.DoesSourceUseItem(SelectedSource, CategoryType.OrgChart);
             }
         }
     }

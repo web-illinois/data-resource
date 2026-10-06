@@ -29,6 +29,7 @@ namespace ResourceInformationV2.Data.DataModels {
 
         public bool IsTest { get; set; } = false;
         public int NumberOfDaysForReview { get; set; }
+        public string OrgChartJson { get; set; } = "";
         public string ReviewEmail { get; set; } = "";
         public string Title { get; set; } = "";
         public bool UseEvents { get; set; }
@@ -37,6 +38,7 @@ namespace ResourceInformationV2.Data.DataModels {
         public bool UseFaqsFragment { get; set; }
         public bool UseNotes { get; set; }
         public bool UseNotesFragment { get; set; }
+        public bool UseOrgChart { get; set; }
         public bool UsePeople { get; set; }
         public bool UsePeopleFragment { get; set; }
         public bool UsePublications { get; set; }

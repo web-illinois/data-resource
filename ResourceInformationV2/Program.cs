@@ -55,6 +55,7 @@ builder.Services.AddScoped<SecurityHelper>();
 builder.Services.AddScoped<SourceEmailHelper>();
 builder.Services.AddScoped<ApiHelper>();
 builder.Services.AddScoped<LogHelper>();
+builder.Services.AddScoped<OrgChartHelper>();
 
 builder.Services.AddScoped<ResourceGetter>();
 builder.Services.AddScoped<ResourceSetter>();

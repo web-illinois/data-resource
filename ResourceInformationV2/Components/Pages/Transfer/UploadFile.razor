@@ -30,15 +30,19 @@
             }
         </select>
     </div>
-
-    <div class="ils-input-entry">
-        <label for="deleteall">Should you delete all items first?</label>
-        <input id="deleteall" type="checkbox" @bind="DeleteAllFirst" />
-    </div>
-    <div class="ils-input-entry">
-        <label for="validatetags">Ignore tags that do not exist? Overwrite it will overwrite your tag list with tags in the file and produce unpredictable results for existing tagged items.</label>
-        <input id="validatetags" type="checkbox" @bind="ValidateTags" />
-    </div>
+    @if (SelectedOption != "OrgChart") {
+        <div class="ils-input-entry">
+            <label for="deleteall">Should you delete all items first?</label>
+            <input id="deleteall" type="checkbox" @bind="DeleteAllFirst" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="validatetags">Ignore tags that do not exist? Overwrite it will overwrite your tag list with tags in the file and produce unpredictable results for existing tagged items.</label>
+            <input id="validatetags" type="checkbox" @bind="ValidateTags" />
+        </div>
+    } else
+    {
+        <p>Note that this will reload the entire Organization Chart.</p>
+    }
 
     <InputFile OnChange="@LoadFile" />
 

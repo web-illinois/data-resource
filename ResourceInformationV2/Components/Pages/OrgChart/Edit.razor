@@ -1,0 +1,72 @@
+﻿@page "/orgchart/edit"
+@layout SidebarLayout
+
+<PageTitle>Organizational Chart - Edit</PageTitle>
+
+<ilw-content>
+    <h1>Edit Organizational Chart</h1>
+</ilw-content>
+
+@if (_useItem ?? false)
+{
+    <ilw-content>
+        <h2>Search</h2>
+        <div class="ils-input-entry">
+            <label for="search">Search</label>
+            <input id="search" class="ils-input-long" @bind="SearchText" />
+        </div>
+        <div>
+            <button class="ilw-button" @onclick="Search">Search</button>
+        </div>
+    </ilw-content>
+    <ilw-content>
+        <h2>Edit</h2>
+        <div class="ils-input-entry">
+            <label for="title">Title</label>
+            <input id="title" class="ils-input-long" @bind="VisibleOrgchartItem.Title" @bind:after="Layout.SetDirty" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="subtitle">Subtitle</label>
+            <input id="subtitle" class="ils-input-long" @bind="VisibleOrgchartItem.Subtitle" @bind:after="Layout.SetDirty" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="link">Link</label>
+            <input id="link" class="ils-input-long" @bind="VisibleOrgchartItem.Link" @bind:after="Layout.SetDirty" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="useLargeText">Use Large Text</label>
+            <input id="useLargeText" type="checkbox" @bind="VisibleOrgchartItem.Large" @bind:after="Layout.SetDirty" />
+        </div>
+        <div class="ils-input-entry">
+            <label for="weight">Weight</label>
+            <select id="weight" @bind="VisibleOrgchartItem.Weight" @bind:after="Layout.SetDirty">
+                <option value="0">Default</option>
+                <option value="-1">Higher</option>
+                <option value="1">Lower</option>
+            </select>
+        </div>
+    </ilw-content>
+
+    <ilw-content>
+        @if (CanGoUpLevel) {
+            <div>
+                <button class="ilw-button" @onclick="GoUpLevel">Up to @ParentText</button>
+            </div>
+        }
+        <h2>Children of Current Level</h2>
+        @foreach (var child in VisibleOrgchartItems)
+        {
+            <p>@child.Title, @child.Subtitle</p>
+            <div>
+                <button class="ilw-button" @onclick="() => GoDownLevel(child)">Edit</button>
+                <button class="ilw-button" @onclick="() => DeleteChild(child)">Delete</button>
+            </div>
+        }
+        <p>
+            <button class="ilw-button" @onclick="AddChild">Add New Entry</button>
+        </p>
+        <p>
+            <button class="ilw-button ilw-theme-orange-solid" @onclick="Save" @onblur="Layout.RemoveMessage">Save Org Chart</button>
+        </p>
+    </ilw-content>
+}

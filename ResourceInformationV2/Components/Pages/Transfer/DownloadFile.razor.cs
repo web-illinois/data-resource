@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using ResourceInformationV2.Components.Layout;
 using ResourceInformationV2.Data.DataHelpers;
+using ResourceInformationV2.Data.Orgchart;
 using ResourceInformationV2.Data.PageList;
 using ResourceInformationV2.Search.Getters;
 using ResourceInformationV2.Search.Models;
@@ -31,6 +32,9 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; } = default!;
+
+        [Inject]
+        protected OrgChartHelper OrgChartHelper { get; set; } = default!;
 
         [Inject]
         protected NoteGetter NoteGetter { get; set; } = default!;
@@ -83,6 +87,10 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
 
                 case UrlTypes.Events:
                     text = await EventGetter.DownloadFile(source);
+                    break;
+
+                case UrlTypes.OrgChart:
+                    text = FlatfileTranslator.TranslateToFlatfile(Orgchart.FromJson(await OrgChartHelper.GetOrgChartJson(source)));
                     break;
 
                 default:

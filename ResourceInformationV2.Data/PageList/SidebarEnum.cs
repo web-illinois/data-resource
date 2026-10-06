@@ -9,6 +9,7 @@
         FaqItem,
         NotesItem,
         EventItem,
+        OrgChartItem,
         Configuration,
         ConfigurationNoSource,
         Review,

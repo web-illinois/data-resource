@@ -32,6 +32,9 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
         [Inject]
         protected SourceHelper SourceHelper { get; set; } = default!;
 
+        [Inject]
+        protected OrgChartHelper OrgChartHelper { get; set; } = default!;
+
         protected override async Task OnInitializedAsync() {
             Layout.SetSidebar(SidebarEnum.Transfer, "Transfer Items");
             var sourceCode = await Layout.CheckSource();
@@ -51,7 +54,15 @@ namespace ResourceInformationV2.Components.Pages.Transfer {
                 var source = await Layout.CheckSource();
 
                 Enum.TryParse(SelectedOption, out UrlTypes urlType);
-                await Layout.AddMessage(await JsonHelper.LoadJson(source, urlType, _reader));
+                if (urlType == UrlTypes.OrgChart) {
+                    if (await OrgChartHelper.SaveOrgChartJson(source, _reader)) {
+                        await Layout.AddMessage("OrgChart JSON file successfully saved.");
+                    } else {
+                        await Layout.AddMessage("Failed to save OrgChart JSON file.");
+                    }
+                } else {
+                    await Layout.AddMessage(await JsonHelper.LoadJson(source, urlType, _reader));
+                }
             }
         }
     }

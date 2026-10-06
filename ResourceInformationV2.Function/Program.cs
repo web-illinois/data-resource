@@ -27,6 +27,7 @@ var host = new HostBuilder()
         });
         _ = services.AddDbContextFactory<ResourceContext>(options => options.UseSqlServer(hostContext.Configuration["Values:AppConnection"]).EnableSensitiveDataLogging(true));
         _ = services.AddScoped<ResourceRepository>();
+        _ = services.AddScoped<OrgChartHelper>();
         _ = services.AddScoped<BulkEditor>();
         _ = services.AddScoped<SourceHelper>();
         _ = services.AddScoped<FilterHelper>();

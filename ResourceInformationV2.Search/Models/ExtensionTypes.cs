@@ -7,6 +7,7 @@
         Faqs,
         Notes,
         Events,
+        OrgChart
     }
 
     public static class ExtensionTypes {

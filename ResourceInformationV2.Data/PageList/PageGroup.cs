@@ -27,7 +27,9 @@
             { SidebarEnum.NotesItem, new() { new ("Home", "/"),
                         new ("Edit Notes", "/note/edit") } },
             { SidebarEnum.EventItem, new() { new ("Home", "/"),
-                        new ("Edit Events", "/event/edit") } }
+                        new ("Edit Events", "/event/edit") } },
+            { SidebarEnum.OrgChartItem, new() { new ("Home", "/"),
+                        new ("Edit Org Chart", "/orgchart/edit") } }
         };
 
         private static readonly Dictionary<SidebarEnum, List<PageLink>> _sidebars = new() {
@@ -69,6 +71,7 @@
                                  new ("Filters", "/event/filters"),
                                  new ("Related Links", "/event/relatedlinks"),
                                  new ("Technical Information", "/event/technical") } },
+            { SidebarEnum.OrgChartItem, new() { new ("General Information", "/orgchart/edit") } },
             { SidebarEnum.Review, new() { new ("View Drafts", "/review/viewdrafts"),
                                  new ("Review Tag Use", "/review/taguse"),
                                  new ("Review Old Items", "/review/old"),
@@ -82,6 +85,7 @@
                                  new ("People", "/configuration/instructions/people"),
                                  new ("Events", "/configuration/instructions/events"),
                                  new ("FAQs", "/configuration/instructions/faqs"),
+                                 new ("Org Chart", "/configuration/instructions/orgchart"),
                                  new ("Notes", "/configuration/instructions/notes") } },
             { SidebarEnum.Configuration, new() { new ("Sources", "/configuration/sources"),
                                  new ("Options and Instructions", "/configuration/instructions/resources"),

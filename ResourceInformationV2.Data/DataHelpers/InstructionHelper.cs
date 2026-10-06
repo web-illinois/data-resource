@@ -42,6 +42,11 @@ namespace ResourceInformationV2.Data.DataHelpers {
                     isUsed = source?.UseResources ?? false;
                     useFragment = source?.UseResourcesFragment ?? false;
                     break;
+
+                case CategoryType.OrgChart:
+                    isUsed = source?.UseOrgChart ?? false;
+                    useFragment = false;
+                    break;
             }
             return (instructions ?? [], isUsed, useFragment);
         }

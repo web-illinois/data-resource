@@ -7,7 +7,8 @@
         Resource,
         Faq,
         Note,
-        Event
+        Event,
+        OrgChart
     }
 
     public enum EmailType {

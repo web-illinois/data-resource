@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Review, Publishing, and Email Notifications - WIGG Resource Application Documentation</title>
+	<link rel="dns-prefetch" href="//cdn.brand.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.toolkit.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.disability.illinois.edu">
+	<link rel="shortcut icon" href="https://cdn.brand.illinois.edu/favicon.ico">
+	<link rel="apple-touch-icon" href="https://cdn.brand.illinois.edu/touch-icon-40x40.png">
+	<link rel="stylesheet" href="//cdn.toolkit.illinois.edu/3/toolkit.css">
+	<script type="module" src="//cdn.toolkit.illinois.edu/3/toolkit.js" async></script>
+	<script src="https://cdn.disability.illinois.edu/skipto.min.js"></script>
+	<script>var SkipToConfig = { 'settings': { 'skipTo': { displayOption: 'static', colorTheme: 'illinois', headings: 'h1, h2, h3', } } };</script>
+	<link href="/css/site.css?cache=1" rel="stylesheet" />
+</head>
+<body>
+<ilw-page>
+<ilw-header slot="header">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+<div slot="links">
+	<a href="/">Back to the Application</a>
+</div>
+</ilw-header>
+
+<main id="app-main">
+<ilw-content width="page">
+<h1 id="review-publishing-and-email-notifications">Review, Publishing, and Email Notifications</h1>
+<h2 id="email-notifications">Email notifications</h2>
+<p>Source administrators can configure emails under <strong>Configuration &gt; Email Setup</strong>.</p>
+<h3 id="triggers">Triggers</h3>
+<ul>
+<li>When an item is submitted for review</li>
+<li>When an item is published</li>
+<li>When an item is moved back to draft</li>
+</ul>
+<p>Each trigger is configured separately. To send emails for several events, set up each one.</p>
+<h3 id="set-up-an-email">Set up an email</h3>
+<ol>
+<li>Choose a <strong>Trigger Option</strong>.</li>
+<li>Fill in:
+<ul>
+<li><strong>To Email</strong> and <strong>CC Email</strong>: semicolon-separated lists are allowed.</li>
+<li><strong>Reply-to Email</strong></li>
+<li><strong>Add review email listed on resource</strong>: also sends to the item's <em>Email for Review</em>.</li>
+<li><strong>Subject Line</strong></li>
+<li><strong>Body</strong>: plain text, for clients that cannot show HTML.</li>
+<li><strong>HTML Body</strong>: for clients that can.</li>
+<li><strong>Is this active?</strong>: turns the email on or off.</li>
+</ul>
+</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<p>To stop an email permanently, select <strong>Remove Email</strong>.</p>
+<h3 id="emails-when-an-item-is-submitted">Emails when an item is submitted</h3>
+<p>The <strong>When an item is submitted for review</strong> trigger sends an email when a new item is added to the source, whether it is added in the tool or loaded through the API. A source may have its own message for this trigger.</p>
+<p>Typical setup:</p>
+<ol>
+<li>Open <strong>Configuration &gt; Email Setup</strong>.</li>
+<li>Select <strong>When an item is submitted for review</strong> under <strong>Select Trigger Option</strong>.</li>
+<li>Choose who receives the message:
+<ul>
+<li>Enter one or more fixed addresses in <strong>To Email</strong> (separated by semicolons) and optionally <strong>CC Email</strong>, or</li>
+<li>Select <strong>Add review email listed on resource to &quot;To:&quot; email list</strong> to also send to the <em>Email for Review</em> address entered on the item. This is useful when different items have different reviewers.</li>
+</ul>
+</li>
+<li>Enter a <strong>Reply-to Email</strong> so replies reach a monitored mailbox.</li>
+<li>Write the <strong>Subject Line</strong>, plain-text <strong>Body</strong>, and <strong>HTML Body</strong>. Provide both bodies so the message reads well in any email client.</li>
+<li>Select <strong>Is this active?</strong> and then <strong>Save</strong>.</li>
+</ol>
+<p>Notes:</p>
+<ul>
+<li>The email is sent only when <strong>Is this active?</strong> is selected. You can keep a saved message and turn it off temporarily by clearing the checkbox.</li>
+<li>Each trigger has its own message. Setting up the submission email does not set up the publication or draft emails.</li>
+<li>When an email is sent, the result is recorded alongside the change in the item's log entry.</li>
+<li>If nobody receives the message, check that the address is correct, that the message is active, and that either <strong>To Email</strong> has an address or the item has an <em>Email for Review</em>.</li>
+<li><strong>Remove Email</strong> deletes the configuration for the selected trigger. To pause it instead, clear <strong>Is this active?</strong>.</li>
+</ul>
+<p>See also <a href="11-link-checks.html">Link Checks</a>.</p>
+
+</ilw-content>
+<ilw-spacer></ilw-spacer>
+</main>
+
+<ilw-footer slot="footer">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+</ilw-footer>
+</ilw-page>
+</body>
+</html>

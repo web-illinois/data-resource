@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Filters and Categories - WIGG Resource Application Documentation</title>
+	<link rel="dns-prefetch" href="//cdn.brand.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.toolkit.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.disability.illinois.edu">
+	<link rel="shortcut icon" href="https://cdn.brand.illinois.edu/favicon.ico">
+	<link rel="apple-touch-icon" href="https://cdn.brand.illinois.edu/touch-icon-40x40.png">
+	<link rel="stylesheet" href="//cdn.toolkit.illinois.edu/3/toolkit.css">
+	<script type="module" src="//cdn.toolkit.illinois.edu/3/toolkit.js" async></script>
+	<script src="https://cdn.disability.illinois.edu/skipto.min.js"></script>
+	<script>var SkipToConfig = { 'settings': { 'skipTo': { displayOption: 'static', colorTheme: 'illinois', headings: 'h1, h2, h3', } } };</script>
+	<link href="/css/site.css?cache=1" rel="stylesheet" />
+</head>
+<body>
+<ilw-page>
+<ilw-header slot="header">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+<div slot="links">
+	<a href="/">Back to the Application</a>
+</div>
+</ilw-header>
+
+<main id="app-main">
+<ilw-content width="page">
+<h1 id="filters-and-categories">Filters and Categories</h1>
+<p>Filters tag an item so users can search and narrow results by category.</p>
+<h2 id="apply-filters">Apply filters</h2>
+<ol>
+<li>Open an item and select <strong>Filters</strong> in the sidebar.</li>
+<li>Toggle the tags that apply. Available groups include Audience, Department, Topic, and up to four additional tag groups (Tag 1–4), depending on how your source is configured.</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Department filters may be disabled for item types that do not use them.</li>
+<li>Changing a filter name in configuration affects every item that uses it.</li>
+</ul>
+<h2 id="managing-filters-configuration-manage-filters">Managing filters (Configuration &gt; Manage Filters)</h2>
+<p>Audience, topics, and tags are keywords configured per source and used as filters on items.</p>
+<h3 id="preset-filter-groups">Preset filter groups</h3>
+<p>Three groups are &quot;preset&quot; to standardize keywords across sources. If one of your keywords resembles a preset, use it instead of a generic tag.</p>
+<ul>
+<li><strong>Audience</strong>: who the item is appropriate for, such as student / staff / faculty or first grade / second grade.</li>
+<li><strong>Topic</strong>: the general subject of the item. This depends on your needs.</li>
+<li><strong>Department</strong>: the department or group the item belongs to. It is mainly used for internal documentation and for permissions (see <a href="10-security.html">Security</a>).</li>
+</ul>
+<p>There are also four generic groups: <strong>Generic Tag 1</strong> through <strong>Generic Tag 4</strong>. Use them for your own filters, such as Grade Level, Skill, or Format.</p>
+<h3 id="edit-a-filter-group">Edit a filter group</h3>
+<ol>
+<li>Open <strong>Configuration &gt; Manage Filters</strong>.</li>
+<li>Choose a group under <strong>Type</strong>.</li>
+<li>Enter the <strong>Filter Title</strong>, the name users see (for example, &quot;Grade Level&quot;). The title is required for the group to be used, even for preset groups.</li>
+<li>Under <strong>Filters</strong>, edit existing entries. Each entry can be moved up, moved down, or removed.</li>
+<li>To add an entry, type its name under <strong>Add New Filter</strong> and select <strong>Add</strong>.</li>
+<li>Select <strong>Save</strong>.</li>
+</ol>
+<p>Removing an entry takes effect only after you save. Review the effect on items that already use the tag.</p>
+<h3 id="order-of-filter-groups">Order of filter groups</h3>
+<p>Under <strong>Filter Names and Order</strong>, move groups up or down to set the order in which they are returned when you pull filters through the API. Select <strong>Save Group Order</strong> to keep the change. This is saved separately from the filter lists above.</p>
+<h3 id="tips">Tips</h3>
+<ul>
+<li>Tag names are case-sensitive when importing files. See <a href="09-importing-and-exporting.html">Importing and Exporting Data</a>.</li>
+<li>Save each filter group before choosing another type, or your edits may be lost.</li>
+</ul>
+
+</ilw-content>
+<ilw-spacer></ilw-spacer>
+</main>
+
+<ilw-footer slot="footer">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+</ilw-footer>
+</ilw-page>
+</body>
+</html>

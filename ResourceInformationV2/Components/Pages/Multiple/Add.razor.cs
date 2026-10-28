@@ -50,7 +50,7 @@ namespace ResourceInformationV2.Components.Pages.Multiple {
                 NavigationManager.NavigateTo("/publication/general");
             }
             if (!UseEvents && !UseFaqs && !UseNotes && !UseResources && !UsePeople && !UsePublications && UseOrgChart) {
-                NavigationManager.NavigateTo("/orgchart/general");
+                NavigationManager.NavigateTo("/orgchart/edit");
             }
             await base.OnInitializedAsync();
         }

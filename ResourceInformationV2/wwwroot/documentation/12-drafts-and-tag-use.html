@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Viewing Drafts and Tag Use - WIGG Resource Application Documentation</title>
+	<link rel="dns-prefetch" href="//cdn.brand.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.toolkit.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.disability.illinois.edu">
+	<link rel="shortcut icon" href="https://cdn.brand.illinois.edu/favicon.ico">
+	<link rel="apple-touch-icon" href="https://cdn.brand.illinois.edu/touch-icon-40x40.png">
+	<link rel="stylesheet" href="//cdn.toolkit.illinois.edu/3/toolkit.css">
+	<script type="module" src="//cdn.toolkit.illinois.edu/3/toolkit.js" async></script>
+	<script src="https://cdn.disability.illinois.edu/skipto.min.js"></script>
+	<script>var SkipToConfig = { 'settings': { 'skipTo': { displayOption: 'static', colorTheme: 'illinois', headings: 'h1, h2, h3', } } };</script>
+	<link href="/css/site.css?cache=1" rel="stylesheet" />
+</head>
+<body>
+<ilw-page>
+<ilw-header slot="header">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+<div slot="links">
+	<a href="/">Back to the Application</a>
+</div>
+</ilw-header>
+
+<main id="app-main">
+<ilw-content width="page">
+<h1 id="viewing-drafts-and-tag-use">Viewing Drafts and Tag Use</h1>
+<p>Two pages under <strong>Review</strong> help you see the state of your source: <strong>View Drafts</strong> and <strong>Review Tag Use</strong>.</p>
+<h2 id="view-drafts-reviewviewdrafts">View Drafts (<code>/review/viewdrafts</code>)</h2>
+<p>This page lists all drafts for all item types in the active source.</p>
+<ol>
+<li>Open <strong>Review &gt; View Drafts</strong>.</li>
+<li>Browse the list, which is sorted alphabetically by title.</li>
+<li>Select a title to open that item's <strong>technical</strong> page, where you can review and change its status.</li>
+</ol>
+<p>Notes:</p>
+<ul>
+<li>If there are no drafts, the page shows &quot;No drafts are created.&quot;</li>
+<li>An entry marked <strong>(newer draft)</strong> has a draft version that is newer than the published version.</li>
+<li>Items can be in draft because they were added through the API (which defaults to Draft), were moved back to draft, or failed a <a href="11-link-checks.html">link check</a>.</li>
+<li>The list is generated each time you open the page, so it always shows the current drafts.</li>
+</ul>
+<h2 id="review-tag-use-reviewtaguse">Review Tag Use (<code>/review/taguse</code>)</h2>
+<p>This page lists the tags that are used in your source, grouped by filter group (for example, Audience, Topic, or a generic tag group). Each group shows its title and the tags in it.</p>
+<p>Use it to:</p>
+<ul>
+<li>confirm which tags are in use before you rename or remove a tag;</li>
+<li>spot misspelled, duplicated, or unneeded tags;</li>
+<li>check tag names before an <a href="09-importing-and-exporting.html">import</a>, since tag names are case-sensitive.</li>
+</ul>
+<p>To change tags, go to <strong>Configuration &gt; Manage Filters</strong>. See <a href="04-filters-and-categories.html">Filters and Categories</a>.</p>
+
+</ilw-content>
+<ilw-spacer></ilw-spacer>
+</main>
+
+<ilw-footer slot="footer">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+</ilw-footer>
+</ilw-page>
+</body>
+</html>

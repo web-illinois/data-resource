@@ -14,8 +14,8 @@ namespace ResourceInformationV2.Function {
 
         public OpenApiInfo Info { get; set; } = new OpenApiInfo() {
             Version = "1.0.0",
-            Title = "IT Partners Resource Repository API",
-            Description = "<p>List of APIs that allow users to pull information from the IT Partners Resource Repository. Use this with the IT Partners Resource Repository at <a href='https://resource.wigg.illinois.edu'>https://resource.wigg.illinois.edu</a>.</p> \n\r\n\r",
+            Title = "WIGG Resource Application API",
+            Description = "<p>List of APIs that allow users to pull information from the WIGG Resource Application. Use this with the WIGG Resource Application at <a href='https://resource.wigg.illinois.edu'>https://resource.wigg.illinois.edu</a>.</p> \n\r\n\r",
             Contact = new OpenApiContact() {
                 Name = "Bryan Jonker",
                 Email = "jonker@illinios.edu",

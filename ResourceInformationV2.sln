@@ -26,6 +26,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\wigg-fun-staging-resource.yml = .github\workflows\wigg-fun-staging-resource.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{4F41B424-DC08-44DF-A2AE-CF35CAD13B33}"
+	ProjectSection(SolutionItems) = preProject
+		documentation\01-getting-started.md = documentation\01-getting-started.md
+		documentation\02-adding-and-editing-items.md = documentation\02-adding-and-editing-items.md
+		documentation\03-images-and-videos.md = documentation\03-images-and-videos.md
+		documentation\04-filters-and-categories.md = documentation\04-filters-and-categories.md
+		documentation\05-organizational-charts.md = documentation\05-organizational-charts.md
+		documentation\06-review-and-email.md = documentation\06-review-and-email.md
+		documentation\07-using-the-data.md = documentation\07-using-the-data.md
+		documentation\08-troubleshooting.md = documentation\08-troubleshooting.md
+		documentation\09-importing-and-exporting.md = documentation\09-importing-and-exporting.md
+		documentation\10-security.md = documentation\10-security.md
+		documentation\11-link-checks.md = documentation\11-link-checks.md
+		documentation\12-drafts-and-tag-use.md = documentation\12-drafts-and-tag-use.md
+		documentation\13-instructions-for-editors.md = documentation\13-instructions-for-editors.md
+		documentation\Build-Documentation.ps1 = documentation\Build-Documentation.ps1
+		documentation\README.md = documentation\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

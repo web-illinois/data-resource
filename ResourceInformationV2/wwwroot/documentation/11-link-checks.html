@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Link Checks - WIGG Resource Application Documentation</title>
+	<link rel="dns-prefetch" href="//cdn.brand.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.toolkit.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.disability.illinois.edu">
+	<link rel="shortcut icon" href="https://cdn.brand.illinois.edu/favicon.ico">
+	<link rel="apple-touch-icon" href="https://cdn.brand.illinois.edu/touch-icon-40x40.png">
+	<link rel="stylesheet" href="//cdn.toolkit.illinois.edu/3/toolkit.css">
+	<script type="module" src="//cdn.toolkit.illinois.edu/3/toolkit.js" async></script>
+	<script src="https://cdn.disability.illinois.edu/skipto.min.js"></script>
+	<script>var SkipToConfig = { 'settings': { 'skipTo': { displayOption: 'static', colorTheme: 'illinois', headings: 'h1, h2, h3', } } };</script>
+	<link href="/css/site.css?cache=1" rel="stylesheet" />
+</head>
+<body>
+<ilw-page>
+<ilw-header slot="header">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+<div slot="links">
+	<a href="/">Back to the Application</a>
+</div>
+</ilw-header>
+
+<main id="app-main">
+<ilw-content width="page">
+<h1 id="link-checks">Link Checks</h1>
+<p>A link check confirms that the links on your resources resolve to a working website. Open <strong>Review &gt; Validate Links</strong> to use it.</p>
+<blockquote>
+<p>The check only tests whether a link resolves to a website. It does not detect whether the page has moved or been repurposed.</p>
+</blockquote>
+<h2 id="schedule-a-link-check">Schedule a link check</h2>
+<ol>
+<li>Open <strong>Review &gt; Validate Links</strong>.</li>
+<li>Select <strong>Schedule Link Check</strong>.</li>
+<li>Return to the page later to see progress.</li>
+</ol>
+<p>You cannot schedule a second check while one is in progress. In that case, the button is replaced with the status only.</p>
+<h2 id="how-long-it-takes">How long it takes</h2>
+<p>The process checks about 60 links an hour, so a large source can take several days. Check back on the page for:</p>
+<ul>
+<li><strong>Last Link Check</strong>: the date of the most recent check.</li>
+<li><strong>Number of Links Left to Check</strong>: how many links remain.</li>
+</ul>
+<h2 id="what-happens-to-bad-links">What happens to bad links</h2>
+<ul>
+<li>A link that does not resolve is converted to <strong>Draft</strong> mode and no longer appears in searches.</li>
+<li>Under <strong>List of Bad Links</strong>, each entry shows the title (linked to the URL), the response message, and an <strong>Edit Resource</strong> link. The list stays until you run another link check.</li>
+<li>For a live list of everything currently in draft, use the <strong>View Drafts</strong> page (<code>/review/viewdrafts</code>).</li>
+</ul>
+<h2 id="fixing-a-bad-link">Fixing a bad link</h2>
+<ol>
+<li>Select <strong>Edit Resource</strong> beside the link.</li>
+<li>Correct the URL and save.</li>
+<li>Move the item out of draft, following your normal review process.</li>
+</ol>
+<h2 id="links-that-are-wrongly-flagged">Links that are wrongly flagged</h2>
+<p>Some websites block automated checks, so a good link may be reported as not resolved. For that resource, open the <strong>technical</strong> area of the item and select <strong>Use Manual Check</strong>. The link will no longer be sent to draft when it does not resolve. You are then responsible for checking it yourself.</p>
+<h2 id="tips">Tips</h2>
+<ul>
+<li>Schedule a link check regularly, for example each term.</li>
+<li>Use it together with the <a href="06-review-and-email.html">review process</a>.</li>
+<li>If many links fail at once, confirm the websites are not simply down before editing items.</li>
+</ul>
+
+</ilw-content>
+<ilw-spacer></ilw-spacer>
+</main>
+
+<ilw-footer slot="footer">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+</ilw-footer>
+</ilw-page>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Adding Instructions for Editors - WIGG Resource Application Documentation</title>
+	<link rel="dns-prefetch" href="//cdn.brand.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.toolkit.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.disability.illinois.edu">
+	<link rel="shortcut icon" href="https://cdn.brand.illinois.edu/favicon.ico">
+	<link rel="apple-touch-icon" href="https://cdn.brand.illinois.edu/touch-icon-40x40.png">
+	<link rel="stylesheet" href="//cdn.toolkit.illinois.edu/3/toolkit.css">
+	<script type="module" src="//cdn.toolkit.illinois.edu/3/toolkit.js" async></script>
+	<script src="https://cdn.disability.illinois.edu/skipto.min.js"></script>
+	<script>var SkipToConfig = { 'settings': { 'skipTo': { displayOption: 'static', colorTheme: 'illinois', headings: 'h1, h2, h3', } } };</script>
+	<link href="/css/site.css?cache=1" rel="stylesheet" />
+</head>
+<body>
+<ilw-page>
+<ilw-header slot="header">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+<div slot="links">
+	<a href="/">Back to the Application</a>
+</div>
+</ilw-header>
+
+<main id="app-main">
+<ilw-content width="page">
+<h1 id="adding-instructions-for-editors">Adding Instructions for Editors</h1>
+<p>Source administrators can add custom instructions that appear at the top of the edit pages for each item type. Editors see them as a bordered red message beginning with &quot;Instructions:&quot;. Instructions are stored per source, so each source can have its own wording.</p>
+<h2 id="where-to-find-the-instruction-pages">Where to find the Instruction pages</h2>
+<p>Open <strong>Configuration</strong> and select <strong>Options and Instructions</strong> in the sidebar. There is one page per item type:</p>
+<table>
+<thead>
+<tr>
+<th>Item type</th>
+<th>Page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resources</td>
+<td><code>/configuration/instructions/resources</code></td>
+</tr>
+<tr>
+<td>Publications</td>
+<td><code>/configuration/instructions/publications</code></td>
+</tr>
+<tr>
+<td>Events</td>
+<td><code>/configuration/instructions/events</code></td>
+</tr>
+<tr>
+<td>People</td>
+<td><code>/configuration/instructions/people</code></td>
+</tr>
+<tr>
+<td>FAQs</td>
+<td><code>/configuration/instructions/faqs</code></td>
+</tr>
+<tr>
+<td>Notes</td>
+<td><code>/configuration/instructions/notes</code></td>
+</tr>
+<tr>
+<td>Organizational Chart</td>
+<td><code>/configuration/instructions/orgchart</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each page begins with a short description of the item type.</p>
+<h2 id="turn-an-item-type-on-or-off">Turn an item type on or off</h2>
+<p>Under <strong>Would you like to add this item to your source?</strong>, choose <strong>Yes</strong> or <strong>No</strong>. Only item types set to Yes appear on the home page and in <strong>Add Items</strong>. Select <strong>Save</strong> to apply the change.</p>
+<h2 id="write-the-instructions">Write the instructions</h2>
+<p>For an enabled item type (other than the Org Chart), enter optional text in any of these boxes. Each box matches an area of the edit pages:</p>
+<table>
+<thead>
+<tr>
+<th>Box</th>
+<th>Shown on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General Area</td>
+<td>General Information page</td>
+</tr>
+<tr>
+<td>Image/Video Area</td>
+<td>Image and Video page</td>
+</tr>
+<tr>
+<td>Item-Specific Area</td>
+<td>The page with fields specific to that type, such as publication or event fields (not available for Resources)</td>
+</tr>
+<tr>
+<td>Filters Area</td>
+<td>Filters page</td>
+</tr>
+<tr>
+<td>Related Links Area</td>
+<td>Related Links page</td>
+</tr>
+<tr>
+<td>Technical Information</td>
+<td>Technical page</td>
+</tr>
+</tbody>
+</table>
+<p>Leave a box empty to show no instructions on that page.</p>
+<p>Steps:</p>
+<ol>
+<li>Open the instruction page for the item type.</li>
+<li>Make sure it is set to <strong>Yes</strong>.</li>
+<li>Type the text in the boxes you want.</li>
+<li>Select <strong>Save</strong>. The message &quot;Information saved&quot; confirms the change.</li>
+</ol>
+<p>The text appears right away the next time an editor opens that page of an item.</p>
+<h2 id="url-fragment-option">URL Fragment option</h2>
+<p>Below the boxes, <strong>Would you like to implement a URL Fragment?</strong> turns the <em>URL Fragment</em> field on or off for this type. Choose <strong>Yes</strong> if you want SEO-friendly URLs for specific items. When on, editors see the field on the General Information page. See <a href="02-adding-and-editing-items.html">Adding and Editing Items</a>.</p>
+<h2 id="tips-for-good-instructions">Tips for good instructions</h2>
+<ul>
+<li>Keep them short and specific, since they are displayed in a prominent box.</li>
+<li>Use plain text. Do not rely on formatting or links.</li>
+<li>State your rules, such as naming conventions, who should be the review contact, or required fields.</li>
+<li>Review them whenever your process changes.</li>
+<li>Instructions only affect the source that is currently active. Check which source you are working in on the home page.</li>
+</ul>
+
+</ilw-content>
+<ilw-spacer></ilw-spacer>
+</main>
+
+<ilw-footer slot="footer">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+</ilw-footer>
+</ilw-page>
+</body>
+</html>

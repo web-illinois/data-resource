@@ -65,7 +65,7 @@ namespace ResourceInformationV2.Components.Pages.OrgChart {
                 return;
             }
             var alert = child.Children is not null && child.Children.Count > 0 ? "This will delete this item and all children" : "This will delete this item";
-            if (!(await JsRuntime.InvokeAsync<bool>("confirm", $"{alert}. Are you sure?"))) {
+            if (await JsRuntime.InvokeAsync<bool>("confirm", $"{alert}. Are you sure?")) {
                 _ = VisibleOrgchartItem.Children.Remove(child);
             }
             RefreshVisibleItems();

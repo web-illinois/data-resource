@@ -34,14 +34,18 @@ The WIGG Resource Application is for editing resources, publications, events, pe
 
 ### Links about the project
 
-- Help with the repository: contact Bryan Jonker at [jonker@illinois.edu](mailto:jonker@illinois.edu).
-- The [API documentation](https://resourceapi.wigg.illinois.edu/api/swagger/ui) describes how to pull this information into your web page.
+- The code is in the [GitHub repository](https://github.com/web-illinois/data-resource).
 - To report an issue or request a feature, [create an issue in the GitHub repository](https://go.illinois.edu/resource-toolkit-help).
 - The project is [tracked through a GitHub project](https://github.com/orgs/web-illinois/projects/17/).
+- The [API documentation](https://resourceapi.wigg.illinois.edu/api/swagger/ui) describes how to pull this information into your web page.
 
 ### Who supports this application?
 
-The application is maintained by WIGG and the University Website Management Center of Expertise group. This application is meant for campus, so we cannot customize it for a specific unit unless others will benefit from the change.
+The application cloud support is managed by Tech Services. The application is maintained by WIGG and the University Website Management Center of Expertise group. This application is meant for campus, so we cannot customize it for a specific unit unless others will benefit from the change.
+
+If you find an issue with the directory or want to request additional functionality, [create an issue in the GitHub repository](https://go.illinois.edu/resource-toolkit-help).
+
+We are happy to have others work on the application to meet their needs. Please contact the WIGG Team if you want to contribute.s
 
 ### Can I get information from the repository?
 

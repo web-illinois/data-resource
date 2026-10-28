@@ -1,8 +1,8 @@
-# IT Partners Resource Information System
+# WIGG Resource Information System
 
 ## Summary
 
-This is the Resource Information system for IT Partners, used to organize resources, publications, notes, FAQ items, people, and events. Built with Blazor Server on .NET 10, it provides a comprehensive content management and search solution leveraging AWS OpenSearch Service.
+This is the Resource Information system for WIGG, used to organize resources, publications, notes, FAQ items, people, and events. Built with Blazor Server on .NET 10, it provides a comprehensive content management and search solution leveraging AWS OpenSearch Service.
 
 ## Schema update
 
@@ -10,6 +10,11 @@ In the rare case that the AWS OpenSearch Schema needs to be updated, go through 
 
 This will rebuild the index and reindex all data. After the schema update is complete, change the `forceIndexCreation` value back to false to prevent unnecessary reindexing in the future.
 
+## Help Documentation
+
+Documentation is in markdown files in the documentation folder. The documentation is generated into HTML files in the docs folder using a PowerShell script.
+
+Regenerating: The Markdown stays the source of truth. After editing a .md file, run pwsh .\documentation\Build-Documentation.ps1 from the repo root and commit the regenerated HTML. The script deletes and rebuilds the folder each time, so don't put hand-edited files there.
 
 ## Architecture Overview
 

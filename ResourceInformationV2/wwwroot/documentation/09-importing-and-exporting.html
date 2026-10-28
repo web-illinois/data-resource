@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Importing and Exporting Data - WIGG Resource Application Documentation</title>
+	<link rel="dns-prefetch" href="//cdn.brand.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.toolkit.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.disability.illinois.edu">
+	<link rel="shortcut icon" href="https://cdn.brand.illinois.edu/favicon.ico">
+	<link rel="apple-touch-icon" href="https://cdn.brand.illinois.edu/touch-icon-40x40.png">
+	<link rel="stylesheet" href="//cdn.toolkit.illinois.edu/3/toolkit.css">
+	<script type="module" src="//cdn.toolkit.illinois.edu/3/toolkit.js" async></script>
+	<script src="https://cdn.disability.illinois.edu/skipto.min.js"></script>
+	<script>var SkipToConfig = { 'settings': { 'skipTo': { displayOption: 'static', colorTheme: 'illinois', headings: 'h1, h2, h3', } } };</script>
+	<link href="/css/site.css?cache=1" rel="stylesheet" />
+</head>
+<body>
+<ilw-page>
+<ilw-header slot="header">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+<div slot="links">
+	<a href="/">Back to the Application</a>
+</div>
+</ilw-header>
+
+<main id="app-main">
+<ilw-content width="page">
+<h1 id="importing-and-exporting-data">Importing and Exporting Data</h1>
+<p>The <strong>Transfer Items</strong> section lets you export your source's data to a file and import data from a file. There are two formats:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Best for</th>
+<th>Pages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tab-delimited text file</td>
+<td>Bulk editing in Excel, manual updates, initial loads</td>
+<td>Save Text File, Load File</td>
+</tr>
+<tr>
+<td>JSON file</td>
+<td>Full backup and restore to a blank area</td>
+<td>Save JSON File, Load JSON File</td>
+</tr>
+</tbody>
+</table>
+<p>Pages work on the <strong>active source</strong> (see <a href="01-getting-started.html">Getting Started</a>). The <em>Select Type to Load</em> list shows only the item types your source uses (Resources, Publications, Events, People, FAQs, Notes, Org Chart).</p>
+<blockquote>
+<p>Large transfers take a while. <strong>Do not leave the page</strong> until the confirmation message appears.</p>
+</blockquote>
+<hr />
+<h2 id="export-to-a-text-file-transfersave">Export to a text file (<code>/transfer/save</code>)</h2>
+<ol>
+<li>Open <strong>Transfer Items &gt; Save Text File</strong>.</li>
+<li>Choose a type under <strong>Select Type to Load</strong>.</li>
+<li>Select <strong>Download File</strong>.</li>
+<li>Open the downloaded tab-delimited file in Excel.</li>
+</ol>
+<p>Format notes:</p>
+<ul>
+<li><strong>Related Links</strong> are separated by semicolons, in Markdown format: <code>[link text](https://example.com)</code>.</li>
+<li><strong>Tags, Audience, and Topics</strong> are separated by semicolons.</li>
+<li>A <em>link text</em> column follows the link column in all exports and imports (added 6/2/2026). If an older file fails to import, add a blank column after the link column.</li>
+</ul>
+<h2 id="import-from-a-text-file-transferload">Import from a text file (<code>/transfer/load</code>)</h2>
+<ol>
+<li><strong>Get the template.</strong> Download the file from <em>Save Text File</em>. Even with no items, it provides the correct column headings.</li>
+<li>Fill in or edit the data.</li>
+<li><strong>If using Excel, save as a tab-delimited text file</strong> before uploading.</li>
+<li>Open <strong>Transfer Items &gt; Load File</strong> and choose the type.</li>
+<li>Choose the file, set the options below, and select <strong>Upload File</strong>.</li>
+<li>Wait for the confirmation message.</li>
+</ol>
+<p>Rules:</p>
+<ul>
+<li>IDs not in the file are generated automatically. Any ID you provide must start with the source code followed by a dash (for example, <code>mysource-123</code>).</li>
+<li>Tags, Audience, and Topics are separated by semicolons and are <strong>case-sensitive</strong>.</li>
+<li>Related Links use the Markdown format shown above.</li>
+<li>Items load <strong>inactive</strong> by default. Enter <code>true</code> under <strong>Active</strong> to load them as active.</li>
+<li>The maximum file size is about 2 MB. Split larger files.</li>
+</ul>
+<p>Options (non-Org Chart types):</p>
+<ul>
+<li><strong>Should you delete all items first?</strong> Deletes all existing items of that type before loading. Use with care; consider downloading a backup first.</li>
+<li><strong>Ignore tags that do not exist?</strong> Selected by default. Tags in the file that are not defined in the source are skipped. If cleared, the tag list is overwritten with the tags in the file, which can produce unpredictable results for existing tagged items.</li>
+</ul>
+<h3 id="org-chart">Org Chart</h3>
+<p>Loading an Org Chart replaces the entire chart. The delete and tag options do not apply.</p>
+<hr />
+<h2 id="export-to-json-transfersavejson">Export to JSON (<code>/transfer/savejson</code>)</h2>
+<ol>
+<li>Open <strong>Transfer Items &gt; Save JSON File</strong>.</li>
+<li>Choose a type and select <strong>Download File</strong>.</li>
+</ol>
+<p>The file is named <code>source_yyyy_MM_dd_type.json</code>.</p>
+<h2 id="import-from-json-transferloadjson">Import from JSON (<code>/transfer/loadjson</code>)</h2>
+<ol>
+<li>Open <strong>Transfer Items &gt; Load JSON File</strong>.</li>
+<li>Choose the type and the <code>.json</code> file, then select <strong>Upload File</strong>.</li>
+</ol>
+<p>JSON import is intended as a <strong>full backup and restore to a blank area</strong>. To manually update existing information, use the text file option.</p>
+<hr />
+<h2 id="which-should-i-use">Which should I use?</h2>
+<ul>
+<li>Update many items by hand: <strong>text file</strong> (export, edit, import).</li>
+<li>Back up or move a source's data: <strong>JSON</strong>.</li>
+<li>Start a new source with existing data: export the template, fill it in, and import.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Import fails or columns look shifted:</strong> add the <em>link text</em> column after the link column.</li>
+<li><strong>Tags missing after import:</strong> tag names must match exactly (case-sensitive) and exist in the source, or turn off <em>Ignore tags that do not exist</em>.</li>
+<li><strong>Special characters look wrong:</strong> save the file as UTF-8.</li>
+<li><strong>Nothing happens on upload:</strong> choose the file first and wait for the &quot;ready to be uploaded&quot; message.</li>
+</ul>
+
+</ilw-content>
+<ilw-spacer></ilw-spacer>
+</main>
+
+<ilw-footer slot="footer">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+</ilw-footer>
+</ilw-page>
+</body>
+</html>

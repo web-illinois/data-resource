@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Security - WIGG Resource Application Documentation</title>
+	<link rel="dns-prefetch" href="//cdn.brand.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.toolkit.illinois.edu">
+	<link rel="dns-prefetch" href="//cdn.disability.illinois.edu">
+	<link rel="shortcut icon" href="https://cdn.brand.illinois.edu/favicon.ico">
+	<link rel="apple-touch-icon" href="https://cdn.brand.illinois.edu/touch-icon-40x40.png">
+	<link rel="stylesheet" href="//cdn.toolkit.illinois.edu/3/toolkit.css">
+	<script type="module" src="//cdn.toolkit.illinois.edu/3/toolkit.js" async></script>
+	<script src="https://cdn.disability.illinois.edu/skipto.min.js"></script>
+	<script>var SkipToConfig = { 'settings': { 'skipTo': { displayOption: 'static', colorTheme: 'illinois', headings: 'h1, h2, h3', } } };</script>
+	<link href="/css/site.css?cache=1" rel="stylesheet" />
+</head>
+<body>
+<ilw-page>
+<ilw-header slot="header">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+<div slot="links">
+	<a href="/">Back to the Application</a>
+</div>
+</ilw-header>
+
+<main id="app-main">
+<ilw-content width="page">
+<h1 id="security">Security</h1>
+<p>Open <strong>Configuration &gt; Security</strong> to control who can edit a source and to manage API access.</p>
+<h2 id="managing-editors">Managing editors</h2>
+<p>The page lists everyone with access to the source. The owner is marked and cannot be removed.</p>
+<h3 id="add-a-person">Add a person</h3>
+<ol>
+<li>Enter their Net ID under <strong>New Net ID</strong>. Adding <code>@illinois.edu</code> is optional.</li>
+<li>If the list of departments is shown, you can set <strong>Restrict to a department</strong>. Choose a department to limit that person to items in that department, or leave it as <em>None (access to all departments)</em>.</li>
+<li>Select <strong>Add Net ID</strong>.</li>
+</ol>
+<p>Departments come from the Department filter group. See <a href="04-filters-and-categories.html">Filters and Categories</a>.</p>
+<h3 id="remove-a-person">Remove a person</h3>
+<p>Select <strong>Remove</strong> beside their name. The button is disabled for the owner.</p>
+<h2 id="changing-the-owner">Changing the owner</h2>
+<p>Every source must have an owner.</p>
+<ol>
+<li>Under <strong>Change Owner</strong>, choose a person from the list. Only people already added to the source appear.</li>
+<li>Select <strong>Change Owner</strong>.</li>
+</ol>
+<h2 id="api-access">API access</h2>
+<p>An API key lets a program add, update, and delete items in your source.</p>
+<h3 id="create-a-key">Create a key</h3>
+<ol>
+<li>Select <strong>Create a New API key</strong>.</li>
+<li>Copy the key shown on the page. <strong>It is displayed only once and cannot be retrieved after you leave the page.</strong></li>
+</ol>
+<p>By default, items created through the API are forced to <strong>Draft</strong> so an administrator can review them. Keep this unless the API is used in a controlled process. When a key is active, the checkbox <strong>Will an API call be forced to Draft mode?</strong> controls this setting.</p>
+<h3 id="replace-or-revoke-a-key">Replace or revoke a key</h3>
+<ul>
+<li>Creating a new key does <strong>not</strong> disable the old one. Both keys work.</li>
+<li>If a key may be compromised, select <strong>Invalidate the API key</strong> first, and then create a new key.</li>
+<li>The page shows the date the key was last changed.</li>
+</ul>
+<h3 id="good-practices">Good practices</h3>
+<ul>
+<li>Store keys securely, as you would a password.</li>
+<li>Add only the people who need access, and use department restrictions where possible.</li>
+<li>Review the list regularly and remove people who no longer need access.</li>
+</ul>
+
+</ilw-content>
+<ilw-spacer></ilw-spacer>
+</main>
+
+<ilw-footer slot="footer">
+<a slot="primary-unit" href="https://wigg.illinois.edu/">Web Implementation Guidelines Group</a>
+<a slot="site-name" href="/">WIGG Resource Application</a>
+</ilw-footer>
+</ilw-page>
+</body>
+</html>

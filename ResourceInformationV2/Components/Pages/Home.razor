@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>WIGG Resource Application | Illinois</PageTitle>
 
 <ilw-content width="page">
     <h1>WIGG Resource Application</h1>
@@ -100,13 +100,6 @@ else if (Sources != null)
                     <h3>Organizational Chart</h3>
                     <p>An Organizational Chart is a standalone hierarchical structure to represent the relationships between different entities. You can only have one chart per source.</p>
                     <div slot="footer"><a href="/orgchart/edit" class="ilw-button">Edit Org Chart</a></div>
-                </ilw-card>
-            }
-            @if (UseResources || UsePublications || UsePeople || UseFaqs || UseNotes || UseEvents) {
-                <ilw-card theme="gray" align="center">
-                    <h3>Review Items</h3>
-                   <p>You can have a review process to confirm your items are not outdated.</p>
-                    <div slot="footer"><a href="/review/old" class="ilw-button">View Review List</a><a href="/review/edit" class="ilw-button">Edit Review Process</a></div>
                 </ilw-card>
             }
             <ilw-card theme="gray" align="center">
